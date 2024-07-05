@@ -171,12 +171,6 @@ const SideBar = () => {
             colors={colors}
             icon={<ReceiptOutlined />}
           />
-          <Item
-            title="Invoices Balances"
-            path="/invoices"
-            colors={colors}
-            icon={<ReceiptOutlined />}
-          />
         </Menu>
         <Typography
           variant="h6"
