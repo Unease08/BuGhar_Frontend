@@ -13,16 +13,14 @@ export const ToggledContext = createContext(null);
 function App() {
   const [theme, colorMode] = useMode();
   const [toggled, setToggled] = useState(false);
-  const [isUser, setIsUser] = useState(false); // Change this state to toggle between user and admin
+  const [isUser, setIsUser] = useState(true); // Change this state to toggle between user and admin
 
   const values = { toggled, setToggled };
 
   return (
     <>
       {isUser ? (
-        <UserContainer>
-          <UserRoute />
-        </UserContainer>
+        <UserRoute />
       ) : (
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>

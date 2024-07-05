@@ -3,15 +3,13 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "../../../index.css";
 
-function UserContainer({ children }) {
+function UserContainer({ children, showNavAndFooter = true }) {
   return (
-    <>
-      <div className="user-container">
-        <Navbar />
-        {children}
-        <Footer />
-      </div>
-    </>
+    <div className="user-container">
+      {showNavAndFooter && <Navbar />}
+      {children}
+      {showNavAndFooter && <Footer />}
+    </div>
   );
 }
 

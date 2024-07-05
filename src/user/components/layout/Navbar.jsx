@@ -7,7 +7,7 @@ function Navbar() {
       <div className="navbar-logo">MyApp</div>
       <ul className="navbar-links">
         <li>
-          <Link to="/">
+          <Link to="/home">
             <span>Home</span>
           </Link>
         </li>
