@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import "../../../index.css";
+import "../../../App.css";
 
 function UserContainer({ children, showNavAndFooter = true }) {
   return (

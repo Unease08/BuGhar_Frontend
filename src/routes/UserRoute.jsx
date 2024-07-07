@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../user/pages/Home";
 import About from "../user/pages/About";
 import Login from "../user/components/login/Login";
-import First from "../user/pages/FirstPage";
 import UserContainer from "../user/components/layout/UserContainer";
+import HomePage from "../user/pages/homepage/HomePage";
 
 const UserRoutes = () => {
   return (
@@ -13,7 +13,7 @@ const UserRoutes = () => {
         path="/"
         element={
           <UserContainer showNavAndFooter={false}>
-            <First />
+            <HomePage />
           </UserContainer>
         }
         exact
