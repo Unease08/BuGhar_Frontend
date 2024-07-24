@@ -2,9 +2,7 @@ import React, { createContext, useState } from "react";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import { Navbar, SideBar } from "./admin/scenes";
-import { Outlet } from "react-router-dom";
 
-import UserContainer from "./user/components/layout/UserContainer";
 import UserRoute from "./routes/UserRoute";
 import AdminRouter from "./AdminRouter";
 

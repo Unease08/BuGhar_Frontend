@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../../library/Api";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   identifier: Yup.string().required("Email or Username is required"),
@@ -11,6 +12,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       const response = await api.post(
@@ -35,6 +37,7 @@ const Login = () => {
       localStorage.setItem("token_type", token_type);
 
       console.log("Login Successfull");
+      navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
       setErrors({ apiError: "Invalid email or password" });

@@ -5,6 +5,7 @@ import About from "../user/pages/About";
 import Login from "../user/components/login/Login";
 import UserContainer from "../user/components/layout/UserContainer";
 import HomePage from "../user/pages/homepage/HomePage";
+import PrivateRoute from "../auth/PrivateRoute"; // Adjust the path as needed
 
 const UserRoutes = () => {
   return (
@@ -19,15 +20,6 @@ const UserRoutes = () => {
         exact
       />
       <Route
-        path="/home"
-        element={
-          <UserContainer>
-            <Home />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
         path="/login"
         element={
           <UserContainer showNavAndFooter={false}>
@@ -35,6 +27,14 @@ const UserRoutes = () => {
           </UserContainer>
         }
         exact
+      />
+      <Route
+        path="/home"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<Home />} />
+          </UserContainer>
+        }
       />
       <Route
         path="/about"

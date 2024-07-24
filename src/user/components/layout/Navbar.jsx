@@ -1,7 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../App.css";
+
 function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear tokens from localStorage
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("token_type");
+
+    // Redirect to login page or another appropriate page
+    navigate("/");
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">MyApp</div>
@@ -15,6 +28,17 @@ function Navbar() {
           <Link to="/about">
             <span>About</span>
           </Link>
+        </li>
+        <li>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogout();
+            }}
+          >
+            <span>Logout</span>
+          </a>
         </li>
       </ul>
     </nav>
