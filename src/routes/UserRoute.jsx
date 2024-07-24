@@ -6,6 +6,7 @@ import Login from "../user/components/login/Login";
 import UserContainer from "../user/components/layout/UserContainer";
 import HomePage from "../user/pages/homepage/HomePage";
 import PrivateRoute from "../auth/PrivateRoute"; // Adjust the path as needed
+import NotFound from "../user/pages/NotFound";
 
 const UserRoutes = () => {
   return (
@@ -44,6 +45,15 @@ const UserRoutes = () => {
           </UserContainer>
         }
         exact
+      />
+
+      <Route
+        path="*"
+        element={
+          <UserContainer showNavAndFooter={false}>
+            <NotFound />
+          </UserContainer>
+        }
       />
     </Routes>
   );
