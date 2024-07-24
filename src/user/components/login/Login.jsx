@@ -17,7 +17,7 @@ const Login = () => {
         "/auth/login",
         {
           email: values.identifier.includes("@") ? values.identifier : null,
-          username: !values.identifier.includes("@") ? values.identifier : null,
+          username: values.identifier,
           password: values.password,
         },
         {
