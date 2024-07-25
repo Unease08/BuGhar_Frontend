@@ -42,8 +42,8 @@ const Login = () => {
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
-      setErrors({ apiError: "Invalid email or password" });
-      toast.error("Login Failed: Invalid email or password");
+      // setErrors({ apiError: "Invalid email or password" });
+      toast.error("Login Failed: Invalid Credentials");
     }
     setSubmitting(false);
   };
@@ -72,7 +72,7 @@ const Login = () => {
                         htmlFor="identifier"
                         className="mb-2 dark:text-gray-400 text-lg"
                       >
-                        Username
+                       Email or Username
                       </label>
                       <Field
                         id="identifier"
