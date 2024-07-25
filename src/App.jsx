@@ -5,6 +5,7 @@ import { Navbar, SideBar } from "./admin/scenes";
 
 import UserRoute from "./routes/UserRoute";
 import AdminRouter from "./AdminRouter";
+import { Toaster } from "react-hot-toast";
 
 export const ToggledContext = createContext(null);
 
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <>
+    <Toaster />
       {isUser ? (
         <UserRoute />
       ) : (
