@@ -7,6 +7,7 @@ import UserContainer from "../user/components/layout/UserContainer";
 import HomePage from "../user/pages/homepage/HomePage";
 import PrivateRoute from "../auth/PrivateRoute"; // Adjust the path as needed
 import NotFound from "../user/pages/NotFound";
+import Register from "../user/components/register/Register";
 
 const UserRoutes = () => {
   return (
@@ -25,6 +26,15 @@ const UserRoutes = () => {
         element={
           <UserContainer showNavAndFooter={false}>
             <Login />
+          </UserContainer>
+        }
+        exact
+      />
+      <Route
+        path="/register"
+        element={
+          <UserContainer showNavAndFooter={false}>
+            <Register />
           </UserContainer>
         }
         exact

@@ -3,7 +3,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../../library/Api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
-  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await api.post(
         "/auth/login",
@@ -72,7 +72,7 @@ const Login = () => {
                         htmlFor="identifier"
                         className="mb-2 dark:text-gray-400 text-lg"
                       >
-                       Email or Username
+                        Email or Username
                       </label>
                       <Field
                         id="identifier"
@@ -140,7 +140,7 @@ const Login = () => {
                     href="#"
                   >
                     <span className=" ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                      Sign Up
+                      <Link to='/register'>Sign Up</Link>
                     </span>
                   </a>
                 </h3>
