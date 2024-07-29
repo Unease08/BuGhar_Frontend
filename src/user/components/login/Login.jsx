@@ -42,160 +42,132 @@ const Login = () => {
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
-      // setErrors({ apiError: "Invalid email or password" });
       toast.error("Login Failed: Invalid Credentials");
     }
     setSubmitting(false);
   };
 
   return (
-    <div className="flex font-poppins items-center justify-center">
-      <div className="h-screen w-screen flex justify-center items-center dark:bg-gray-900">
-        <div className="grid gap-8">
-          <div
-            id="back-div"
-            className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4"
+    <div className="py-32 h-screen">
+      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+        <div
+          className="hidden lg:block lg:w-1/2 bg-cover h-auto"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')",
+          }}
+        ></div>
+        <div className="w-full p-8 lg:w-1/2">
+          <p className="text-xl text-gray-600 text-center">Welcome back!</p>
+          <a
+            href=""
+            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
           >
-            <div className="border-[20px] border-transparent rounded-[20px] dark:bg-gray-900 bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
-              <h1 className="pt-8 pb-6 font-bold dark:text-gray-400 text-5xl text-center cursor-default">
-                Log in
-              </h1>
-              <Formik
-                initialValues={{ identifier: "", password: "" }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                {({ isSubmitting, errors }) => (
-                  <Form className="space-y-4">
-                    <div>
-                      <label
-                        htmlFor="identifier"
-                        className="mb-2 dark:text-gray-400 text-lg"
-                      >
-                        Email or Username
-                      </label>
-                      <Field
-                        id="identifier"
-                        name="identifier"
-                        type="text"
-                        className="border p-3 dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 shadow-md placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full"
-                        placeholder="Email or Username"
-                      />
-                      <ErrorMessage
-                        name="identifier"
-                        component="div"
-                        className="text-red-500 text-sm mt-2"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="password"
-                        className="mb-2 dark:text-gray-400 text-lg"
-                      >
-                        Password
-                      </label>
-                      <Field
-                        id="password"
-                        name="password"
-                        type="password"
-                        className="border p-3 shadow-md dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full"
-                        placeholder="Password"
-                      />
-                      <ErrorMessage
-                        name="password"
-                        component="div"
-                        className="text-red-500 text-sm mt-2"
-                      />
-                    </div>
-                    {/* {errors.apiError && (
-                      <div className="text-red-500 text-sm mt-2">
-                        {errors.apiError}
-                      </div>
-                    )} */}
-                    <div className="mb-4 text-right">
-                      <a
-                        className="group text-blue-400 transition-all duration-100 ease-in-out"
-                        href="#"
-                      >
-                        <span className=" ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                          Forgot Your Password?
-                        </span>
-                      </a>
-                    </div>
-                    <button
-                      className="bg-gradient-to-r dark:text-gray-300 from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Logging in..." : "LOG IN"}
-                    </button>
-                  </Form>
-                )}
-              </Formik>
-              <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-                <h3 className="dark:text-gray-300">
-                  Don't have an account?
-                  <a
-                    className="group text-blue-400 transition-all duration-100 ease-in-out"
-                    href="#"
-                  >
-                    <span className=" ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                      <Link to='/register'>Sign Up</Link>
-                    </span>
-                  </a>
-                </h3>
-              </div>
-              <div className="flex items-center my-4">
-                <hr className="flex-grow border-t border-border" />
-                <span className="px-2 text-white text-muted-foreground">
-                  OR
-                </span>
-                <hr className="flex-grow border-t border-border" />
-              </div>
-              <div
-                id="third-party-auth"
-                className="flex items-center justify-center mt-5 flex-wrap"
-              >
-                <button
-                  type="button"
-                  className="transition-colors focus:ring-2 p-0.5 disabled:cursor-not-allowed bg-white hover:bg-gray-100 text-gray-900 border border-gray-200 disabled:bg-gray-300 disabled:text-gray-700 rounded-lg "
-                >
-                  <span className="flex items-center justify-center gap-1 font-medium py-1 px-2.5 text-base false">
-                    <svg
-                      stroke="currentColor"
-                      fill="currentColor"
-                      strokeWidth="0"
-                      version="1.1"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 48 48"
-                      enableBackground="new 0 0 48 48"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill="#FFC107"
-                        d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12 c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24 c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-                      ></path>
-                      <path
-                        fill="#FF3D00"
-                        d="M6.306,14.691l6.571,4.82C14.713,16.367,18.974,14,24,14c3.059,0,5.842,1.154,7.961,3.039 l5.657-5.657C34.046,6.053,29.268,4,24,4C15.902,4,9.032,8.816,6.306,14.691z"
-                      ></path>
-                      <path
-                        fill="#4CAF50"
-                        d="M24,44c5.148,0,9.844-1.97,13.432-5.166l-6.104-5.564C29.837,34.61,27.036,36,24,36 c-5.233,0-9.671-3.343-11.307-8H6.094l-6.65,4.857C8.965,39.853,15.992,44,24,44z"
-                      ></path>
-                      <path
-                        fill="#1976D2"
-                        d="M43.611,20.083H42V20H24v8h11.303c-0.795,2.248-2.208,4.179-4.023,5.564 c1.997-1.315,3.647-3.222,4.614-5.564c0.4-0.972,0.711-1.989,0.914-3.033c0.134-0.686,0.211-1.393,0.211-2.125 C44,22.659,43.862,21.35,43.611,20.083z"
-                      ></path>
-                    </svg>
-                    Sign in with Google
-                  </span>
-                </button>
-              </div>
+            <div className="px-4 py-3">
+              <svg className="h-6 w-6" viewBox="0 0 40 40">
+                <path
+                  d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.045 27.2142 24.3525 30 20 30C14.4775 30 10 25.5225 10 20C10 14.4775 14.4775 9.99999 20 9.99999C22.5492 9.99999 24.8683 10.9617 26.6342 12.5325L31.3483 7.81833C28.3717 5.04416 24.39 3.33333 20 3.33333C10.7958 3.33333 3.33335 10.7958 3.33335 20C3.33335 29.2042 10.7958 36.6667 20 36.6667C29.2042 36.6667 36.6667 29.2042 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z"
+                  fill="#FFC107"
+                />
+                <path
+                  d="M5.25497 12.2425L10.7308 16.2583C12.2125 12.59 15.8008 9.99999 20 9.99999C22.5491 9.99999 24.8683 10.9617 26.6341 12.5325L31.3483 7.81833C28.3716 5.04416 24.39 3.33333 20 3.33333C13.5983 3.33333 8.04663 6.94749 5.25497 12.2425Z"
+                  fill="#FF3D00"
+                />
+                <path
+                  d="M20 36.6667C24.305 36.6667 28.2167 35.0192 31.1742 32.34L26.0159 27.975C24.3425 29.2425 22.2625 30 20 30C15.665 30 11.9842 27.2359 10.5975 23.3784L5.16254 27.5659C7.92087 32.9634 13.5225 36.6667 20 36.6667Z"
+                  fill="#4CAF50"
+                />
+                <path
+                  d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.7592 25.1975 27.56 26.805 26.0133 27.9758C26.0142 27.975 26.015 27.975 26.0158 27.9742L31.1742 32.3392C30.8092 32.6708 36.6667 28.3333 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z"
+                  fill="#1976D2"
+                />
+              </svg>
             </div>
+            <h1 className="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">
+              Sign in with Google
+            </h1>
+          </a>
+          <div className="mt-4 flex items-center justify-between">
+            <span className="border-b w-1/5 lg:w-1/4"></span>
+            <a href="" className="text-xs text-center text-gray-500 uppercase">
+              OR
+            </a>
+            <span className="border-b w-1/5 lg:w-1/4"></span>
+          </div>
+          <Formik
+            initialValues={{ identifier: "", password: "" }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting }) => (
+              <Form className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="identifier"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Email or Username
+                  </label>
+                  <Field
+                    id="identifier"
+                    name="identifier"
+                    type="text"
+                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Email or Username"
+                  />
+                  <ErrorMessage
+                    name="identifier"
+                    component="div"
+                    className="text-red-500 text-sm mt-2"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Password
+                  </label>
+                  <Field
+                    id="password"
+                    name="password"
+                    type="password"
+                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Password"
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-red-500 text-sm mt-2"
+                  />
+                </div>
+                <div className="mb-4 text-right">
+                  <a className="text-xs text-gray-500" href="">
+                    Forgot Your Password?
+                  </a>
+                </div>
+                <button
+                  className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Logging in..." : "Login"}
+                </button>
+              </Form>
+            )}
+          </Formik>
+          <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
+            <h3 className="dark:text-black-300">
+              Don't have an account?
+              <a
+                className="group text-blue-400 transition-all duration-100 ease-in-out"
+                href="#"
+              >
+                <span className=" ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                  <Link to="/register">Create an Account</Link>
+                </span>
+              </a>
+            </h3>
           </div>
         </div>
       </div>
