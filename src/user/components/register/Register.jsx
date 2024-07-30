@@ -101,6 +101,7 @@ const Register = () => {
                     name="username"
                     type="text"
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Username"
                   />
                   <ErrorMessage
                     name="username"
@@ -117,6 +118,7 @@ const Register = () => {
                     name="email"
                     type="email"
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Email"
                   />
                   <ErrorMessage
                     name="email"
@@ -133,6 +135,7 @@ const Register = () => {
                     name="password"
                     type="password"
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Password"
                   />
                   <ErrorMessage
                     name="password"
@@ -149,6 +152,7 @@ const Register = () => {
                     name="confirmPassword"
                     type="password"
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Confirm Password"
                   />
                   <ErrorMessage
                     name="confirmPassword"

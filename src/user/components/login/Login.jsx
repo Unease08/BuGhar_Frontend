@@ -142,12 +142,12 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-4 text-right">
-                  <a className="text-xs text-white" href="">
+                  <a className="text-xs dark:text-white" href="">
                     <Link to="/forgotpassword"> Forgot Your Password?</Link>
                   </a>
                 </div>
                 <button
-                  className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                  className="bg-n-13 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
                   type="submit"
                   disabled={isSubmitting}
                 >
