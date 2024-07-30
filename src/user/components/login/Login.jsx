@@ -48,8 +48,8 @@ const Login = () => {
   };
 
   return (
-    <div className="py-32 h-screen">
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div className="py-32 h-screen bg-n-11">
+      <div className="flex bg-n-14 rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover h-auto"
           style={{
@@ -58,10 +58,10 @@ const Login = () => {
           }}
         ></div>
         <div className="w-full p-8 lg:w-1/2">
-          <p className="text-xl text-gray-600 text-center">Welcome back!</p>
+          <p className="text-xl text-white text-center">Welcome back!</p>
           <a
             href=""
-            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
+            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-m border-2 bg-white"
           >
             <div className="px-4 py-3">
               <svg className="h-6 w-6" viewBox="0 0 40 40">
@@ -83,13 +83,13 @@ const Login = () => {
                 />
               </svg>
             </div>
-            <h1 className="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">
+            <h1 className="px-4 py-3 w-5/6 text-center bg-white text-gray-700 font-bold">
               Sign in with Google
             </h1>
           </a>
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 lg:w-1/4"></span>
-            <a href="" className="text-xs text-center text-gray-500 uppercase">
+            <a href="" className="text-xs text-center text-white uppercase">
               OR
             </a>
             <span className="border-b w-1/5 lg:w-1/4"></span>
@@ -104,7 +104,7 @@ const Login = () => {
                 <div>
                   <label
                     htmlFor="identifier"
-                    className="block text-gray-700 text-sm font-bold mb-2"
+                    className="block mt-2 text-white text-sm font-bold mb-2"
                   >
                     Email or Username
                   </label>
@@ -124,7 +124,7 @@ const Login = () => {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block text-gray-700 text-sm font-bold mb-2"
+                    className="block text-white text-sm font-bold mb-2"
                   >
                     Password
                   </label>
@@ -142,8 +142,8 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-4 text-right">
-                  <a className="text-xs text-gray-500" href="">
-                    Forgot Your Password?
+                  <a className="text-xs text-white" href="">
+                    <Link to="/forgotpassword"> Forgot Your Password?</Link>
                   </a>
                 </div>
                 <button
@@ -157,7 +157,7 @@ const Login = () => {
             )}
           </Formik>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-            <h3 className="dark:text-black-300">
+            <h3 className="dark:text-white">
               Don't have an account?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"

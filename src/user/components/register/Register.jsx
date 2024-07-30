@@ -45,7 +45,7 @@ const Register = () => {
 
       navigate("/login"); // Redirect to login page after successful registration
     } catch (error) {
-      console.error("Registration error:", error);
+      // console.error("Registration error:", error);
       if (error.response && error.response.data.message) {
         if (error.response.data.message.includes("Username")) {
           setFieldError("username", error.response.data.message);
@@ -62,8 +62,8 @@ const Register = () => {
   };
 
   return (
-    <div className="py-8 h-screen">
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div className="py-8 h-screen bg-n-11">
+      <div className="flex bg-n-14 rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover"
           style={{
@@ -72,7 +72,7 @@ const Register = () => {
           }}
         ></div>
         <div className="w-full p-8 lg:w-1/2">
-          <p className="text-xl text-gray-600 text-center">
+          <p className="text-xl text-white text-center">
             Create an Account Here!
           </p>
 
@@ -94,7 +94,7 @@ const Register = () => {
             {({ isSubmitting }) => (
               <Form className="mt-4">
                 <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="block text-white text-sm font-bold mb-2">
                     Username
                   </label>
                   <Field
@@ -110,7 +110,7 @@ const Register = () => {
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="block text-white text-sm font-bold mb-2">
                     Email Address
                   </label>
                   <Field
@@ -126,7 +126,7 @@ const Register = () => {
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="block text-white text-sm font-bold mb-2">
                     Password
                   </label>
                   <Field
@@ -142,7 +142,7 @@ const Register = () => {
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                  <label className="block text-white text-sm font-bold mb-2">
                     Confirm Password
                   </label>
                   <Field
@@ -171,7 +171,7 @@ const Register = () => {
           </Formik>
 
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-            <h3 className="dark:text-black-300">
+            <h3 className="dark:text-white">
               Already have an account?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
