@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
 const Register = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
       const response = await api.post(
         "/auth/register",
@@ -46,7 +46,17 @@ const Register = () => {
       navigate("/login"); // Redirect to login page after successful registration
     } catch (error) {
       console.error("Registration error:", error);
-      toast.error("Registration Failed: Please try again.");
+      if (error.response && error.response.data.message) {
+        if (error.response.data.message.includes("Username")) {
+          setFieldError("username", error.response.data.message);
+        } else if (error.response.data.message.includes("Email")) {
+          setFieldError("email", error.response.data.message);
+        } else {
+          toast.error(error.response.data.message);
+        }
+      } else {
+        toast.error("Email or Username Already Exists");
+      }
     }
     setSubmitting(false);
   };
