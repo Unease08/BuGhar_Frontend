@@ -1,17 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import api from "../../../library/Api"; // Adjust the import path as necessary
+import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(3, "Username must be at least 5 characters")
+    .min(3, "Username must be at least 3 characters")
     .required("Username is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .min(5, "Password must be at least 6 characters")
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -19,14 +21,38 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log("Form values:", values);
-    // Here you can handle form submission, e.g., send data to the server
+  const navigate = useNavigate();
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await api.post(
+        "/auth/register",
+        {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const { message } = response.data;
+
+      toast.success(message); // Display success message
+
+      navigate("/login"); // Redirect to login page after successful registration
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Registration Failed: Please try again.");
+    }
     setSubmitting(false);
   };
 
   return (
-    <div className="py-8     h-screen">
+    <div className="py-8 h-screen">
       <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover"

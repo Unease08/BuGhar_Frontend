@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 const validationSchema = Yup.object().shape({
   identifier: Yup.string().required("Email or Username is required"),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .min(5, "Password must be at least 6 characters")
     .required("Password is required"),
 });
 
