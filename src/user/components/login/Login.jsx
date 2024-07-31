@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="py-32 h-screen bg-n-11">
+    <div className="py-32 h-screen bg-gray-900">
       <div className="flex bg-n-14 rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover h-auto"
