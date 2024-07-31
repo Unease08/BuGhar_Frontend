@@ -9,6 +9,7 @@ import PrivateRoute from "../auth/PrivateRoute"; // Adjust the path as needed
 import NotFound from "../user/pages/NotFound";
 import Register from "../user/components/register/Register";
 import ForgotPassword from "../user/components/login/ForgotPassword";
+import Profile from "../user/pages/profile/Profile";
 
 const UserRoutes = () => {
   return (
@@ -54,6 +55,14 @@ const UserRoutes = () => {
         element={
           <UserContainer>
             <PrivateRoute element={<Home />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<Profile />} />
           </UserContainer>
         }
       />
