@@ -164,7 +164,7 @@ const Register = () => {
                 <div className="mt-8">
                   <button
                     type="submit"
-                    className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                    className="bg-n-16 text-white font-bold py-2 px-4 w-full rounded hover:bg-n-17"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Registering..." : "Register"}

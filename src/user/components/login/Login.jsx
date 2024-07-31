@@ -147,7 +147,7 @@ const Login = () => {
                   </a>
                 </div>
                 <button
-                  className="bg-n-13 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                  className="bg-n-16 text-white font-bold py-2 px-4 w-full rounded hover:bg-n-17"
                   type="submit"
                   disabled={isSubmitting}
                 >

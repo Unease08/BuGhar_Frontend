@@ -83,7 +83,7 @@ const ForgotPassword = () => {
 
                       <button
                         type="submit"
-                        className="bg-gray-700 mt-3 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                        className="bg-n-16 mt-3 text-white font-bold py-2 px-4 w-full rounded hover:bg-n-17"
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? "Processing..." : "Reset Password"}
