@@ -47,7 +47,7 @@ const CustomDropdown = ({ options, value, onChange }) => {
         value={value}
         onChange={handleChange}
         onClick={toggleDropdown}
-        className="block w-full border border-border rounded-md p-2 focus:ring focus:ring-ring bg-gray-900 text-white"
+        className="block mt-1 w-full border border-border rounded-md p-2 focus:ring focus:ring-ring bg-gray-900 text-white"
         placeholder="Select Country"
       />
       {isOpen && (
