@@ -1,20 +1,26 @@
-// src/user/components/login/Login.js
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../../library/Api";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const validationSchema = Yup.object().shape({
   identifier: Yup.string().required("Email or Username is required"),
   password: Yup.string()
-    .min(5, "Password must be at least 6 characters")
+    .min(5, "Password must be at least 5 characters")
     .required("Password is required"),
 });
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await api.post(
@@ -121,7 +127,7 @@ const Login = () => {
                     className="text-red-500 text-sm mt-2"
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <label
                     htmlFor="password"
                     className="block text-white text-sm font-bold mb-2"
@@ -131,10 +137,16 @@ const Login = () => {
                   <Field
                     id="password"
                     name="password"
-                    type="password"
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    type={showPassword ? "text" : "password"}
+                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none pr-10"
                     placeholder="Password"
                   />
+                  <span
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 top-10 flex pr-3 cursor-pointer text-gray-600"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   <ErrorMessage
                     name="password"
                     component="div"
@@ -163,7 +175,7 @@ const Login = () => {
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
                 href="#"
               >
-                <span className=" ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                <span className="ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
                   <Link to="/register">Create an Account</Link>
                 </span>
               </a>

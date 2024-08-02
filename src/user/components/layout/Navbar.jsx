@@ -28,6 +28,10 @@ const Navbar = () => {
     setDropDownOpen((prevState) => !prevState);
   };
 
+  const closeDropdown = () => {
+    setDropDownOpen(false);
+  };
+
   // Handle clicks outside of the dropdown and profile image
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -99,6 +103,7 @@ const Navbar = () => {
               <hr className="font-bold" />
               <Link
                 to="/profile"
+                onClick={closeDropdown} // Close dropdown on click
                 className="flex gap-3 items-center px-4 py-2 text-white hover:bg-n-4"
               >
                 <i className="text-2xl">
@@ -108,7 +113,8 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/settings"
-                className="flex gap-3 items-center px-4 py-2 text-white  hover:bg-n-4"
+                onClick={closeDropdown} // Close dropdown on click
+                className="flex gap-3 items-center px-4 py-2 text-white hover:bg-n-4"
               >
                 <i className="text-2xl">
                   <RiSettings4Fill />
@@ -120,6 +126,7 @@ const Navbar = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   handleLogout();
+                  closeDropdown(); // Close dropdown on click
                 }}
                 className="flex gap-3 items-center px-4 py-2 text-white hover:bg-n-4"
               >

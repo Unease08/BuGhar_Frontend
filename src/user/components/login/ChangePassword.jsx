@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa";
 import ProfileSidebar from "../profilesidebar/ProfileSidebar";
 
 const ChangePassword = () => {
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const toggleOldPasswordVisibility = () =>
+    setShowOldPassword(!showOldPassword);
+  const toggleNewPasswordVisibility = () =>
+    setShowNewPassword(!showNewPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
   const formik = useFormik({
     initialValues: {
       oldPassword: "",
@@ -47,25 +60,33 @@ const ChangePassword = () => {
                   </div>
                   <div className="mt-5 space-y-4">
                     <div className="flex space-x-4">
-                      <div className="flex-1">
+                      <div className="flex-1 relative">
                         <label
                           className="block text-sm font-bold text-gray-400"
                           htmlFor="old-password"
                         >
                           Old Password
                         </label>
-                        <input
-                          type="password"
-                          id="old-password"
-                          placeholder="Old Password"
-                          {...formik.getFieldProps("oldPassword")}
-                          className={`mt-2 block w-[50%] border ${
-                            formik.touched.oldPassword &&
-                            formik.errors.oldPassword
-                              ? "border-red-600"
-                              : "border-gray-700"
-                          } rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring`}
-                        />
+                        <div className="relative">
+                          <input
+                            type={showOldPassword ? "text" : "password"}
+                            id="old-password"
+                            placeholder="Old Password"
+                            {...formik.getFieldProps("oldPassword")}
+                            className={`mt-2 block w-[50%] pr-10 border ${
+                              formik.touched.oldPassword &&
+                              formik.errors.oldPassword
+                                ? "border-red-600"
+                                : "border-gray-700"
+                            } rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring`}
+                          />
+                          <span
+                            onClick={toggleOldPasswordVisibility}
+                            className="absolute inset-y-0 left-96 flex items-center pr-3 cursor-pointer text-gray-400"
+                          >
+                            {showOldPassword ? <FaEyeSlash /> : <FaEye />}
+                          </span>
+                        </div>
                         {formik.touched.oldPassword &&
                         formik.errors.oldPassword ? (
                           <div className="text-red-600 text-sm mt-1">
@@ -75,25 +96,33 @@ const ChangePassword = () => {
                       </div>
                     </div>
                     <div className="flex space-x-4">
-                      <div className="flex-1">
+                      <div className="flex-1 relative">
                         <label
                           className="block text-sm font-bold text-gray-400"
                           htmlFor="new-password"
                         >
                           New Password
                         </label>
-                        <input
-                          type="password"
-                          id="new-password"
-                          placeholder="New Password"
-                          {...formik.getFieldProps("newPassword")}
-                          className={`mt-2 block w-[50%] border ${
-                            formik.touched.newPassword &&
-                            formik.errors.newPassword
-                              ? "border-red-600"
-                              : "border-gray-700"
-                          } rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring`}
-                        />
+                        <div className="relative">
+                          <input
+                            type={showNewPassword ? "text" : "password"}
+                            id="new-password"
+                            placeholder="New Password"
+                            {...formik.getFieldProps("newPassword")}
+                            className={`mt-2 block w-[50%] pr-10 border ${
+                              formik.touched.newPassword &&
+                              formik.errors.newPassword
+                                ? "border-red-600"
+                                : "border-gray-700"
+                            } rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring`}
+                          />
+                          <span
+                            onClick={toggleNewPasswordVisibility}
+                            className="absolute inset-y-0 left-96 flex items-center pr-3 cursor-pointer text-gray-400"
+                          >
+                            {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                          </span>
+                        </div>
                         {formik.touched.newPassword &&
                         formik.errors.newPassword ? (
                           <div className="text-red-600 text-sm mt-1">
@@ -103,25 +132,33 @@ const ChangePassword = () => {
                       </div>
                     </div>
                     <div className="flex space-x-4">
-                      <div className="flex-1">
+                      <div className="flex-1 relative">
                         <label
                           className="block text-sm font-bold text-gray-400"
                           htmlFor="confirm-password"
                         >
                           Confirm New Password
                         </label>
-                        <input
-                          type="password"
-                          id="confirm-password"
-                          placeholder="Confirm New Password"
-                          {...formik.getFieldProps("confirmPassword")}
-                          className={`mt-2 block w-[50%] border ${
-                            formik.touched.confirmPassword &&
-                            formik.errors.confirmPassword
-                              ? "border-red-600"
-                              : "border-gray-700"
-                          } rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring`}
-                        />
+                        <div className="relative">
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            id="confirm-password"
+                            placeholder="Confirm New Password"
+                            {...formik.getFieldProps("confirmPassword")}
+                            className={`mt-2 block w-[50%] pr-10 border ${
+                              formik.touched.confirmPassword &&
+                              formik.errors.confirmPassword
+                                ? "border-red-600"
+                                : "border-gray-700"
+                            } rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring`}
+                          />
+                          <span
+                            onClick={toggleConfirmPasswordVisibility}
+                            className="absolute inset-y-0 left-96 flex items-center pr-3 cursor-pointer text-gray-400"
+                          >
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                          </span>
+                        </div>
                         {formik.touched.confirmPassword &&
                         formik.errors.confirmPassword ? (
                           <div className="text-red-600 text-sm mt-1">

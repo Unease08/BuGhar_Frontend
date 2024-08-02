@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../../library/Api"; // Adjust the import path as necessary
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -21,6 +22,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
@@ -45,7 +48,6 @@ const Register = () => {
 
       navigate("/login"); // Redirect to login page after successful registration
     } catch (error) {
-      // console.error("Registration error:", error);
       if (error.response && error.response.data.message) {
         if (error.response.data.message.includes("Username")) {
           setFieldError("username", error.response.data.message);
@@ -59,6 +61,14 @@ const Register = () => {
       }
     }
     setSubmitting(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -127,16 +137,22 @@ const Register = () => {
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="relative mt-4">
                   <label className="block text-white text-sm font-bold mb-2">
                     Password
                   </label>
                   <Field
                     name="password"
-                    type="password"
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    type={showPassword ? "text" : "password"}
+                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none pr-10"
                     placeholder="Password"
                   />
+                  <span
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 top-10 flex pr-3 cursor-pointer text-gray-600"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   <ErrorMessage
                     name="password"
                     component="div"
@@ -144,16 +160,22 @@ const Register = () => {
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="relative mt-4">
                   <label className="block text-white text-sm font-bold mb-2">
                     Confirm Password
                   </label>
                   <Field
                     name="confirmPassword"
-                    type="password"
-                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    type={showConfirmPassword ? "text" : "password"}
+                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none pr-10"
                     placeholder="Confirm Password"
                   />
+                  <span
+                    onClick={toggleConfirmPasswordVisibility}
+                    className="absolute inset-y-0 right-0 top-10 flex pr-3 cursor-pointer text-gray-600"
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
                   <ErrorMessage
                     name="confirmPassword"
                     component="div"
