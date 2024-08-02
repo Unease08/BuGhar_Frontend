@@ -10,6 +10,7 @@ import NotFound from "../user/pages/NotFound";
 import Register from "../user/components/register/Register";
 import ForgotPassword from "../user/components/login/ForgotPassword";
 import Profile from "../user/pages/profile/Profile";
+import ChangePassword from "../user/components/login/ChangePassword";
 
 const UserRoutes = () => {
   return (
@@ -63,6 +64,14 @@ const UserRoutes = () => {
         element={
           <UserContainer>
             <PrivateRoute element={<Profile />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/change-password"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<ChangePassword />} />
           </UserContainer>
         }
       />

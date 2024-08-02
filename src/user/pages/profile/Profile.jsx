@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { CgProfile } from "react-icons/cg";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
 import profile1 from "../../../assets/profile1.jpg";
-import useCountries from "../../../customhooks/UseCountries"; // Ensure the path is correct
-import CustomDropdown from "../../../library/CustomDropdown"; // Ensure the path is correct
+import useCountries from "../../../customhooks/UseCountries";
+import CustomDropdown from "../../../library/CustomDropdown";
+import ProfileSidebar from "../../components/profilesidebar/ProfileSidebar";
 
 const Profile = () => {
   const countries = useCountries().map((country) => country.name);
@@ -32,28 +30,7 @@ const Profile = () => {
       <div className="container mx-auto py-8">
         <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
           <div className="col-span-4 sm:col-span-3">
-            <div className="bg-gray-800 shadow rounded-lg p-6">
-              <div className="flex flex-col">
-                <ul className="font-sans">
-                  <li className="mb-6 flex items-center gap-3 cursor-pointer">
-                    <i className="text-xl">
-                      <CgProfile />
-                    </i>
-                    <span className="text-sm font-semibold">
-                      <Link className="text-white">Profile</Link>
-                    </span>
-                  </li>
-                  <li className="mb-2 flex items-center gap-3 cursor-pointer">
-                    <i className="text-xl">
-                      <RiLockPasswordFill />
-                    </i>
-                    <span className="text-sm font-semibold">
-                      Change Password
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <ProfileSidebar />
           </div>
           <div className="col-span-4 sm:col-span-9">
             <div className="bg-gray-800 shadow rounded-lg p-4">
