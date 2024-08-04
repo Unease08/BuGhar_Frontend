@@ -11,6 +11,7 @@ import Register from "../user/components/register/Register";
 import ForgotPassword from "../user/components/login/ForgotPassword";
 import Profile from "../user/pages/profile/Profile";
 import ChangePassword from "../user/components/login/ChangePassword";
+import Programs from "../user/pages/programs/Programs";
 
 const UserRoutes = () => {
   return (
@@ -56,6 +57,14 @@ const UserRoutes = () => {
         element={
           <UserContainer>
             <PrivateRoute element={<Home />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/programs"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<Programs />} />
           </UserContainer>
         }
       />

@@ -168,7 +168,7 @@ const ChangePassword = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-10 ml-10">
+                  <div className="mt-10">
                     <div className="flex flex-col items-center justify-start mt-6 md:flex-row">
                       <button
                         type="submit"

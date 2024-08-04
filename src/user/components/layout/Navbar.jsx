@@ -57,31 +57,22 @@ const Navbar = () => {
       <div className="flex items-center">
         <img alt="logo" src={logo} className="w-100 h-8 mr-2" />
       </div>
-      <nav className="flex space-x-6 text-white">
-        <a href="#" className="text-muted hover:text-foreground">
-          Dashboard
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
-          Engagements
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
+      <nav className="flex space-x-20 text-white">
+        <span className="text-muted hover:text-foreground cursor-pointer">
+          <Link to="/home">Dashboard</Link>
+        </span>
+        <span className="text-muted hover:text-foreground cursor-pointer">
+          <Link to="/programs">Programs</Link>
+        </span>
+        <span className="text-muted hover:text-foreground cursor-pointer">
           Invites
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
+        </span>
+        <span className="text-muted hover:text-foreground cursor-pointer">
           Discovery
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
+        </span>
+        <span className="text-muted hover:text-foreground cursor-pointer">
           Work
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
-          Payments
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
-          Leaderboards
-        </a>
-        <a href="#" className="text-muted hover:text-foreground">
-          CrowdStream
-        </a>
+        </span>
       </nav>
       <div className="flex items-center">
         <div className="relative flex items-center">
