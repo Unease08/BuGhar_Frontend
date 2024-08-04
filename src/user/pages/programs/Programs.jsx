@@ -4,16 +4,197 @@ import { FaSort } from "react-icons/fa";
 import { FaChevronDown } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
+// Scope data
+const scopeData = [
+  { name: "Critical", color: "bg-red-500", textColor: "text-white" },
+  { name: "High", color: "bg-red-400", textColor: "text-red-700" },
+  { name: "Moderate", color: "bg-red-200", textColor: "text-red-600" },
+  { name: "Low", color: "bg-yellow-300", textColor: "text-black" },
+  { name: "Info", color: "bg-blue-300", textColor: "text-blue-700" },
+];
+
+// Sample data with dates
+const sampleData = [
+  {
+    companyName: "InnovaTech Solutions",
+    companyDesc:
+      "Leading the way in innovative tech solutions and AI advancements.",
+    scope: "High",
+    price: "Rs 35000 - Rs 45000",
+    imgSrc: "https://dummyimage.com/720x400/ff6347/fff",
+    date: "2024-08-01",
+  },
+  {
+    companyName: "GreenFields Organic",
+    companyDesc: "Organic farming and sustainable agriculture solutions.",
+    scope: "Moderate",
+    price: "Rs 20000 - Rs 30000",
+    imgSrc: "https://dummyimage.com/720x400/32cd32/fff",
+    date: "2024-07-15",
+  },
+  {
+    companyName: "CityLights Entertainment",
+    companyDesc:
+      "Bringing the best in live music and entertainment to your city.",
+    scope: "Info",
+    price: "Rs 10000 - Rs 20000",
+    imgSrc: "https://dummyimage.com/720x400/1e90ff/fff",
+    date: "2024-06-22",
+  },
+  {
+    companyName: "AeroDynamics Inc.",
+    companyDesc:
+      "Pioneering advancements in aerospace technology and research.",
+    scope: "Critical",
+    price: "Rs 50000 - Rs 70000",
+    imgSrc: "https://dummyimage.com/720x400/ff4500/fff",
+    date: "2024-08-10",
+  },
+  {
+    companyName: "EcoBreeze Energy",
+    companyDesc: "Sustainable energy solutions and green technologies.",
+    scope: "Low",
+    price: "Rs 15000 - Rs 25000",
+    imgSrc: "https://dummyimage.com/720x400/98fb98/fff",
+    date: "2024-07-05",
+  },
+  {
+    companyName: "TechVision Labs",
+    companyDesc:
+      "Innovative solutions in virtual reality and augmented reality.",
+    scope: "High",
+    price: "Rs 40000 - Rs 60000",
+    imgSrc: "https://dummyimage.com/720x400/ff69b4/fff",
+    date: "2024-08-20",
+  },
+  {
+    companyName: "BioMed Research",
+    companyDesc: "Cutting-edge research in biotechnology and medical sciences.",
+    scope: "Moderate",
+    price: "Rs 25000 - Rs 35000",
+    imgSrc: "https://dummyimage.com/720x400/7fffd4/fff",
+    date: "2024-07-28",
+  },
+  {
+    companyName: "UrbanCraft Design",
+    companyDesc: "Modern and sustainable urban design solutions for the city.",
+    scope: "Info",
+    price: "Rs 30000 - Rs 40000",
+    imgSrc: "https://dummyimage.com/720x400/dda0dd/fff",
+    date: "2024-06-30",
+  },
+  {
+    companyName: "FutureWave Robotics",
+    companyDesc: "Advanced robotics and automation for the future.",
+    scope: "Critical",
+    price: "Rs 55000 - Rs 75000",
+    imgSrc: "https://dummyimage.com/720x400/ffb6c1/fff",
+    date: "2024-08-15",
+  },
+  {
+    companyName: "PureVita Wellness",
+    companyDesc: "Holistic wellness solutions and natural health products.",
+    scope: "Low",
+    price: "Rs 12000 - Rs 22000",
+    imgSrc: "https://dummyimage.com/720x400/ff6347/fff",
+    date: "2024-07-10",
+  },
+  {
+    companyName: "SmartGrid Technologies",
+    companyDesc:
+      "Advanced grid technologies for smart cities and energy efficiency.",
+    scope: "High",
+    price: "Rs 45000 - Rs 55000",
+    imgSrc: "https://dummyimage.com/720x400/8a2be2/fff",
+    date: "2024-08-25",
+  },
+];
+
+const parsePrice = (priceStr) => {
+  const match = priceStr.match(/Rs (\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+const parseDate = (dateStr) => {
+  return new Date(dateStr);
+};
+
 const Programs = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedScope, setSelectedScope] = useState("Scope");
+  const [filteredData, setFilteredData] = useState(sampleData);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortBy, setSortBy] = useState("price");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
+  };
+
+  const handleScopeSelect = (scope) => {
+    setSelectedScope(scope.name);
+    const newData = sampleData.filter(
+      (item) => item.scope === scope.name || scope.name === "Scope"
+    );
+    sortData(newData);
+    closeDropdown();
+  };
+
+  const handleClearFilter = () => {
+    setSelectedScope("Scope");
+    setFilteredData(sampleData);
+    closeDropdown();
+  };
+
+  const sortData = (data) => {
+    const sortedData = [...data].sort((a, b) => {
+      if (sortBy === "price") {
+        const priceA = parsePrice(a.price);
+        const priceB = parsePrice(b.price);
+        return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+      } else if (sortBy === "date") {
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+        return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+      }
+      return 0;
+    });
+    setFilteredData(sortedData);
+  };
+
+  const handleSortToggle = (type) => {
+    if (sortBy !== type) {
+      setSortBy(type);
+      setSortOrder("asc");
+    } else {
+      const newOrder = sortOrder === "asc" ? "desc" : "asc";
+      setSortOrder(newOrder);
+    }
+    sortData(filteredData);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+
+  const handleSearchChange = (e) => {
+    const searchValue = e.target.value;
+    setSearchTerm(searchValue);
+    const newData = sampleData.filter((item) =>
+      item.companyName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    sortData(newData);
   };
 
   useEffect(() => {
@@ -29,6 +210,11 @@ const Programs = () => {
     };
   }, []);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
   return (
     <div className="bg-gray-900 min-h-screen">
       <div className="flex items-center justify-start ml-10 p-6">
@@ -37,74 +223,142 @@ const Programs = () => {
             <IoSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               id="search"
-              name="search"
-              className="inline w-full rounded-sm border text-white border-gray-300 bg-gray-700 py-2 pl-10 pr-3 leading-5 placeholder-gray-500 focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Search"
+              name="Search"
+              className="inline w-full rounded-sm border text-white border-gray-300 bg-gray-700 py-2 pl-10 pr-3 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Search by Company Name"
               type="search"
-              autoFocus
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
           </form>
+          <div className="relative">
+            <button
+              type="button"
+              className="mt-4 w-48 text-white bg-gray-800 py-2 px-4 rounded-md"
+              onClick={toggleDropdown}
+            >
+              {selectedScope} <FaChevronDown className="inline ml-2" />
+            </button>
+            {isDropdownOpen && (
+              <div
+                ref={dropdownRef}
+                className="absolute mt-2 w-full bg-gray-800 border border-gray-700 rounded-md shadow-lg"
+              >
+                <ul className="py-1">
+                  {scopeData.map((scope, index) => (
+                    <li
+                      key={index}
+                      className="cursor-pointer px-4 py-2 text-white hover:bg-gray-700"
+                      onClick={() => handleScopeSelect(scope)}
+                    >
+                      <span
+                        className={`inline-block w-3 h-3 mr-2 rounded-full ${scope.color} ${scope.textColor}`}
+                      ></span>
+                      {scope.name}
+                    </li>
+                  ))}
+                </ul>
+                <div
+                  className="cursor-pointer px-4 py-2 text-gray-400 hover:bg-gray-700"
+                  onClick={handleClearFilter}
+                >
+                  Clear Filter
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      <div className="flex ml-16 text-white font-grotesk gap-5">
-        <div className="cursor-pointer items-center flex gap-1">
-          <span className="font-bold">Rewards</span>
-          <i>
-            <FaSort />
-          </i>
-        </div>
-        <div className="relative" ref={dropdownRef}>
-          <div
-            className="cursor-pointer items-center flex gap-1"
-            onClick={toggleDropdown}
-          >
-            <span className="font-bold">Scope</span>
-            <i>
-              <FaChevronDown />
-            </i>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between mb-4">
+          <div className="flex space-x-4">
+            <button
+              onClick={() => handleSortToggle("price")}
+              className="flex items-center text-white border border-gray-300 bg-gray-800 py-2 px-4 rounded-md"
+            >
+              Sort by Price
+              <FaSort className="ml-2" />
+            </button>
+            <button
+              onClick={() => handleSortToggle("date")}
+              className="flex items-center text-white border border-gray-300 bg-gray-800 py-2 px-4 rounded-md"
+            >
+              Sort by Date
+              <FaSort className="ml-2" />
+            </button>
           </div>
-          {isDropdownOpen && (
-            <div className="absolute top-8 left-12 w-52 bg-n-12 text-black rounded-md shadow-lg">
-              <div className="flex justify-end mt-2 mr-2">
-                <button onClick={closeDropdown}>
-                  <IoClose className="text-red-700 hover:text-red-500" />
-                </button>
-              </div>
-              <ul className="py-2 text-sm">
-                <li className="px-4 py-2 mt-2 ml-2 cursor-pointer">
-                  <span className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg">
-                    Critical
-                  </span>
-                </li>
-                <li className="px-4 py-2 mt-2 ml-2 cursor-pointer">
-                  <span className="bg-red-400 text-red-700 font-bold py-2 px-4 rounded-lg">
-                    High
-                  </span>
-                </li>
-                <li className="px-4 py-2 mt-2 ml-2 cursor-pointer">
-                  <span className="bg-red-200 text-red-600 font-bold py-2 px-4 rounded-lg">
-                    Moderate
-                  </span>
-                </li>
-                <li className="px-4 py-2 mt-2 ml-2 cursor-pointer">
-                  <span className="bg-yellow-300 text-black font-bold py-2 px-4 rounded-lg">
-                    Low
-                  </span>
-                </li>
-                <li className="px-4 py-2 mt-2 ml-2 cursor-pointer">
-                  <span className="bg-blue-300 text-blue-700 font-bold py-2 px-4 rounded-lg">
-                    Informational
-                  </span>
-                </li>
-              </ul>
-            </div>
-          )}
         </div>
-        <div className="cursor-pointer items-center flex gap-1">
-          <span className="font-bold">Date</span>
-          <i>
-            <FaSort />
-          </i>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentItems.map((item, index) => (
+            <div
+              key={index}
+              className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden shadow-lg"
+            >
+              <img
+                src={item.imgSrc}
+                alt={item.companyName}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-indigo-400">
+                  {item.companyName}
+                </h2>
+
+                <span className="flex justify-start mt-2 text-gray-400">
+                  {item.date}
+                </span>
+
+                <p className="text-gray-400 mt-2">{item.companyDesc}</p>
+                <div className="flex items-center mt-4">
+                  <span
+                    className={`inline-block px-2 py-1 rounded-full ${
+                      scopeData.find((scope) => scope.name === item.scope).color
+                    } ${
+                      scopeData.find((scope) => scope.name === item.scope)
+                        .textColor
+                    }`}
+                  >
+                    {item.scope}
+                  </span>
+                  <span className="ml-44 text-indigo-400 text-lg">
+                    {item.price}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center mt-8">
+          <nav className="flex items-center space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border border-gray-300 bg-gray-800 text-white rounded-md disabled:opacity-50"
+            >
+              Prev
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 border border-gray-300 rounded-md ${
+                  currentPage === index + 1
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-800 text-white"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border border-gray-300 bg-gray-800 text-white rounded-md disabled:opacity-50"
+            >
+              Next
+            </button>
+          </nav>
         </div>
       </div>
     </div>
