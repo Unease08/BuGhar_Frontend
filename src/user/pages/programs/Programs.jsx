@@ -289,46 +289,51 @@ const Programs = () => {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentItems.map((item, index) => (
-            <div
-              key={index}
-              className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden shadow-lg"
-            >
-              <img
-                src={item.imgSrc}
-                alt={item.companyName}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h2 className="text-xl font-semibold text-indigo-400">
-                  {item.companyName}
-                </h2>
-
-                <span className="flex justify-start mt-2 text-gray-400">
-                  {item.date}
-                </span>
-
-                <p className="text-gray-400 mt-2">{item.companyDesc}</p>
-                <div className="flex items-center mt-4">
-                  <span
-                    className={`inline-block px-2 py-1 rounded-full ${
-                      scopeData.find((scope) => scope.name === item.scope).color
-                    } ${
-                      scopeData.find((scope) => scope.name === item.scope)
-                        .textColor
-                    }`}
-                  >
-                    {item.scope}
+        {currentItems.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentItems.map((item, index) => (
+              <div
+                key={index}
+                className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden shadow-lg"
+              >
+                <img
+                  src={item.imgSrc}
+                  alt={item.companyName}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 cursor-pointer">
+                  <h2 className="text-xl font-semibold text-indigo-400">
+                    {item.companyName}
+                  </h2>
+                  <span className="flex justify-start mt-2 text-gray-400">
+                    {item.date}
                   </span>
-                  <span className="ml-44 text-indigo-400 text-lg">
-                    {item.price}
-                  </span>
+                  <p className="text-gray-400 mt-2">{item.companyDesc}</p>
+                  <div className="flex items-center mt-4">
+                    <span
+                      className={`inline-block px-2 py-1 rounded-full ${
+                        scopeData.find((scope) => scope.name === item.scope)
+                          .color
+                      } ${
+                        scopeData.find((scope) => scope.name === item.scope)
+                          .textColor
+                      }`}
+                    >
+                      {item.scope}
+                    </span>
+                    <span className="ml-44 text-indigo-400 text-lg">
+                      {item.price}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center h-64 text-5xl text-white">
+            No data to show
+          </div>
+        )}
         <div className="flex justify-center mt-8">
           <nav className="flex items-center space-x-2">
             <button
