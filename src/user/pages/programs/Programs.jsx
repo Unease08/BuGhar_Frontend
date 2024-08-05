@@ -3,6 +3,7 @@ import { IoSearch } from "react-icons/io5";
 import { FaSort } from "react-icons/fa";
 import { FaChevronDown } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 // Scope data
 const scopeData = [
@@ -16,6 +17,7 @@ const scopeData = [
 // Sample data with dates
 const sampleData = [
   {
+    id: 1,
     companyName: "InnovaTech Solutions",
     companyDesc:
       "Leading the way in innovative tech solutions and AI advancements.",
@@ -25,6 +27,7 @@ const sampleData = [
     date: "2024-08-01",
   },
   {
+    id: 2,
     companyName: "GreenFields Organic",
     companyDesc: "Organic farming and sustainable agriculture solutions.",
     scope: "Moderate",
@@ -33,6 +36,7 @@ const sampleData = [
     date: "2024-07-15",
   },
   {
+    id: 3,
     companyName: "CityLights Entertainment",
     companyDesc:
       "Bringing the best in live music and entertainment to your city.",
@@ -42,6 +46,7 @@ const sampleData = [
     date: "2024-06-22",
   },
   {
+    id: 4,
     companyName: "AeroDynamics Inc.",
     companyDesc:
       "Pioneering advancements in aerospace technology and research.",
@@ -51,6 +56,7 @@ const sampleData = [
     date: "2024-08-10",
   },
   {
+    id: 5,
     companyName: "EcoBreeze Energy",
     companyDesc: "Sustainable energy solutions and green technologies.",
     scope: "Low",
@@ -59,6 +65,7 @@ const sampleData = [
     date: "2024-07-05",
   },
   {
+    id: 6,
     companyName: "TechVision Labs",
     companyDesc:
       "Innovative solutions in virtual reality and augmented reality.",
@@ -68,6 +75,7 @@ const sampleData = [
     date: "2024-08-20",
   },
   {
+    id: 7,
     companyName: "BioMed Research",
     companyDesc: "Cutting-edge research in biotechnology and medical sciences.",
     scope: "Moderate",
@@ -76,6 +84,7 @@ const sampleData = [
     date: "2024-07-28",
   },
   {
+    id: 8,
     companyName: "UrbanCraft Design",
     companyDesc: "Modern and sustainable urban design solutions for the city.",
     scope: "Info",
@@ -84,6 +93,7 @@ const sampleData = [
     date: "2024-06-30",
   },
   {
+    id: 9,
     companyName: "FutureWave Robotics",
     companyDesc: "Advanced robotics and automation for the future.",
     scope: "Critical",
@@ -92,6 +102,7 @@ const sampleData = [
     date: "2024-08-15",
   },
   {
+    id: 10,
     companyName: "PureVita Wellness",
     companyDesc: "Holistic wellness solutions and natural health products.",
     scope: "Low",
@@ -100,6 +111,7 @@ const sampleData = [
     date: "2024-07-10",
   },
   {
+    id: 11,
     companyName: "SmartGrid Technologies",
     companyDesc:
       "Advanced grid technologies for smart cities and energy efficiency.",
@@ -109,6 +121,7 @@ const sampleData = [
     date: "2024-08-25",
   },
 ];
+
 
 const parsePrice = (priceStr) => {
   const match = priceStr.match(/Rs (\d+)/);
@@ -186,7 +199,6 @@ const Programs = () => {
       setCurrentPage(pageNumber);
     }
   };
-
 
   const handleSearchChange = (e) => {
     const searchValue = e.target.value;
@@ -277,14 +289,14 @@ const Programs = () => {
               onClick={() => handleSortToggle("price")}
               className="flex items-center text-white border border-gray-300 bg-gray-800 py-2 px-4 rounded-md"
             >
-              Sort by Price
+              Rewards
               <FaSort className="ml-2" />
             </button>
             <button
               onClick={() => handleSortToggle("date")}
               className="flex items-center text-white border border-gray-300 bg-gray-800 py-2 px-4 rounded-md"
             >
-              Sort by Date
+              Date
               <FaSort className="ml-2" />
             </button>
           </div>
@@ -302,9 +314,12 @@ const Programs = () => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4 cursor-pointer">
-                  <h2 className="text-xl font-semibold text-indigo-400">
-                    {item.companyName}
-                  </h2>
+                  <Link to={`/programdetails/${item.id}`}>
+                    <h2 className="text-xl font-semibold text-indigo-400 hover:underline">
+                      {item.companyName}
+                    </h2>
+                  </Link>
+
                   <span className="flex justify-start mt-2 text-gray-400">
                     {item.date}
                   </span>

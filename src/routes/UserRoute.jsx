@@ -12,6 +12,7 @@ import ForgotPassword from "../user/components/login/ForgotPassword";
 import Profile from "../user/pages/profile/Profile";
 import ChangePassword from "../user/components/login/ChangePassword";
 import Programs from "../user/pages/programs/Programs";
+import ProgramDetails from '../user/pages/programs/ProgramsDetails'
 
 const UserRoutes = () => {
   return (
@@ -65,6 +66,14 @@ const UserRoutes = () => {
         element={
           <UserContainer>
             <PrivateRoute element={<Programs />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/programdetails/:id"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<ProgramDetails />} />
           </UserContainer>
         }
       />
