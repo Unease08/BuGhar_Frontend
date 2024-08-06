@@ -45,13 +45,152 @@ const ProgramsDetails = () => {
               onClick={() => setActiveTab(tab)}
               className={`${
                 activeTab === tab
-                  ? "text-indigo-400 underline"
+                  ? "text-indigo-500 underline"
                   : "text-gray-400"
               }`}
             >
               {tab}
             </span>
           ))}
+        </div>
+      </div>
+      <div className="bg-card mt-5 ml-32 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[970px] mx-auto shadow-lg">
+        <div className="w-full mt-2">
+          <div className="font-sans">
+            <h1 className="font-bold text-indigo-400 text-xl mb-4">
+              Information
+            </h1>
+            <p className="text-sm leading-6 text-gray-300">
+              We are Programiz and we are ready to work with the talented cyber
+              security experts/ethical hackers from all over the world. If you
+              found or believe you found a security vulnerability in any of our
+              systems, we will happily accept your report and reward you
+              according to the impact of your report. See the rewards tab to see
+              how we pay your reports.
+            </p>
+            <hr className="mt-10" />
+          </div>
+          <div className="font-sans mt-10">
+            <h1 className="font-bold text-indigo-400 text-xl mb-4">Target</h1>
+            <span className="text-black font-extrabold ml-1">In Scope</span>
+            <div className="block w-full overflow-x-auto border mt-5">
+              <table className="items-center w-full bg-transparent border-collapse">
+                <thead>
+                  <tr>
+                    <th className="px-4 bg-gray-50 text-gray-700  align-middle py-3 text-md font-bold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                      Targets
+                    </th>
+                    <th className="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-md font-bold text-left uppercase border-l-0 border-r-0 whitespace-nowrap"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      Https://programiz.com/python-programming/online-compiler
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
+                      Website
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      Https://programiz.com/python-programming/online-compiler
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
+                      Website
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      Https://programiz.com/python-programming/online-compiler
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
+                      Website
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      Https://programiz.com/python-programming/online-compiler
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
+                      Website
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr className="mt-10" />
+          </div>
+          <div className="font-sans mt-10">
+            <h1 className="font-bold text-indigo-400 text-xl mb-4">Reward</h1>
+            <div className="block w-full overflow-x-auto border mt-5">
+              <table className="items-center w-full bg-transparent border-collapse">
+                <thead>
+                  <tr>
+                    <th className="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-md font-bold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
+                      Severity
+                    </th>
+                    <th className="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-sm font-bold text-right uppercase border-l-0 border-r-0 whitespace-nowrap">
+                      Reward Range
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      <button className="bg-red-500 text-white font-bold py-2 px-4 rounded w-32">
+                        Critical
+                      </button>
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 text-right cursor-pointer">
+                      Rs 10000 - RS 20000
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      <button className="bg-red-400 text-red-700 font-bold py-2 px-4 rounded w-32">
+                        High
+                      </button>
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 text-right cursor-pointer">
+                      Rs 10000 - RS 20000
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      <button className="bg-red-200 text-red-600 font-bold py-2 px-4 rounded w-32">
+                        Moderate
+                      </button>
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 text-right cursor-pointer">
+                      Rs 10000 - RS 20000
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      <button className="bg-yellow-300 text-black font-bold py-2 px-4 rounded w-32">
+                        Low
+                      </button>
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 text-right cursor-pointer">
+                      Rs 10000 - RS 20000
+                    </td>
+                  </tr>
+                  <tr className="text-white">
+                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                      <button className="bg-blue-300 text-blue-700 font-bold py-2 px-4 rounded w-32">
+                        Informational
+                      </button>
+                    </th>
+                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 text-right cursor-pointer">
+                      Rs 10000 - RS 20000
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr className="mt-10" />
+          </div>
         </div>
       </div>
     </div>
