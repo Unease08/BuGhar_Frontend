@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa";
+import api from "../../../library/Api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
 import ProfileSidebar from "../profilesidebar/ProfileSidebar";
+import toast from "react-hot-toast";
 
 const ChangePassword = () => {
+  const [email, setEmail] = useState("");
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -16,6 +19,25 @@ const ChangePassword = () => {
     setShowNewPassword(!showNewPassword);
   const toggleConfirmPasswordVisibility = () =>
     setShowConfirmPassword(!showConfirmPassword);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await api.get("/user/details", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+        setEmail(response.data.email); // Set the email state
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        toast.error("Failed to load user details.");
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
 
   const formik = useFormik({
     initialValues: {
@@ -32,11 +54,35 @@ const ChangePassword = () => {
         .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
         .required("Confirm New Password is required"),
     }),
-    onSubmit: (values) => {
-      // Handle form submission
-      console.log("Form values:", values);
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const response = await api.post(
+          "/user/change-password",
+          {
+            current_password: values.oldPassword,
+            new_password: values.newPassword,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+  
+        // Assuming the backend returns a message in the response
+        const successMessage = response.data?.detail || "Password changed successfully!";
+        toast.success(successMessage);
+      } catch (error) {
+        // Extracting custom error message from the backend
+        const errorMessage = error.response?.data?.detail || "Failed to change password. Please try again.";
+        toast.error(errorMessage);
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
+  
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -56,7 +102,7 @@ const ChangePassword = () => {
                     <span className="text-gray-400 font-bold text-lg">
                       Email
                     </span>
-                    <p className="text-gray-400 text-md">anisheyyy@gmail.com</p>
+                    <p className="text-gray-400 text-md">{email}</p>
                   </div>
                   <div className="mt-5 space-y-4">
                     <div className="flex space-x-4">
