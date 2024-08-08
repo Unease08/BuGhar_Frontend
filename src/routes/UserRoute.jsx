@@ -9,6 +9,7 @@ import PrivateRoute from "../auth/PrivateRoute"; // Adjust the path as needed
 import NotFound from "../user/pages/NotFound";
 import Register from "../user/components/register/Register";
 import ForgotPassword from "../user/components/login/ForgotPassword";
+import GoogleCallback from "../user/components/login/GoogleCallback";
 import Profile from "../user/pages/profile/Profile";
 import ChangePassword from "../user/components/login/ChangePassword";
 import Programs from "../user/pages/programs/Programs";
@@ -49,6 +50,15 @@ const UserRoutes = () => {
         element={
           <UserContainer showNavAndFooter={false}>
             <ForgotPassword />
+          </UserContainer>
+        }
+        exact
+      />
+      <Route
+        path="/oauth/callback"
+        element={
+          <UserContainer showNavAndFooter={false}>
+            <GoogleCallback />
           </UserContainer>
         }
         exact
