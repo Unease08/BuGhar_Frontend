@@ -7,8 +7,18 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
+  firstName: Yup.string()
+    .required("First name is required")
+    .matches(
+      /^[A-Za-z]+$/,
+      "First name should not contain numbers or special characters"
+    ),
+  lastName: Yup.string()
+    .required("Last name is required")
+    .matches(
+      /^[A-Za-z]+$/,
+      "Last name should not contain numbers or special characters"
+    ),
   gender: Yup.string().required("Gender is required"),
   dob: Yup.date().required("Date of birth is required").nullable(),
   bio: Yup.string()
