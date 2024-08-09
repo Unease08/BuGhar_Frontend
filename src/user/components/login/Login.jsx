@@ -13,6 +13,11 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
+
+const handleGoogleSignIn = () => {
+  window.location.href = "http://localhost:8000/api/v1/auth/google/login";
+};
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -66,8 +71,8 @@ const Login = () => {
         <div className="w-full p-8 lg:w-1/2">
           <p className="text-xl text-white text-center">Welcome back!</p>
           <a
-            href=""
-            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-m border-2 bg-white"
+            onClick={handleGoogleSignIn}
+            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-m border-2 bg-white cursor-pointer"
           >
             <div className="px-4 py-3">
               <svg className="h-6 w-6" viewBox="0 0 40 40">
