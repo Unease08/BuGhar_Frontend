@@ -33,7 +33,6 @@ const validationSchema = Yup.object({
     }),
 });
 
-
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,6 +64,7 @@ const Profile = () => {
         setSelectedCountry(data.country || "");
       } catch (error) {
         console.error("Error fetching user details:", error.message || error);
+        toast.error("Failed to load user details.");
         setError("Failed to load user details.");
       } finally {
         setLoading(false);
@@ -147,6 +147,7 @@ const Profile = () => {
                   setSubmitLoading(false);
                 }
               }}
+              enableReinitialize // <-- Add this line to reinitialize form with new initialValues
             >
               {({ setFieldValue, handleSubmit }) => (
                 <Form onSubmit={handleSubmit}>
@@ -215,7 +216,12 @@ const Profile = () => {
                             <label className="block text-sm font-bold text-gray-400" htmlFor="gender">
                               Gender
                             </label>
-                            <Field as="select" id="gender" name="gender" className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring">
+                            <Field
+                              as="select"
+                              id="gender"
+                              name="gender"
+                              className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
+                            >
                               <option value="" label="Select gender" />
                               <option value="male" label="Male" />
                               <option value="female" label="Female" />
@@ -223,8 +229,6 @@ const Profile = () => {
                             </Field>
                             <ErrorMessage name="gender" component="div" className="text-red-500 text-sm mt-2" />
                           </div>
-                        </div>
-                        <div className="flex space-x-4">
                           <div className="flex-1">
                             <label className="block text-sm font-bold text-gray-400" htmlFor="bio">
                               Bio
@@ -233,7 +237,7 @@ const Profile = () => {
                               as="textarea"
                               id="bio"
                               name="bio"
-                              placeholder="Tell us about yourself"
+                              placeholder="Write about yourself"
                               className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
                             />
                             <ErrorMessage name="bio" component="div" className="text-red-500 text-sm mt-2" />
@@ -245,14 +249,13 @@ const Profile = () => {
                               Country
                             </label>
                             <CustomDropdown
-                              id="country"
-                              name="country"
                               options={countries}
                               value={selectedCountry}
-                              onChange={(e) => {
-                                setFieldValue("country", e.target.value);
-                                setSelectedCountry(e.target.value);
+                              onChange={(value) => {
+                                setSelectedCountry(value);
+                                setFieldValue("country", value);
                               }}
+                              placeholder="Select country"
                             />
                             <ErrorMessage name="country" component="div" className="text-red-500 text-sm mt-2" />
                           </div>
@@ -264,17 +267,17 @@ const Profile = () => {
                               type="text"
                               id="address"
                               name="address"
-                              placeholder="Enter Address"
+                              placeholder="Address"
                               className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
                             />
                             <ErrorMessage name="address" component="div" className="text-red-500 text-sm mt-2" />
                           </div>
                         </div>
-                        <div className="mt-6 flex justify-end">
+                        <div className="flex justify-end">
                           <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
-                            disabled={submitLoading} // Disable when submitting
+                            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 focus:ring focus:ring-indigo-400"
+                            disabled={submitLoading}
                           >
                             {submitLoading ? "Saving..." : "Save Changes"}
                           </button>
