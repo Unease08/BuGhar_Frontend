@@ -3,13 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../../App.css";
 import toast from "react-hot-toast";
 import logo from "../../../assets/logo.png";
-import profile1 from "../../../assets/profile1.jpg";
 import { CgProfile } from "react-icons/cg";
 import { RiSettings4Fill } from "react-icons/ri";
 import { AiOutlineLogout } from "react-icons/ai";
+import api from "../../../library/Api";
+import config from "../../../config";
 
 const Navbar = () => {
   const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
   const dropdownRef = useRef(null);
   const profileImgRef = useRef(null);
   const navigate = useNavigate();
@@ -52,6 +54,29 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await api.get("/user/details", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+        const data = response.data;
+        if (data.profile_picture) {
+          const imageUrl = `${config.BASE_URL}/${data.profile_picture}`;
+          setProfilePicture(imageUrl);
+        } else {
+          setProfilePicture(null);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error.message || error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   return (
     <div className="bg-background bg-n-11 p-4 flex items-center justify-between">
       <div className="flex items-center">
@@ -78,7 +103,7 @@ const Navbar = () => {
         <div className="relative flex items-center">
           <img
             ref={profileImgRef}
-            src={profile1}
+            src={profilePicture || 'https://saugat-nepal.com.np/assets/img/profile-img.png'}
             alt="profile"
             className="w-9 h-9 rounded-full ml-4 bg-white cursor-pointer"
             onClick={toggleDropdown}

@@ -1,11 +1,11 @@
 // src/library/Api.jsx
 import axios from "axios";
 import qs from "qs";
-import BASE_URL from '../config';
+import config from "../config";
 
 // Create an instance of axios for API requests
 const api = axios.create({
-  baseURL: `${BASE_URL}/api/v1`,
+  baseURL: `${config.BASE_URL}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
   },

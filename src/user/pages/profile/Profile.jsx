@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../../library/Api";
 import toast from "react-hot-toast";
-import BASE_URL from '../../../config';
+import config from '../../../config';
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -57,7 +57,7 @@ const Profile = () => {
 
         setUserData(data);
         if (data.profile_picture) {
-          const imageUrl = `${BASE_URL}/${data.profile_picture}`;
+          const imageUrl = `${config.BASE_URL}/${data.profile_picture}`;
           setImagePreview(imageUrl);
         } else {
           setImagePreview(null);
