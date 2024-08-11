@@ -102,7 +102,7 @@ const ChangePassword = () => {
                     <span className="text-gray-400 font-bold text-lg">
                       Email
                     </span>
-                    <p className="text-gray-400 text-md">{email}</p>
+                    <p className="text-gray-400 text-md">{ email || "Loading..."}</p>
                   </div>
                   <div className="mt-5 space-y-4">
                     <div className="flex space-x-4">
