@@ -5,6 +5,7 @@ import api from "../../../library/Api";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import config from "../../../config";
 
 const validationSchema = Yup.object().shape({
   identifier: Yup.string().required("Email or Username is required"),
@@ -13,9 +14,8 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-
 const handleGoogleSignIn = () => {
-  window.location.href = "http://localhost:8000/api/v1/auth/google/login";
+  window.location.href = config.OAUTH_LINK;
 };
 
 const Login = () => {
