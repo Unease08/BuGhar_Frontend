@@ -59,7 +59,7 @@ const Login = () => {
   };
 
   return (
-    <div className="py-32 h-screen bg-gray-900">
+    <div className="py-24 h-screen bg-gray-900">
       <div className="flex bg-n-14 rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover h-auto"
@@ -69,7 +69,25 @@ const Login = () => {
           }}
         ></div>
         <div className="w-full p-8 lg:w-1/2">
-          <p className="text-xl text-white text-center">Welcome back!</p>
+          <p className="text-3xl text-white text-center">
+            Log In to Researcher Portal
+          </p>
+          <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
+            <h3 className="dark:text-white">
+              Don't have an account?
+              <a
+                className="group text-blue-400 transition-all duration-100 ease-in-out"
+                href="#"
+              >
+                <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                  <Link to="/auth/researcher/register">
+                    Signup as a researcher
+                  </Link>
+                </span>
+              </a>
+            </h3>
+          </div>
+
           <a
             onClick={handleGoogleSignIn}
             className="flex items-center justify-center mt-4 text-white rounded-lg shadow-m border-2 bg-white cursor-pointer"
@@ -160,7 +178,10 @@ const Login = () => {
                 </div>
                 <div className="mb-4 text-right">
                   <a className="text-xs dark:text-white" href="">
-                    <Link to="/forgotpassword"> Forgot Your Password?</Link>
+                    <Link to="/auth/researcher/forgot-password">
+                      {" "}
+                      Forgot Your Password?
+                    </Link>
                   </a>
                 </div>
                 <button
@@ -175,13 +196,13 @@ const Login = () => {
           </Formik>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
             <h3 className="dark:text-white">
-              Don't have an account?
+              Looking for company portal?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
                 href="#"
               >
-                <span className="ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="/register">Create an Account</Link>
+                <span className="ml-3 underline bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                  <Link to="">Go to company portal</Link>
                 </span>
               </a>
             </h3>

@@ -94,8 +94,10 @@ const ForgotPassword = () => {
                           className="group text-blue-400 transition-all duration-100 ease-in-out"
                           href="#"
                         >
-                          <span className="ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                            <Link to="/login">Login here</Link>
+                          <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                            <Link to="/auth/researcher/login">
+                              Go to researcher login
+                            </Link>
                           </span>
                         </a>
                       </h3>

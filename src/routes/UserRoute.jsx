@@ -13,7 +13,9 @@ import GoogleCallback from "../user/components/login/GoogleCallback";
 import Profile from "../user/pages/profile/Profile";
 import ChangePassword from "../user/components/login/ChangePassword";
 import Programs from "../user/pages/programs/Programs";
-import ProgramDetails from '../user/pages/programs/ProgramsDetails'
+import ProgramDetails from "../user/pages/programs/ProgramsDetails";
+import AuthIdentity from "../user/pages/AuthIdentity";
+import ResetPassword from "../user/components/login/ResetPassword";
 
 const UserRoutes = () => {
   return (
@@ -28,7 +30,16 @@ const UserRoutes = () => {
         exact
       />
       <Route
-        path="/login"
+        path="/auth/identity"
+        element={
+          <UserContainer showNavAndFooter={false}>
+            <AuthIdentity />
+          </UserContainer>
+        }
+        exact
+      />
+      <Route
+        path="/auth/researcher/login"
         element={
           <UserContainer showNavAndFooter={false}>
             <Login />
@@ -37,7 +48,7 @@ const UserRoutes = () => {
         exact
       />
       <Route
-        path="/register"
+        path="/auth/researcher/register"
         element={
           <UserContainer showNavAndFooter={false}>
             <Register />
@@ -46,10 +57,19 @@ const UserRoutes = () => {
         exact
       />
       <Route
-        path="/forgotpassword"
+        path="/auth/researcher/forgot-password"
         element={
           <UserContainer showNavAndFooter={false}>
             <ForgotPassword />
+          </UserContainer>
+        }
+        exact
+      />
+      <Route
+        path="/auth/researcher/reset-password/:id"
+        element={
+          <UserContainer showNavAndFooter={false}>
+            <ResetPassword />
           </UserContainer>
         }
         exact

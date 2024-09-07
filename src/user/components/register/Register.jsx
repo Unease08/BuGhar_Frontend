@@ -72,7 +72,7 @@ const Register = () => {
   };
 
   return (
-    <div className="py-8 h-screen bg-gray-900">
+    <div className="py-24 h-screen bg-gray-900">
       <div className="flex bg-n-14 rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover"
@@ -82,9 +82,20 @@ const Register = () => {
           }}
         ></div>
         <div className="w-full p-8 lg:w-1/2">
-          <p className="text-xl text-white text-center">
-            Create an Account Here!
-          </p>
+          <p className="text-4xl text-white text-center">Join the Hunt !!!</p>
+          <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
+            <h3 className="dark:text-white">
+              Already have an account?
+              <a
+                className="group text-blue-400 transition-all duration-100 ease-in-out"
+                href="#"
+              >
+                <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                  <Link to="/auth/researcher/login">Signin as researcher</Link>
+                </span>
+              </a>
+            </h3>
+          </div>
 
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 lg:w-3/4"></span>
@@ -198,13 +209,13 @@ const Register = () => {
 
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
             <h3 className="dark:text-white">
-              Already have an account?
+              Looking for company portal?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
                 href="#"
               >
-                <span className="ml-3 bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="/login">Sign in</Link>
+                <span className="ml-3 underline bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                  <Link to="">Go to company portal</Link>
                 </span>
               </a>
             </h3>

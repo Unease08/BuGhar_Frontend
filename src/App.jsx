@@ -18,7 +18,11 @@ function App() {
 
   return (
     <>
-    <Toaster />
+      <Toaster
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       {isUser ? (
         <UserRoute />
       ) : (
