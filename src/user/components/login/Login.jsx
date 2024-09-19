@@ -73,7 +73,7 @@ const Login = () => {
             Log In to Researcher Portal
           </p>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-            <h3 className="dark:text-white">
+            <h3 className="text-white">
               Don't have an account?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
@@ -177,7 +177,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-4 text-right">
-                  <a className="text-xs dark:text-white" href="">
+                  <a className="text-xs text-white" href="">
                     <Link to="/auth/researcher/forgot-password">
                       {" "}
                       Forgot Your Password?
@@ -195,7 +195,7 @@ const Login = () => {
             )}
           </Formik>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-            <h3 className="dark:text-white">
+            <h3 className="text-white">
               Looking for company portal?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
