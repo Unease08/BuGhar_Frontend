@@ -6,13 +6,14 @@ import { Navbar, SideBar } from "./admin/scenes";
 import UserRoute from "./routes/UserRoute";
 import AdminRouter from "./AdminRouter";
 import { Toaster } from "react-hot-toast";
+import CompanyRoutes from "./routes/CompanyRoute";
 
 export const ToggledContext = createContext(null);
 
 function App() {
   const [theme, colorMode] = useMode();
   const [toggled, setToggled] = useState(false);
-  const [isUser, setIsUser] = useState(true); // Change this state to toggle between user and admin
+  const [routeType, setRouteType] = useState("company"); // Manage user, admin, and company routes
 
   const values = { toggled, setToggled };
 
@@ -23,9 +24,9 @@ function App() {
           duration: 3000,
         }}
       />
-      {isUser ? (
+      {routeType === "user" ? (
         <UserRoute />
-      ) : (
+      ) : routeType === "admin" ? (
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -50,7 +51,9 @@ function App() {
             </ToggledContext.Provider>
           </ThemeProvider>
         </ColorModeContext.Provider>
-      )}
+      ) : routeType === "company" ? (
+        <CompanyRoutes />
+      ) : null}
     </>
   );
 }
