@@ -6,14 +6,14 @@ import { Navbar, SideBar } from "./admin/scenes";
 import UserRoute from "./routes/UserRoute";
 import AdminRouter from "./AdminRouter";
 import { Toaster } from "react-hot-toast";
-import CompanyRoutes from "./routes/CompanyRoute";
+import CompanyRouter from "./CompanyRouter";
 
 export const ToggledContext = createContext(null);
 
 function App() {
   const [theme, colorMode] = useMode();
   const [toggled, setToggled] = useState(false);
-  const [routeType, setRouteType] = useState("company"); // Manage user, admin, and company routes
+  const [routeType, setRouteType] = useState("user"); // Manage user, admin, and company routes
 
   const values = { toggled, setToggled };
 
@@ -52,7 +52,30 @@ function App() {
           </ThemeProvider>
         </ColorModeContext.Provider>
       ) : routeType === "company" ? (
-        <CompanyRoutes />
+        <ColorModeContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ToggledContext.Provider value={values}>
+              <Box sx={{ display: "flex", height: "100vh", maxWidth: "100%" }}>
+                <SideBar />
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    maxWidth: "100%",
+                  }}
+                >
+                  <Navbar />
+                  <Box sx={{ overflowY: "auto", flex: 1, maxWidth: "100%" }}>
+                    <CompanyRouter />
+                  </Box>
+                </Box>
+              </Box>
+            </ToggledContext.Provider>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
       ) : null}
     </>
   );

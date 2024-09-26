@@ -16,6 +16,7 @@ import Programs from "../user/pages/programs/Programs";
 import ProgramDetails from "../user/pages/programs/ProgramsDetails";
 import AuthIdentity from "../user/pages/AuthIdentity";
 import ResetPassword from "../user/components/login/ResetPassword";
+import VerifyEmail from "../user/components/login/VerifyEmail";
 
 const UserRoutes = () => {
   return (
@@ -70,6 +71,15 @@ const UserRoutes = () => {
         element={
           <UserContainer showNavAndFooter={false}>
             <ResetPassword />
+          </UserContainer>
+        }
+        exact
+      />
+      <Route
+        path="/auth/researcher/verify-email/:id"
+        element={
+          <UserContainer showNavAndFooter={false}>
+            <VerifyEmail />
           </UserContainer>
         }
         exact

@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { mockDataContacts } from "../../data/mockData";
 import { tokens } from "../../../theme";
 
-const Team = () => {
+const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -53,8 +53,8 @@ const Team = () => {
   return (
     <Box m="20px">
       <Header
-        title="Managing Users"
-        subtitle="List of Users "
+        title="CONTACTS"
+        subtitle="List of Contacts for Future Reference"
       />
       <Box
         mt="40px"
@@ -110,4 +110,4 @@ const Team = () => {
   );
 };
 
-export default Team;
+export default Contacts;

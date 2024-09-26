@@ -18,9 +18,9 @@ import {
   Geography,
   Calendar,
   Stream,
-} from "./admin/scenes";
+} from "./company/scenes";
 
-const AdminRouter = () => {
+const CompanyRouter = () => {
   return (
     
       <Routes>
@@ -43,4 +43,4 @@ const AdminRouter = () => {
   );
 };
 
-export default AdminRouter;
+export default CompanyRouter;

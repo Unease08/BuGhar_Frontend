@@ -53,7 +53,11 @@ const Login = () => {
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Login Failed: Invalid Credentials");
+      // Extract error message from the backend response
+      const errorMessage =
+        (error.response && error.response.data && error.response.data.detail) ||
+        "Unknown error occured"; // Fallback error message
+      toast.error(errorMessage);
     }
     setSubmitting(false);
   };

@@ -46,19 +46,13 @@ const Register = () => {
 
       toast.success(message); // Display success message
 
-      navigate("/login"); // Redirect to login page after successful registration
+      navigate("/auth/researcher/login"); // Redirect to login page after successful registration
     } catch (error) {
-      if (error.response && error.response.data.message) {
-        if (error.response.data.message.includes("Username")) {
-          setFieldError("username", error.response.data.message);
-        } else if (error.response.data.message.includes("Email")) {
-          setFieldError("email", error.response.data.message);
-        } else {
-          toast.error(error.response.data.message);
-        }
-      } else {
-        toast.error("Email or Username Already Exists");
-      }
+      const errorMessage =
+        (error.response && error.response.data && error.response.data.detail) ||
+        "Unknown Error Occured.";
+
+      toast.error(errorMessage);
     }
     setSubmitting(false);
   };
