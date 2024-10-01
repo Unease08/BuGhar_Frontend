@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../../library/Api"; // Adjust the import path as necessary
+import api from "../../library/Api"; // Adjust the import path as necessary
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
     .required("Confirm Password is required"),
 });
 
-const Register = () => {
+const CompanyRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const Register = () => {
                 href="#"
               >
                 <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="/auth/researcher/login">Signin as researcher</Link>
+                  <Link to="/auth/login">Signin as researcher</Link>
                 </span>
               </a>
             </h3>
@@ -209,7 +209,7 @@ const Register = () => {
                 href="#"
               >
                 <span className="ml-3 underline bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="">Go to company portal</Link>
+                  <Link to="/auth/researcher/register">Go to Researcher portal</Link>
                 </span>
               </a>
             </h3>
@@ -220,4 +220,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CompanyRegister;

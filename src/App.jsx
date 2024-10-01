@@ -2,11 +2,11 @@ import React, { createContext, useState } from "react";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import { Navbar, SideBar } from "./admin/scenes";
-
 import UserRoute from "./routes/UserRoute";
 import AdminRouter from "./AdminRouter";
 import { Toaster } from "react-hot-toast";
 import CompanyRouter from "./CompanyRouter";
+import AuthRoutes from "./routes/AuthRoutes";
 
 export const ToggledContext = createContext(null);
 
@@ -19,6 +19,7 @@ function App() {
 
   return (
     <>
+    <AuthRoutes />
       <Toaster
         toastOptions={{
           duration: 3000,

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../../library/Api"; // Assuming you have an axios instance setup in 'api.js'
+import api from "./VerifyEmail"; // Assuming you have an axios instance setup in 'api.js'
 
 const VerifyEmail = () => {
   const { id } = useParams(); // Extract ID from the URL
@@ -20,7 +20,7 @@ const VerifyEmail = () => {
         const { message } = response.data;
         toast.success(message); // Show success message from the backend
 
-        // Redirect to the login page after successful email verification
+        // Redirect to researcher login page after success
         navigate("/auth/researcher/login");
       } catch (error) {
         // Handle error response
@@ -32,7 +32,7 @@ const VerifyEmail = () => {
 
         toast.error(errorMessage);
 
-        // Always navigate to the login page on error
+        // Redirect to researcher login page on error
         navigate("/auth/researcher/login");
       }
     };

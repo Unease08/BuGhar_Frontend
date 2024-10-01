@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../../library/Api";
+import api from "../../library/Api";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import config from "../../../config";
+import config from "../../config";
 
 const validationSchema = Yup.object().shape({
   identifier: Yup.string().required("Email or Username is required"),
@@ -73,9 +73,7 @@ const Login = () => {
           }}
         ></div>
         <div className="w-full p-8 lg:w-1/2">
-          <p className="text-3xl text-white text-center">
-            Log In to Researcher Portal
-          </p>
+          <p className="text-3xl text-white text-center">Welcome, Login Here</p>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
             <h3 className="text-white">
               Don't have an account?
@@ -182,7 +180,7 @@ const Login = () => {
                 </div>
                 <div className="mb-4 text-right">
                   <a className="text-xs text-white" href="">
-                    <Link to="/auth/researcher/forgot-password">
+                    <Link to="/auth/forgot-password">
                       {" "}
                       Forgot Your Password?
                     </Link>

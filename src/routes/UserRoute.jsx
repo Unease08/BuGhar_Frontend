@@ -2,21 +2,14 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "../user/pages/Home";
 import About from "../user/pages/About";
-import Login from "../user/components/login/Login";
 import UserContainer from "../user/components/layout/UserContainer";
 import HomePage from "../user/pages/homepage/HomePage";
-import PrivateRoute from "../auth/PrivateRoute"; // Adjust the path as needed
+import PrivateRoute from "../components/auth/PrivateRoute"; // Adjust the path as needed
 import NotFound from "../user/pages/NotFound";
-import Register from "../user/components/register/Register";
-import ForgotPassword from "../user/components/login/ForgotPassword";
-import GoogleCallback from "../user/components/login/GoogleCallback";
 import Profile from "../user/pages/profile/Profile";
 import ChangePassword from "../user/components/login/ChangePassword";
 import Programs from "../user/pages/programs/Programs";
 import ProgramDetails from "../user/pages/programs/ProgramsDetails";
-import AuthIdentity from "../user/pages/AuthIdentity";
-import ResetPassword from "../user/components/login/ResetPassword";
-import VerifyEmail from "../user/components/login/VerifyEmail";
 
 const UserRoutes = () => {
   return (
@@ -26,69 +19,6 @@ const UserRoutes = () => {
         element={
           <UserContainer showNavAndFooter={false}>
             <HomePage />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/auth/identity"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <AuthIdentity />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/auth/researcher/login"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <Login />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/auth/researcher/register"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <Register />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/auth/researcher/forgot-password"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <ForgotPassword />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/auth/researcher/reset-password/:id"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <ResetPassword />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/auth/researcher/verify-email/:id"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <VerifyEmail />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/oauth/callback"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <GoogleCallback />
           </UserContainer>
         }
         exact

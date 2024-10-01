@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import FaEye and FaEyeSlash
-import api from "../../../library/Api"; // Adjust the import path as necessary
+import api from "../../library/Api"; // Adjust the import path as necessary
 import toast from "react-hot-toast";
 
 // Validation schema for new password and confirm password
@@ -60,7 +60,6 @@ const ResetPassword = () => {
     }
     setSubmitting(false);
   };
-
 
   return (
     <div className="h-screen w-full bg-gray-900">

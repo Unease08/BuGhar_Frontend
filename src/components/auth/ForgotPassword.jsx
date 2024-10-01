@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../../library/Api"; // Adjust the import path as necessary
+import api from "../../library/Api"; // Adjust the import path as necessary
 import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
@@ -95,8 +95,8 @@ const ForgotPassword = () => {
                           href="#"
                         >
                           <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                            <Link to="/auth/researcher/login">
-                              Go to researcher login
+                            <Link to="/auth/login">
+                              Go to Login
                             </Link>
                           </span>
                         </a>
