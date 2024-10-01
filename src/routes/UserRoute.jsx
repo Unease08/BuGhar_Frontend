@@ -15,16 +15,7 @@ const UserRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/"
-        element={
-          <UserContainer showNavAndFooter={false}>
-            <HomePage />
-          </UserContainer>
-        }
-        exact
-      />
-      <Route
-        path="/home"
+        path="/dashboard"
         element={
           <UserContainer>
             <PrivateRoute element={<Home />} />

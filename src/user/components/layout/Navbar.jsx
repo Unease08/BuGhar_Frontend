@@ -23,7 +23,7 @@ const Navbar = () => {
 
     toast.success("Logged out successfully");
 
-    navigate("/");
+    navigate("/auth/login");
   };
 
   const toggleDropdown = () => {

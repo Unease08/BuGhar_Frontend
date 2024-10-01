@@ -50,7 +50,7 @@ const Login = () => {
       localStorage.setItem("token_type", token_type);
 
       toast.success("Login Successful!");
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       // Extract error message from the backend response
