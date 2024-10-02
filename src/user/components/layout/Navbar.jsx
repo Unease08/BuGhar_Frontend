@@ -8,6 +8,11 @@ import { RiSettings4Fill } from "react-icons/ri";
 import { AiOutlineLogout } from "react-icons/ai";
 import api from "../../../library/Api";
 import config from "../../../config";
+import { FaChartPie } from "react-icons/fa";
+import { FaBook } from "react-icons/fa6";
+import { TbReportAnalytics } from "react-icons/tb";
+import { TbReportMoney } from "react-icons/tb";
+
 
 const Navbar = () => {
   const [dropDownOpen, setDropDownOpen] = useState(false);
@@ -23,7 +28,7 @@ const Navbar = () => {
 
     toast.success("Logged out successfully");
 
-    navigate("/auth/login");
+    window.location.href = "/auth/login";
   };
 
   const toggleDropdown = () => {
@@ -80,30 +85,42 @@ const Navbar = () => {
   return (
     <div className="bg-background bg-n-11 p-4 flex items-center justify-between">
       <div className="flex items-center">
-        <img alt="logo" src={logo} className="w-100 h-8 mr-2" />
+        {/* <img alt="logo" src={logo} className="w-100 h-8 mr-2" /> */}
       </div>
       <nav className="flex space-x-20 text-white">
-        <span className="text-muted hover:text-foreground cursor-pointer">
+        <span className="text-muted flex items-center gap-2 hover:text-foreground cursor-pointer">
+          <i>
+            <FaChartPie />
+          </i>
           <Link to="/dashboard">Dashboard</Link>
         </span>
-        <span className="text-muted hover:text-foreground cursor-pointer">
+        <span className="text-muted flex items-center gap-2 hover:text-foreground cursor-pointer">
+          <i>
+            <FaBook />
+          </i>
           <Link to="/programs">Programs</Link>
         </span>
-        <span className="text-muted hover:text-foreground cursor-pointer">
-          Invites
+        <span className="text-muted flex items-center gap-2 hover:text-foreground cursor-pointer">
+          <i>
+            <TbReportAnalytics />
+          </i>
+          My Report
         </span>
-        <span className="text-muted hover:text-foreground cursor-pointer">
-          Discovery
-        </span>
-        <span className="text-muted hover:text-foreground cursor-pointer">
-          Work
+        <span className="text-muted flex items-center gap-2 hover:text-foreground cursor-pointer">
+          <i>
+            <TbReportMoney />
+          </i>
+          Payment
         </span>
       </nav>
       <div className="flex items-center">
         <div className="relative flex items-center">
           <img
             ref={profileImgRef}
-            src={profilePicture || 'https://saugat-nepal.com.np/assets/img/profile-img.png'}
+            src={
+              profilePicture ||
+              "https://saugat-nepal.com.np/assets/img/profile-img.png"
+            }
             alt="profile"
             className="w-9 h-9 rounded-full ml-4 bg-white cursor-pointer"
             onClick={toggleDropdown}

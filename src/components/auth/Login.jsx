@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../library/Api";
 import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import toast, { useToaster } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import config from "../../config";
 
@@ -19,12 +19,15 @@ const handleGoogleSignIn = () => {
 };
 
 const Login = () => {
+  const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  //  useEffect(() => navigate("/dashboard"), [isSuccess]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
@@ -50,7 +53,8 @@ const Login = () => {
       localStorage.setItem("token_type", token_type);
 
       toast.success("Login Successful!");
-      navigate("/dashboard");
+      setIsSuccess(true);
+      window.location.href = "/dashboard";
     } catch (error) {
       console.error("Login error:", error);
       // Extract error message from the backend response

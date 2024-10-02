@@ -3,6 +3,7 @@ import profile1 from "../../../assets/profile1.jpg";
 import { TbReportSearch } from "react-icons/tb";
 import { FaMedal } from "react-icons/fa";
 import { FaBug } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ProgramsDetails = () => {
   return (
@@ -23,9 +24,11 @@ const ProgramsDetails = () => {
             </span>{" "}
           </div>
           <hr />
-          <button className="bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded">
-            Submit Report
-          </button>
+          <Link to="/programdetails/:id/programreport">
+            <button className="bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded">
+              Submit Report
+            </button>
+          </Link>
           <hr className="mt-4" />
           <div className="mt-3">
             <span className="mt-2 text-2xl font-bold font-grotesk text-indigo-400">

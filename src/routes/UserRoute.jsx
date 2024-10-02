@@ -10,6 +10,7 @@ import Profile from "../user/pages/profile/Profile";
 import ChangePassword from "../user/components/login/ChangePassword";
 import Programs from "../user/pages/programs/Programs";
 import ProgramDetails from "../user/pages/programs/ProgramsDetails";
+import ProgramReport from "../user/pages/programs/ProgramReport";
 
 const UserRoutes = () => {
   return (
@@ -35,6 +36,14 @@ const UserRoutes = () => {
         element={
           <UserContainer>
             <PrivateRoute element={<ProgramDetails />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/programdetails/:id/programreport"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<ProgramReport />} />
           </UserContainer>
         }
       />
