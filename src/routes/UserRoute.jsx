@@ -11,6 +11,9 @@ import ChangePassword from "../user/components/login/ChangePassword";
 import Programs from "../user/pages/programs/Programs";
 import ProgramDetails from "../user/pages/programs/ProgramsDetails";
 import ProgramReport from "../user/pages/programs/ProgramReport";
+import MyReport from "../user/pages/myreport/MyReport";
+import ViewMyReport from "../user/pages/myreport/ViewMyReport"
+import Payment from "../user/pages/payment/Payment"
 
 const UserRoutes = () => {
   return (
@@ -60,6 +63,30 @@ const UserRoutes = () => {
         element={
           <UserContainer>
             <PrivateRoute element={<ChangePassword />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/myreport"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<MyReport />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/myreport/view"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<ViewMyReport />} />
+          </UserContainer>
+        }
+      />
+      <Route
+        path="/payment"
+        element={
+          <UserContainer>
+            <PrivateRoute element={<Payment />} />
           </UserContainer>
         }
       />

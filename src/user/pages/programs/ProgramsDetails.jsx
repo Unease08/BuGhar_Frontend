@@ -67,12 +67,12 @@ const ProgramsDetails = () => {
           />
         </div>
       </div>
-      <div className="bg-card mt-2 ml-32 h-14 bg-gray-700 text-card-foreground p-4 rounded-xl w-[970px]">
+      <div className="bg-card mt-2 ml-32 h-14 bg-gray-700 text-card-foreground p-4 rounded-xl w-[990px]">
         <div className="flex gap-10 mb-2 font-bold text-lg ml-4 text-gray-400 cursor-pointer">
           <span className="text-indigo-500 underline">Program Details</span>
         </div>
       </div>
-      <div className="bg-card mt-5 ml-32 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[970px] mx-auto shadow-lg">
+      <div className="bg-card mt-5 ml-32 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[990px] mx-auto shadow-lg">
         <div className="w-full mt-2">
           <div className="font-sans">
             <h1 className="font-bold text-indigo-400 text-xl mb-4">

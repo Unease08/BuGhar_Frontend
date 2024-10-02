@@ -13,7 +13,6 @@ import { FaBook } from "react-icons/fa6";
 import { TbReportAnalytics } from "react-icons/tb";
 import { TbReportMoney } from "react-icons/tb";
 
-
 const Navbar = () => {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
@@ -104,13 +103,13 @@ const Navbar = () => {
           <i>
             <TbReportAnalytics />
           </i>
-          My Report
+          <Link to="/myreport">My Report</Link>
         </span>
         <span className="text-muted flex items-center gap-2 hover:text-foreground cursor-pointer">
           <i>
             <TbReportMoney />
           </i>
-          Payment
+          <Link to="/payment"> Payment</Link>
         </span>
       </nav>
       <div className="flex items-center">

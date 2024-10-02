@@ -208,7 +208,7 @@ const Login = () => {
                 href="#"
               >
                 <span className="ml-3 underline bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="">Go to company portal</Link>
+                  <Link to="/auth/company/register">Go to company portal</Link>
                 </span>
               </a>
             </h3>

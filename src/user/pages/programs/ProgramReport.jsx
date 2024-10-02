@@ -105,7 +105,7 @@ const ProgramReport = () => {
           />
         </div>
       </div>
-      <div className="bg-card mt-5 ml-32 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[970px] mx-auto shadow-lg">
+      <div className="bg-card mt-5 ml-32 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[990px] mx-auto shadow-lg">
         <Formik
           initialValues={{
             summary: "",
@@ -200,46 +200,32 @@ const ProgramReport = () => {
 
               <div className="font-sans mt-10">
                 <h1 className="font-bold text-indigo-400 text-xl mb-4">
-                  Target
+                  Technical Severity
                 </h1>
                 <p className="text-md leading-6 text-gray-300">
-                  Targets that are not explicitly in scope may not be eligible
-                  for acceptance.
+                  The Vulnerability Rating Taxonomy is the baseline guide used
+                  for classifying technical severity. A severity rating
+                  suggested by the Vulnerability Type is not guaranteed to be
+                  the severity rating applied to your submission.
                 </p>
                 <div className="mt-2">
-                  <strong className="text-sm">
-                    Select the vulnerable target
-                  </strong>
+                  <strong className="text-sm">Select the severity</strong>
                   <div className="flex mt-2 space-x-4">
-                    <div className="w-1/3">
+                    <div className="w-full">
                       <Field
                         as="select"
-                        name="target"
+                        name="severity"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
                       >
-                        <option value="">Select target</option>
-                        <option value="website">Website</option>
+                        <option value="">Select severity</option>
+                        <option value="website">Critical</option>
+                        <option value="website">High</option>
+                        <option value="website">Moderate</option>
+                        <option value="website">Low</option>
+                        <option value="website">Informational</option>
                       </Field>
                       <ErrorMessage
-                        name="target"
-                        component="div"
-                        className="text-red-600 text-sm mt-1"
-                      />
-                    </div>
-                    <div className="w-2/3">
-                      <Field
-                        as="select"
-                        name="scope"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
-                      >
-                        <option value="">Select Scope</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option>
-                      </Field>
-                      <ErrorMessage
-                        name="scope"
+                        name="severity"
                         component="div"
                         className="text-red-600 text-sm mt-1"
                       />
