@@ -84,7 +84,7 @@ const Navbar = () => {
       </div>
       <nav className="flex space-x-20 text-white">
         <span className="text-muted hover:text-foreground cursor-pointer">
-          <Link to="/home">Dashboard</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </span>
         <span className="text-muted hover:text-foreground cursor-pointer">
           <Link to="/programs">Programs</Link>
