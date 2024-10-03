@@ -17,7 +17,7 @@ import {
   SettingsOutlined,
 } from "@mui/icons-material";
 import { ToggledContext } from "../../../../App";
-const Navbar = () => {
+const CompanyNavbar = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const { toggled, setToggled } = useContext(ToggledContext);
@@ -74,4 +74,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default CompanyNavbar;

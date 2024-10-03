@@ -1,13 +1,14 @@
 import React, { createContext, useState, useEffect } from "react";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import { Navbar, SideBar } from "./admin/scenes";
+import { AdminNavbar, AdminSideBar } from "./admin/scenes";
+import { CompanyNavbar, CompanySideBar } from "./company/scenes";
 import UserRoute from "./routes/UserRoute";
 import AdminRouter from "./AdminRouter";
 import { Toaster } from "react-hot-toast";
 import CompanyRouter from "./CompanyRouter";
 import AuthRoutes from "./routes/AuthRoutes";
-import {jwtDecode} from "jwt-decode"; // Ensure you have this package installed
+import { jwtDecode } from "jwt-decode"; // Ensure this is imported correctly
 
 export const ToggledContext = createContext(null);
 
@@ -56,25 +57,48 @@ function App() {
             <CssBaseline />
             <ToggledContext.Provider value={values}>
               <Box sx={{ display: "flex", height: "100vh", maxWidth: "100%" }}>
-                <SideBar />
-                <Box
-                  sx={{
-                    flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    maxWidth: "100%",
-                  }}
-                >
-                  <Navbar />
-                  <Box sx={{ overflowY: "auto", flex: 1, maxWidth: "100%" }}>
-                    {routeType === "admin" ? (
-                      <AdminRouter />
-                    ) : (
-                      <CompanyRouter />
-                    )}
-                  </Box>
-                </Box>
+                {/* Conditional rendering for Navbar and Sidebar based on role */}
+                {routeType === "admin" ? (
+                  <>
+                    <AdminSideBar />
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "100%",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      <AdminNavbar />
+                      <Box
+                        sx={{ overflowY: "auto", flex: 1, maxWidth: "100%" }}
+                      >
+                        <AdminRouter />
+                      </Box>
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <CompanySideBar />
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "100%",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      <CompanyNavbar />
+                      <Box
+                        sx={{ overflowY: "auto", flex: 1, maxWidth: "100%" }}
+                      >
+                        <CompanyRouter />
+                      </Box>
+                    </Box>
+                  </>
+                )}
               </Box>
             </ToggledContext.Provider>
           </ThemeProvider>

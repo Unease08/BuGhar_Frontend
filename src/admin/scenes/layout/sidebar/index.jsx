@@ -23,7 +23,7 @@ import logo from "../../../assets/images/logo.png";
 import Item from "./Item";
 import { ToggledContext } from "../../../../App";
 
-const SideBar = () => {
+const AdminSideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { toggled, setToggled } = useContext(ToggledContext);
   const theme = useTheme();
@@ -103,7 +103,7 @@ const SideBar = () => {
           />
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight="bold" color={colors.gray[100]}>
-              Anish Shrestha
+              Admin Anish Shrestha
             </Typography>
           </Box>
         </Box>
@@ -256,4 +256,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default AdminSideBar;
