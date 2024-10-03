@@ -46,7 +46,7 @@ const ResearcherRegister = () => {
 
       toast.success(message); // Display success message
 
-      navigate("/auth/researcher/login"); // Redirect to login page after successful registration
+      navigate("/auth/login"); // Redirect to login page after successful registration
     } catch (error) {
       const errorMessage =
         (error.response && error.response.data && error.response.data.detail) ||

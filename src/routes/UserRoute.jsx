@@ -12,8 +12,8 @@ import Programs from "../user/pages/programs/Programs";
 import ProgramDetails from "../user/pages/programs/ProgramsDetails";
 import ProgramReport from "../user/pages/programs/ProgramReport";
 import MyReport from "../user/pages/myreport/MyReport";
-import ViewMyReport from "../user/pages/myreport/ViewMyReport"
-import Payment from "../user/pages/payment/Payment"
+import ViewMyReport from "../user/pages/myreport/ViewMyReport";
+import Payment from "../user/pages/payment/Payment";
 
 const UserRoutes = () => {
   return (
@@ -35,7 +35,7 @@ const UserRoutes = () => {
         }
       />
       <Route
-        path="/programdetails/:id"
+        path="/program-details/:id"
         element={
           <UserContainer>
             <PrivateRoute element={<ProgramDetails />} />
@@ -43,7 +43,7 @@ const UserRoutes = () => {
         }
       />
       <Route
-        path="/programdetails/:id/programreport"
+        path="/program-details/:id/program-report"
         element={
           <UserContainer>
             <PrivateRoute element={<ProgramReport />} />

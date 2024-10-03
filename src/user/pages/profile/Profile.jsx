@@ -6,6 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../../library/Api";
 import toast from "react-hot-toast";
+import config from "../../../config";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -31,17 +32,20 @@ const validationSchema = Yup.object({
     }),
   country: Yup.string().required("Country is required"),
   address: Yup.string().required("Address is required"),
-  profilePicture: Yup.mixed().nullable().notRequired()
+  profilePicture: Yup.mixed()
+    .nullable()
+    .notRequired()
     .test("fileSize", "File size is too large", (value) => {
       if (!value) return true;
       return value.size <= 5 * 1024 * 1024; // 5MB limit
     })
     .test("fileType", "Unsupported file format", (value) => {
       if (!value) return true;
-      return ["image/jpeg", "image/png", "image/gif", "image/jpg"].includes(value.type);
+      return ["image/jpeg", "image/png", "image/gif", "image/jpg"].includes(
+        value.type
+      );
     }),
 });
-
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -66,7 +70,7 @@ const Profile = () => {
 
         setUserData(data);
         if (data.profile_picture) {
-          const imageUrl = `http://127.0.0.1:8000/${data.profile_picture}`;
+          const imageUrl = `${config.BASE_URL}/${data.profile_picture}`;
           setImagePreview(imageUrl);
         } else {
           setImagePreview(null);
@@ -145,12 +149,17 @@ const Profile = () => {
                   await api.put("/user/update", formData, {
                     headers: {
                       "Content-Type": "multipart/form-data",
-                      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "access_token"
+                      )}`,
                     },
                   });
                   toast.success("Profile updated successfully!");
                 } catch (error) {
-                  console.error("Error updating profile:", error.message || error);
+                  console.error(
+                    "Error updating profile:",
+                    error.message || error
+                  );
                   toast.error("Failed to update profile.");
                 } finally {
                   setSubmitLoading(false);
@@ -161,10 +170,15 @@ const Profile = () => {
                 <Form onSubmit={handleSubmit}>
                   <div className="bg-gray-800 shadow rounded-lg p-4">
                     <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg shadow-lg h-[180px] relative">
-                      <h2 className="text-white text-2xl font-bold mb-4">Profile</h2>
+                      <h2 className="text-white text-2xl font-bold mb-4">
+                        Profile
+                      </h2>
                       <div className="flex justify-center items-center relative">
                         <img
-                          src={imagePreview || 'https://saugat-nepal.com.np/assets/img/profile-img.png'}
+                          src={
+                            imagePreview ||
+                            "https://saugat-nepal.com.np/assets/img/profile-img.png"
+                          }
                           className="rounded-full w-40 h-40 border-2 border-black shadow-xl cursor-pointer"
                           alt="Profile"
                           onClick={handleProfilePicClick}
@@ -173,28 +187,45 @@ const Profile = () => {
                           type="file"
                           ref={fileInputRef}
                           className="hidden"
-                          onChange={(event) => handleFileChange(event, setFieldValue)}
+                          onChange={(event) =>
+                            handleFileChange(event, setFieldValue)
+                          }
                         />
                       </div>
-                      <ErrorMessage name="profilePicture" component="div" className="text-red-500 text-sm mt-2" />
+                      <ErrorMessage
+                        name="profilePicture"
+                        component="div"
+                        className="text-red-500 text-sm mt-2"
+                      />
                     </div>
                     <div className="mt-10 ml-10 flex gap-96">
                       <div>
                         <span className="font-semibold text-xl">Username</span>
-                        <p className="text-lg mt-1">{userData?.username || "Loading..."}</p>
+                        <p className="text-lg mt-1">
+                          {userData?.username || "Loading..."}
+                        </p>
                       </div>
                       <div>
                         <span className="font-semibold text-xl">Email</span>
-                        <p className="text-lg mt-1">{userData?.email || "Loading..."}</p>
+                        <p className="text-lg mt-1">
+                          {userData?.email || "Loading..."}
+                        </p>
                       </div>
                     </div>
                     <div className="mt-10 ml-10">
-                      <h1 className="text-indigo-400 font-bold text-lg">Personal details</h1>
-                      <p className="text-gray-400">Personal details are visible on your profile page</p>
+                      <h1 className="text-indigo-400 font-bold text-lg">
+                        Personal details
+                      </h1>
+                      <p className="text-gray-400">
+                        Personal details are visible on your profile page
+                      </p>
                       <div className="mt-5 space-y-4">
                         <div className="flex space-x-4">
                           <div className="flex-1">
-                            <label className="block text-sm font-bold text-gray-400" htmlFor="first-name">
+                            <label
+                              className="block text-sm font-bold text-gray-400"
+                              htmlFor="first-name"
+                            >
                               First Name
                             </label>
                             <Field
@@ -204,10 +235,17 @@ const Profile = () => {
                               placeholder="Anish"
                               className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
                             />
-                            <ErrorMessage name="firstName" component="div" className="text-red-500 text-sm mt-2" />
+                            <ErrorMessage
+                              name="firstName"
+                              component="div"
+                              className="text-red-500 text-sm mt-2"
+                            />
                           </div>
                           <div className="flex-1">
-                            <label className="block text-sm font-bold text-gray-400" htmlFor="last-name">
+                            <label
+                              className="block text-sm font-bold text-gray-400"
+                              htmlFor="last-name"
+                            >
                               Last Name
                             </label>
                             <Field
@@ -217,26 +255,45 @@ const Profile = () => {
                               placeholder="Shrestha"
                               className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
                             />
-                            <ErrorMessage name="lastName" component="div" className="text-red-500 text-sm mt-2" />
+                            <ErrorMessage
+                              name="lastName"
+                              component="div"
+                              className="text-red-500 text-sm mt-2"
+                            />
                           </div>
                         </div>
                         <div className="flex space-x-4">
                           <div className="flex-1">
-                            <label className="block text-sm font-bold text-gray-400" htmlFor="gender">
+                            <label
+                              className="block text-sm font-bold text-gray-400"
+                              htmlFor="gender"
+                            >
                               Gender
                             </label>
-                            <Field as="select" id="gender" name="gender" className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring">
+                            <Field
+                              as="select"
+                              id="gender"
+                              name="gender"
+                              className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
+                            >
                               <option value="" label="Select gender" />
                               <option value="male" label="Male" />
                               <option value="female" label="Female" />
                               <option value="other" label="Other" />
                             </Field>
-                            <ErrorMessage name="gender" component="div" className="text-red-500 text-sm mt-2" />
+                            <ErrorMessage
+                              name="gender"
+                              component="div"
+                              className="text-red-500 text-sm mt-2"
+                            />
                           </div>
                         </div>
                         <div className="flex space-x-4">
                           <div className="flex-1">
-                            <label className="block text-sm font-bold text-gray-400" htmlFor="bio">
+                            <label
+                              className="block text-sm font-bold text-gray-400"
+                              htmlFor="bio"
+                            >
                               Bio
                             </label>
                             <Field
@@ -246,12 +303,19 @@ const Profile = () => {
                               placeholder="Tell us about yourself"
                               className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
                             />
-                            <ErrorMessage name="bio" component="div" className="text-red-500 text-sm mt-2" />
+                            <ErrorMessage
+                              name="bio"
+                              component="div"
+                              className="text-red-500 text-sm mt-2"
+                            />
                           </div>
                         </div>
                         <div className="flex space-x-4">
                           <div className="flex-1">
-                            <label className="block text-sm font-bold text-gray-400" htmlFor="country">
+                            <label
+                              className="block text-sm font-bold text-gray-400"
+                              htmlFor="country"
+                            >
                               Country
                             </label>
                             <CustomDropdown
@@ -264,10 +328,17 @@ const Profile = () => {
                                 setSelectedCountry(e.target.value);
                               }}
                             />
-                            <ErrorMessage name="country" component="div" className="text-red-500 text-sm mt-2" />
+                            <ErrorMessage
+                              name="country"
+                              component="div"
+                              className="text-red-500 text-sm mt-2"
+                            />
                           </div>
                           <div className="flex-1">
-                            <label className="block text-sm font-bold text-gray-400" htmlFor="address">
+                            <label
+                              className="block text-sm font-bold text-gray-400"
+                              htmlFor="address"
+                            >
                               Address
                             </label>
                             <Field
@@ -277,7 +348,11 @@ const Profile = () => {
                               placeholder="Enter Address"
                               className="mt-1 block w-full border border-gray-700 rounded-md p-2 bg-gray-900 text-white focus:ring focus:ring-ring"
                             />
-                            <ErrorMessage name="address" component="div" className="text-red-500 text-sm mt-2" />
+                            <ErrorMessage
+                              name="address"
+                              component="div"
+                              className="text-red-500 text-sm mt-2"
+                            />
                           </div>
                         </div>
                         <div className="mt-6 flex justify-end">

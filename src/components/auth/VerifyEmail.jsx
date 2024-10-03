@@ -1,43 +1,46 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../../library/Api"; // Assuming you have an axios instance setup in 'api.js'
 
-const OAuthCallback = () => {
+const VerifyEmail = () => {
+  const { id } = useParams(); // Extract ID from the URL
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get("access_token");
-    const refreshToken = params.get("refresh_token");
-    const error = params.get("error");
-    const message = params.get("message");
-
-    console.log("URL Params:", { accessToken, refreshToken, error, message });
-
-    if (error && message) {
-      console.log("Error detected:", message);
-      toast.error(`Error: ${message}`);
-      navigate("/login");
-    } else if (accessToken && refreshToken) {
-      const loadingToastId = toast.loading("Logging in... Please wait.");
-
-      localStorage.setItem("access_token", accessToken);
-      localStorage.setItem("refresh_token", refreshToken);
-
-      setTimeout(() => {
-        toast.success("Login successful!", {
-          id: loadingToastId,
+    const verifyEmail = async () => {
+      try {
+        // Sending GET request to verify the email
+        const response = await api.get(`/auth/verify-email/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-        navigate("/home");
-      }, 3000);
-    } else {
-      console.error("Error: Tokens are missing");
-      toast.error("Error: Tokens are missing or invalid. Please try again.");
-      navigate("/login");
-    }
-  }, [navigate]);
 
-  return <div></div>;
+        const { message } = response.data;
+        toast.success(message); // Show success message from the backend
+
+        // Redirect to the login page after successful email verification
+        navigate("/auth/login");
+      } catch (error) {
+        // Handle error response
+        const errorMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.detail) ||
+          "An error occurred during email verification.";
+
+        toast.error(errorMessage);
+
+        // Always navigate to the login page on error
+        navigate("/auth/login");
+      }
+    };
+
+    verifyEmail();
+  }, [id, navigate]);
+
+  return <div>Verifying your email, please wait...</div>;
 };
 
-export default OAuthCallback;
+export default VerifyEmail;
