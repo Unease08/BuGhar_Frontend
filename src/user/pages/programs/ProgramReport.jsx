@@ -1,14 +1,38 @@
-import React, { useState } from "react";
-import profile1 from "../../../assets/profile1.jpg";
+import React, { useState, useEffect } from "react";
 import { TbReportSearch } from "react-icons/tb";
 import { FaMedal } from "react-icons/fa";
 import { FaBug } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import api from "../../../library/Api"
+import config from "../../../config"
 
 const ProgramReport = () => {
+
   const [selectedImages, setSelectedImages] = useState([]);
+  const [program, setProgram] = useState(null);
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchProgram = async () => {
+      try {
+        const response = await api.get(`/programs/${id}`); // Fixed API call to use string
+        console.log("API response", response.data);
+        setProgram(response.data); // Assuming the response contains program details
+      } catch (error) {
+        console.error("Error fetching program:", error);
+      }
+    };
+
+    if (id) {
+      fetchProgram();
+    }
+  }, [id]);
+
+  if (!program) {
+    return <div>Loading...</div>; // Show a loading state while data is being fetched
+  }
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files); // Get the selected files
@@ -46,66 +70,68 @@ const ProgramReport = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <div className="flex justify-start ml-32 gap-40">
-        <div className="bg-card mt-10 bg-gray-700 text-card-foreground p-4 rounded-lg max-w-6xl">
-          <h1 className="mt-2 text-3xl font-bold font-grotesk text-indigo-400">
-            Under Armour’s vision
-          </h1>
-          <p className="mt-3 text-lg text-muted-foreground">
-            Under Armour’s vision is to inspire you with performance solutions
-            you never knew you needed and can’t imagine living without.
-          </p>
-          <div className="mt-4 text-right mb-2 flex justify-between items-center">
-            <span>20th Semptember, 2024</span>
-            <span className="text-primary font-bold text-xl text-indigo-400">
-              Rs 125 - Rs 2,500 <p className="text-sm">per vulnerability</p>
-            </span>{" "}
-          </div>
-          <hr />
-          <Link to="/programdetails/:id">
-            <button className="bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded">
-              Learn More
-            </button>
-          </Link>
-          <hr className="mt-4" />
-          <div className="mt-3">
-            <span className="mt-2 text-2xl font-bold font-grotesk text-indigo-400">
-              Information Stats
-            </span>
-            <div className="mt-2 flex flex-col space-y-4">
-              <span className="flex items-center text-xl">
-                <i className="mr-2 text-blue-500 text-xl">
-                  <TbReportSearch />
-                </i>
-                <span className="flex">Total reports</span>
-                <strong className="text-white text-xl ml-15">50</strong>
+      <div className="flex justify-start ml-48 gap-40">
+        <div className="bg-gray-700 text-card-foreground p-4 rounded-lg w-[1080px] relative overflow-visible transform mt-24">
+          <div className="relative">
+            <div className="h-32 w-32 mt-10 mr-5 border-4 border-white rounded-full overflow-hidden shadow-lg absolute -top-48 left-1/2 transform -translate-x-1/2">
+              <img
+                src={`${config.BASE_URL}/${program.program_logo}`}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h1 className="mt-20 text-3xl font-bold font-grotesk text-indigo-400 text-center">
+              {program.title}
+            </h1>
+            <p className="mt-3 text-lg text-muted-foreground text-center">
+              {program.description}
+            </p>
+            <div className="mt-4 text-right mb-2 flex justify-between items-center">
+              <span></span>
+              <span className="text-primary font-bold text-xl text-indigo-400">
+                Rs. {program.min_price} - Rs. {program.max_price}{" "}
+                <p className="text-md">per vulnerability</p>
               </span>
-              <span className="flex items-center text-xl">
-                <i className="mr-2 text-green-500 text-xl">
-                  <FaMedal />
-                </i>
-                <span className="flex">Reports resolved</span>
-                <strong className="text-white text-xl ml-6">50</strong>
+            </div>
+            <hr />
+            <Link to={`/program-details/${program.id}`}>
+              <button className="bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded">
+                Learn More
+              </button>
+            </Link>
+            <hr className="mt-4" />
+            <div className="mt-3">
+              <span className="mt-2 text-2xl font-bold font-grotesk text-indigo-400">
+                Information Stats
               </span>
-              <span className="flex items-center text-xl">
-                <i className="mr-2 text-red-700 text-xl">
-                  <FaBug />
-                </i>
-                <span className="flex">Total bounty paid</span>
-                <strong className="text-white text-xl ml-4">50</strong>
-              </span>
+              <div className="mt-2 flex flex-col space-y-4">
+                <span className="flex items-center text-xl">
+                  <i className="mr-2 text-blue-500 text-xl">
+                    <TbReportSearch />
+                  </i>
+                  <span className="flex">Total reports</span>
+                  <strong className="text-white text-xl ml-15">50</strong>
+                </span>
+                <span className="flex items-center text-xl">
+                  <i className="mr-2 text-green-500 text-xl">
+                    <FaMedal />
+                  </i>
+                  <span className="flex">Reports resolved</span>
+                  <strong className="text-white text-xl ml-6">50</strong>
+                </span>
+                <span className="flex items-center text-xl">
+                  <i className="mr-2 text-red-700 text-xl">
+                    <FaBug />
+                  </i>
+                  <span className="flex">Total bounty paid</span>
+                  <strong className="text-white text-xl ml-4">50</strong>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        <div className="h-52 w-52 mt-10 mr-5 border-4 border-white rounded-full overflow-hidden shadow-lg">
-          <img
-            src={profile1}
-            alt="Profile"
-            className="w-full h-full object-cover"
-          />
-        </div>
       </div>
-      <div className="bg-card mt-5 ml-32 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[990px] mx-auto shadow-lg">
+      <div className="bg-card mt-5 ml-48 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[1080px] mx-auto shadow-lg">
         <Formik
           initialValues={{
             summary: "",

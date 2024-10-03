@@ -6,15 +6,22 @@ import api from "../../library/Api"; // Adjust the import path as necessary
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
+// Updated validationSchema
 const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, "Username must be at least 3 characters")
-    .required("Username is required"),
+  company_name: Yup.string()
+    .min(3, "Company Name must be at least 3 characters")
+    .required("Company Name is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
+  phone_number: Yup.string()
+    .matches(/^\d+$/, "Phone number must contain only digits") // Ensures only numbers are allowed
+    .min(10, "Phone number must be exactly 10 digits")
+    .max(10, "Phone number must be exactly 10 digits")
+    .required("Number is required"),
+
   password: Yup.string()
-    .min(5, "Password must be at least 6 characters")
+    .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -29,10 +36,11 @@ const CompanyRegister = () => {
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
       const response = await api.post(
-        "/auth/register",
+        "/company/register",
         {
-          username: values.username,
           email: values.email,
+          company_name: values.company_name,
+          phone_number: values.phone_number,
           password: values.password,
         },
         {
@@ -43,15 +51,12 @@ const CompanyRegister = () => {
       );
 
       const { message } = response.data;
-
-      toast.success(message); // Display success message
-
-      navigate("/auth/researcher/login"); // Redirect to login page after successful registration
+      toast.success(message);
+      navigate("/auth/login");
     } catch (error) {
       const errorMessage =
         (error.response && error.response.data && error.response.data.detail) ||
         "Unknown Error Occured.";
-
       toast.error(errorMessage);
     }
     setSubmitting(false);
@@ -66,7 +71,7 @@ const CompanyRegister = () => {
   };
 
   return (
-    <div className="py-24 h-screen bg-gray-900">
+    <div className="py-8 h-screen bg-gray-900">
       <div className="flex bg-n-14 rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover"
@@ -76,7 +81,7 @@ const CompanyRegister = () => {
           }}
         ></div>
         <div className="w-full p-8 lg:w-1/2">
-          <p className="text-4xl text-white text-center">Join the Hunt !!!</p>
+          <p className="text-4xl text-white text-center">Secure Your System</p>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
             <h3 className="dark:text-white">
               Already have an account?
@@ -85,7 +90,7 @@ const CompanyRegister = () => {
                 href="#"
               >
                 <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="/auth/login">Signin as researcher</Link>
+                  <Link to="/auth/login">Signin as Company</Link>
                 </span>
               </a>
             </h3>
@@ -98,8 +103,9 @@ const CompanyRegister = () => {
 
           <Formik
             initialValues={{
-              username: "",
+              company_name: "",
               email: "",
+              phone_number: "",
               password: "",
               confirmPassword: "",
             }}
@@ -108,18 +114,18 @@ const CompanyRegister = () => {
           >
             {({ isSubmitting }) => (
               <Form className="mt-4">
-                <div>
+                <div className="mt-4">
                   <label className="block text-white text-sm font-bold mb-2">
-                    Username
+                    Company Name
                   </label>
                   <Field
-                    name="username"
+                    name="company_name"
                     type="text"
                     className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                    placeholder="Username"
+                    placeholder="Company Name"
                   />
                   <ErrorMessage
-                    name="username"
+                    name="company_name"
                     component="div"
                     className="text-red-500 text-sm mt-2"
                   />
@@ -137,6 +143,23 @@ const CompanyRegister = () => {
                   />
                   <ErrorMessage
                     name="email"
+                    component="div"
+                    className="text-red-500 text-sm mt-2"
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-white text-sm font-bold mb-2">
+                    Phone Number
+                  </label>
+                  <Field
+                    name="phone_number"
+                    type="text"
+                    className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Phone Number"
+                  />
+                  <ErrorMessage
+                    name="phone_number"
                     component="div"
                     className="text-red-500 text-sm mt-2"
                   />
@@ -203,13 +226,13 @@ const CompanyRegister = () => {
 
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
             <h3 className="dark:text-white">
-              Looking for company portal?
+              Looking for Researcher Portal?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
                 href="#"
               >
-                <span className="ml-3 underline bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  <Link to="/auth/researcher/register">Go to Researcher portal</Link>
+                <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                  <Link to="/auth/login">Go to Login</Link>
                 </span>
               </a>
             </h3>
