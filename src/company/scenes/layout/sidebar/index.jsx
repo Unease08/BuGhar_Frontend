@@ -103,7 +103,7 @@ const SideBar = () => {
           />
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight="bold" color={colors.gray[100]}>
-              Anish Shrestha
+              Company Anish Shrestha
             </Typography>
           </Box>
         </Box>
