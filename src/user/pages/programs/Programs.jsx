@@ -25,7 +25,7 @@ const Programs = () => {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response = await api.get("/programs");
+        const response = await api.get("/programs/");
         console.log("API response", response.data);
         // Replace with your API endpoint
         setPrograms(response.data); // Assuming the data is an array of programs
@@ -157,7 +157,7 @@ const Programs = () => {
         {currentItems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentItems.map((item) => (
-              <Link to={`/program-details/${item.id}`}>
+              <Link to={`/program-details/${item.id}`} key={item.id}>
                 <div
                   key={item.id}
                   className="bg-gray-800 border mt-5 border-gray-700 rounded-lg overflow-hidden shadow-lg"
