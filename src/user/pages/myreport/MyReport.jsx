@@ -17,37 +17,103 @@ const MyReport = () => {
           />
         </div>
       </div>
-      <div className="bg-card mt-10 ml-10 bg-gray-700 text-card-foreground p-4 rounded-lg max-w-7xl">
+      <div className="bg-card mt-10 ml-10 bg-gray-700 text-card-foreground p-2 rounded-lg max-w-7xl">
         <div className="text-muted-foreground">
           <h1 className="text-indigo-400 text-2xl">My Reports</h1>
           <p className="text-gray-50 mt-2">
             Your reports till now is listed below
           </p>
         </div>
-        <div class="p-4 mt-5 border border-gray-50 rounded-lg">
+        <div className="p-1 mt-3 border border-gray-50 rounded-lg">
           <div className="flex justify-between items-center">
-            <span className="text-2xl text-indigo-400">Programiz</span>
-            <span className="text-white text-lg">20th September, 2024</span>
+            <span className="text-xl text-indigo-400">Programiz</span>{" "}
+            {/* Reduced font size */}
+            <span className="text-white text-md">
+              20th September, 2024
+            </span>{" "}
+            {/* Reduced font size */}
           </div>
-          <div className="flex flex-col mt-4 space-y-3">
-            <div className="flex items-center space-x-2">
-              <span className="text-xl font-semibold text-white">Title: </span>
-              <p className="text-lg text-gray-400">Programiz</p>
+          <div className="flex flex-col mt-1 space-y-1">
+            {" "}
+            {/* Reduced margins */}
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Reduced spacing */}
+              <span className="text-lg font-semibold text-white">
+                Title:{" "}
+              </span>{" "}
+              {/* Reduced font size */}
+              <p className="text-md text-gray-400">Programiz</p>{" "}
+              {/* Reduced font size */}
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Reduced spacing */}
               <span className="text-white">Date of Submission: </span>
               <p className="text-gray-400">20 September, 2024</p>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Reduced spacing */}
               <span className="text-white">Bounty Received: </span>
               <p className="text-gray-400">Rs. 30,000</p>
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-1">
+            {" "}
+            {/* Reduced margin */}
             <Link to="/myreport/view">
               <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded"
+                className="bg-blue-500 text-white py-1 px-3 rounded" // Reduced padding
+              >
+                View Report
+              </button>
+            </Link>
+          </div>
+        </div>
+        <div className="p-1 mt-3 border border-gray-50 rounded-lg">
+          <div className="flex justify-between items-center">
+            <span className="text-xl text-indigo-400">Programiz</span>{" "}
+            {/* Reduced font size */}
+            <span className="text-white text-md">
+              20th September, 2024
+            </span>{" "}
+            {/* Reduced font size */}
+          </div>
+          <div className="flex flex-col mt-1 space-y-1">
+            {" "}
+            {/* Reduced margins */}
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Reduced spacing */}
+              <span className="text-lg font-semibold text-white">
+                Title:{" "}
+              </span>{" "}
+              {/* Reduced font size */}
+              <p className="text-md text-gray-400">Programiz</p>{" "}
+              {/* Reduced font size */}
+            </div>
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Reduced spacing */}
+              <span className="text-white">Date of Submission: </span>
+              <p className="text-gray-400">20 September, 2024</p>
+            </div>
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Reduced spacing */}
+              <span className="text-white">Bounty Received: </span>
+              <p className="text-gray-400">Rs. 30,000</p>
+            </div>
+          </div>
+          <div className="flex justify-end mt-1">
+            {" "}
+            {/* Reduced margin */}
+            <Link to="/myreport/view">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-1 px-3 rounded" // Reduced padding
               >
                 View Report
               </button>
