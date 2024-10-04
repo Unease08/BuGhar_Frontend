@@ -23,8 +23,20 @@ import {
 } from "@mui/icons-material";
 import { tokens } from "../../../theme";
 import { mockTransactions } from "../../data/mockData";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 function Dashboard() {
+
+  useEffect(() => {
+    // Check if there is a toast message in sessionStorage
+    const message = sessionStorage.getItem("toastMessage");
+    if (message) {
+      toast.success(message);
+      sessionStorage.removeItem("toastMessage"); // Clear message after showing
+    }
+  }, []);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isXlDevices = useMediaQuery("(min-width: 1260px)");

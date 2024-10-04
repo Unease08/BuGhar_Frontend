@@ -20,6 +20,7 @@ import {
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
 import logo from "../../../assets/images/logo.png";
+import bughar from "../../../assets/images/bughar.png";
 import Item from "./Item";
 import { ToggledContext } from "../../../../App";
 
@@ -65,19 +66,7 @@ const CompanySideBar = () => {
                 gap="12px"
                 sx={{ transition: ".3s ease" }}
               >
-                <img
-                  style={{ width: "30px", height: "30px", borderRadius: "8px" }}
-                  src={logo}
-                  alt="Argon"
-                />
-                <Typography
-                  variant="h4"
-                  fontWeight="bold"
-                  textTransform="capitalize"
-                  color={colors.greenAccent[500]}
-                >
-                  Bughar
-                </Typography>
+                <img style={{ borderRadius: "8px" }} src={bughar} alt="Argon" />
               </Box>
             )}
             <IconButton onClick={() => setCollapsed(!collapsed)}>

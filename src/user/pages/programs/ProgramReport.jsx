@@ -4,22 +4,23 @@ import { FaMedal } from "react-icons/fa";
 import { FaBug } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Select from "react-select";
 import * as Yup from "yup";
-import api from "../../../library/Api"
-import config from "../../../config"
+import api from "../../../library/Api";
+import config from "../../../config";
 
 const ProgramReport = () => {
-
   const [selectedImages, setSelectedImages] = useState([]);
   const [program, setProgram] = useState(null);
+  const [vulnerabilityOptions, setVulnerabilityOptions] = useState([]);
   const { id } = useParams();
 
+  // Fetch the program details
   useEffect(() => {
     const fetchProgram = async () => {
       try {
-        const response = await api.get(`/programs/${id}`); // Fixed API call to use string
-        console.log("API response", response.data);
-        setProgram(response.data); // Assuming the response contains program details
+        const response = await api.get(`/programs/${id}`);
+        setProgram(response.data);
       } catch (error) {
         console.error("Error fetching program:", error);
       }
@@ -30,43 +31,91 @@ const ProgramReport = () => {
     }
   }, [id]);
 
-  if (!program) {
-    return <div>Loading...</div>; // Show a loading state while data is being fetched
-  }
+  // Fetch vulnerability types and transform for react-select
+  useEffect(() => {
+    const fetchVulnerabilityTypes = async () => {
+      try {
+        const response = await api.get("/vulnerability-type");
+        const options = response.data.map((vul) => ({
+          value: vul.id,
+          label: `${vul.name}`,
+        }));
+        setVulnerabilityOptions(options);
+      } catch (error) {
+        console.error("Error fetching vulnerability types:", error);
+      }
+    };
 
+    fetchVulnerabilityTypes();
+  }, []);
+
+  // Handle file uploads
   const handleFileChange = (event) => {
-    const files = Array.from(event.target.files); // Get the selected files
+    const files = Array.from(event.target.files);
     const newImagePreviews = files.map((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       return new Promise((resolve) => {
-        reader.onloadend = () => resolve(reader.result); // Resolve with the image data URL
+        reader.onloadend = () => resolve(reader.result);
       });
     });
 
     Promise.all(newImagePreviews).then((results) => {
-      setSelectedImages((prevImages) => [...prevImages, ...results]); // Append new images to existing ones
+      setSelectedImages((prevImages) => [...prevImages, ...results]);
     });
     event.target.value = "";
   };
 
   const removeImage = (index) => {
-    setSelectedImages(
-      (prevImages) => prevImages.filter((_, i) => i !== index) // Remove the image at the given index
-    );
+    setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const validationSchema = Yup.object().shape({
-    summary: Yup.string().required("Summary is required"),
-    target: Yup.string().required("Target is required"),
-    scope: Yup.string().required("Scope is required"),
-    severity: Yup.string().required("Severity is required"),
-    vulnerabilityType: Yup.string().required("Vulnerability type is required"),
-    url: Yup.string().url("Invalid URL").required("URL is required"),
+    title: Yup.string().required("Summary is required"),
+    impact: Yup.string().required("Severity is required"),
+    vulnerability_ids: Yup.array().min(
+      1,
+      "At least one vulnerability type is required"
+    ),
+    steps_to_reproduce: Yup.string().required("URL is required"),
     description: Yup.string().required("Description is required"),
-    traceDump: Yup.string().required("Trace dump/HTTP request is required"),
-    file: Yup.mixed().required("A file is required"),
+    attachments: Yup.mixed().required("A file is required"),
   });
+
+  const submitReport = async (values) => {
+    // Convert vulnerabilityType array to a comma-separated string
+    const vulnerabilityTypeIds = values.vulnerability_ids.join(", ");
+
+    // Prepare the form data to submit
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("program_id", id);
+    formData.append("impact", values.impact);
+    formData.append(
+      "vulnerability_ids",
+      JSON.stringify(vulnerabilityTypeIds)
+    );
+    formData.append("steps_to_reproduce", values.steps_to_reproduce);
+    formData.append("description", values.description);
+    formData.append("attachments[]", values.attachments); // File is added to formData
+
+    try {
+      const response = await api.post("/report", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Since it's file upload
+        },
+      });
+      console.log("Report submitted successfully:", response.data);
+      // You can handle success notifications here
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      // You can handle error notifications here
+    }
+  };
+
+  if (!program) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -134,20 +183,15 @@ const ProgramReport = () => {
       <div className="bg-card mt-5 ml-48 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[1080px] mx-auto shadow-lg">
         <Formik
           initialValues={{
-            summary: "",
-            target: "",
-            scope: "",
-            severity: "",
-            vulnerabilityType: "",
-            url: "",
+            title: "",
+            impact: "",
+            vulnerability_ids: [],
+            steps_to_reproduce: "",
             description: "",
-            traceDump: "",
-            file: null,
+            attachments: null,
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log("Form data", values);
-          }}
+          onSubmit={submitReport}
         >
           {({ setFieldValue }) => (
             <Form className="w-full mt-2">
@@ -160,12 +204,12 @@ const ProgramReport = () => {
                 </p>
                 <Field
                   type="text"
-                  name="summary"
+                  name="title"
                   className="w-full mt-4 py-2 px-4 rounded border text-black border-gray-300"
                   placeholder="summary/title of your submissions"
                 />
                 <ErrorMessage
-                  name="summary"
+                  name="title"
                   component="div"
                   className="text-red-600 mt-2"
                 />
@@ -174,84 +218,26 @@ const ProgramReport = () => {
 
               <div className="font-sans mt-10">
                 <h1 className="font-bold text-indigo-400 text-xl mb-4">
-                  Target
-                </h1>
-                <p className="text-md leading-6 text-gray-300">
-                  Targets that are not explicitly in scope may not be eligible
-                  for acceptance.
-                </p>
-                <div className="mt-2">
-                  <strong className="text-sm">
-                    Select the vulnerable target
-                  </strong>
-                  <div className="flex mt-2 space-x-4">
-                    <div className="w-1/3">
-                      <Field
-                        as="select"
-                        name="target"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
-                      >
-                        <option value="">Select target</option>
-                        <option value="website">Website</option>
-                      </Field>
-                      <ErrorMessage
-                        name="target"
-                        component="div"
-                        className="text-red-600 text-sm mt-2"
-                      />
-                    </div>
-                    <div className="w-2/3">
-                      <Field
-                        as="select"
-                        name="scope"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
-                      >
-                        <option value="">Select Scope</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option>
-                      </Field>
-                      <ErrorMessage
-                        name="scope"
-                        component="div"
-                        className="text-red-600 text-sm mt-2"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <hr className="mt-10" />
-              </div>
-
-              <div className="font-sans mt-10">
-                <h1 className="font-bold text-indigo-400 text-xl mb-4">
                   Technical Severity
                 </h1>
-                <p className="text-md leading-6 text-gray-300">
-                  The Vulnerability Rating Taxonomy is the baseline guide used
-                  for classifying technical severity. A severity rating
-                  suggested by the Vulnerability Type is not guaranteed to be
-                  the severity rating applied to your submission.
-                </p>
                 <div className="mt-2">
                   <strong className="text-sm">Select the severity</strong>
                   <div className="flex mt-2 space-x-4">
                     <div className="w-full">
                       <Field
                         as="select"
-                        name="severity"
+                        name="impact"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
                       >
                         <option value="">Select severity</option>
-                        <option value="website">Critical</option>
-                        <option value="website">High</option>
-                        <option value="website">Moderate</option>
-                        <option value="website">Low</option>
-                        <option value="website">Informational</option>
+                        <option value="critical">Critical</option>
+                        <option value="high">High</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="low">Low</option>
+                        <option value="informational">Informational</option>
                       </Field>
                       <ErrorMessage
-                        name="severity"
+                        name="impact"
                         component="div"
                         className="text-red-600 text-sm mt-1"
                       />
@@ -264,106 +250,64 @@ const ProgramReport = () => {
 
               <div className="font-sans mt-10">
                 <h1 className="font-bold text-indigo-400 text-xl mb-4">
-                  Vulnerability details
+                  Vulnerability Type
                 </h1>
-                <p className="text-gray-300 text-base leading-relaxed">
-                  Describe the vulnerability, and provide a proof of concept.
-                  How would you fix it?
+                <p className="text-md leading-6 text-gray-300">
+                  Please select the type(s) of vulnerabilities
                 </p>
+                <Select
+                  isMulti
+                  name="vulnerability_ids"
+                  options={vulnerabilityOptions}
+                  className="basic-multi-select text-black"
+                  classNamePrefix="select"
+                  onChange={(selectedOptions) =>
+                    setFieldValue(
+                      "vulnerability_ids",
+                      selectedOptions.map((option) => option.value)
+                    )
+                  }
+                />
+                <ErrorMessage
+                  name="vulnerability_ids"
+                  component="div"
+                  className="text-red-600 text-sm mt-1"
+                />
+              </div>
 
-                <div className="mt-2">
-                  <strong className="text-sm">Vulnerability type</strong>
-                  <div className="flex mt-2 space-x-4">
-                    <Field
-                      as="select"
-                      name="vulnerabilityType"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
-                    >
-                      <option value="">Select vulnerability type</option>
-                      <option value="sql_injection">SQL Injection</option>
-                      <option value="xss">Cross-Site Scripting (XSS)</option>
-                      <option value="csrf">
-                        Cross-Site Request Forgery (CSRF)
-                      </option>
-                      <option value="rce">Remote Code Execution (RCE)</option>
-                      <option value="directory_traversal">
-                        Directory Traversal
-                      </option>
-                      <option value="idor">
-                        Insecure Direct Object References (IDOR)
-                      </option>
-                      <option value="ssrf">
-                        Server-Side Request Forgery (SSRF)
-                      </option>
-                      <option value="security_misconfiguration">
-                        Security Misconfiguration
-                      </option>
-                      <option value="sensitive_data_exposure">
-                        Sensitive Data Exposure
-                      </option>
-                      <option value="insufficient_logging">
-                        Insufficient Logging and Monitoring
-                      </option>
-                    </Field>
-                  </div>
-                  <ErrorMessage
-                    name="vulnerabilityType"
-                    component="div"
-                    className="text-red-600 text-sm mt-1"
+              <div className="mt-4">
+                <strong className="text-sm">
+                  URL/Location of the vulnerability
+                </strong>
+                <div className="flex mt-2 space-x-4">
+                  <Field
+                    type="text"
+                    name="steps_to_reproduce"
+                    className="w-full mt-4 py-2 px-4 rounded border text-black border-gray-300"
                   />
                 </div>
+                <ErrorMessage
+                  name="steps_to_reproduce"
+                  component="div"
+                  className="text-red-600 text-sm mt-1"
+                />
+              </div>
 
-                <div className="mt-8">
-                  <strong className="text-sm">
-                    URL/Location of the vulnerability
-                  </strong>
-                  <div className="flex mt-2 space-x-4">
-                    <Field
-                      type="text"
-                      name="url"
-                      className="w-full mt-4 py-2 px-4 rounded border text-black border-gray-300"
-                    />
-                  </div>
-                  <ErrorMessage
-                    name="url"
-                    component="div"
-                    className="text-red-600 text-sm mt-1"
-                  />
-                </div>
-
-                <div className="mt-8">
-                  <strong className="text-sm">Description</strong>
-                  <div className="flex mt-2 space-x-4">
-                    <Field
-                      as="textarea"
-                      name="description"
-                      rows="8"
-                      className="block p-2 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50"
-                    />
-                  </div>
-                  <ErrorMessage
+              <div className="mt-4">
+                <strong className="text-sm">Description</strong>
+                <div className="flex mt-2 space-x-4">
+                  <Field
+                    as="textarea"
                     name="description"
-                    component="div"
-                    className="text-red-600 text-sm mt-1"
+                    rows="8"
+                    className="block p-2 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50"
                   />
                 </div>
-
-                <div className="mt-8">
-                  <strong className="text-sm">Trace Dump/HTTP Request</strong>
-                  <div className="flex mt-2 space-x-4">
-                    <Field
-                      as="textarea"
-                      name="traceDump"
-                      rows="8"
-                      className="block p-2 w-full text-sm text-black bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-50"
-                    />
-                  </div>
-                  <ErrorMessage
-                    name="traceDump"
-                    component="div"
-                    className="text-red-600 text-sm mt-1"
-                  />
-                </div>
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-red-600 text-sm mt-1"
+                />
               </div>
 
               <div className="font-sans mt-10">
@@ -375,15 +319,15 @@ const ProgramReport = () => {
                 </p>
                 <input
                   type="file"
-                  name="file"
+                  name="attachments"
                   onChange={(event) => {
-                    setFieldValue("file", event.currentTarget.files[0]);
+                    setFieldValue("attachments", event.currentTarget.files[0]);
                     handleFileChange(event);
                   }}
                   className="border border-gray-300 rounded-lg py-2 px-4 mt-2"
                 />
                 <ErrorMessage
-                  name="file"
+                  name="attachments"
                   component="div"
                   className="text-red-600"
                 />
@@ -393,7 +337,7 @@ const ProgramReport = () => {
                     <div key={index} className="relative w-1/3 h-32 m-1">
                       <img
                         src={image}
-                        alt={`attachment-${index}`}
+                        alt={`attachments-${index}`}
                         className="w-full h-full object-cover rounded-lg"
                       />
                       <button
