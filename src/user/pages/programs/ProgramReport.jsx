@@ -83,21 +83,36 @@ const ProgramReport = () => {
   });
 
   const submitReport = async (values) => {
-    // Convert vulnerabilityType array to a comma-separated string
-    const vulnerabilityTypeIds = values.vulnerability_ids.join(", ");
+    //   console.log("Title:", values.title);
+    //   console.log("Program ID:", id);
+    //   console.log("Impact/Severity:", values.impact);
+    //   console.log("Vulnerability IDs (Array):", values.vulnerability_ids);
+    //   console.log(
+    //     "Vulnerability IDs (String):",
+    //     values.vulnerability_ids.join(",")
+    //   );
+    //   console.log("Steps to Reproduce:", values.steps_to_reproduce);
+    //   console.log("Description:", values.description);
+    //   console.log("Attachments:", values.attachments);
+
+    //  const vulnerabilityId = values.vulnerability_ids.join(",");
 
     // Prepare the form data to submit
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("program_id", id);
     formData.append("impact", values.impact);
-    formData.append(
-      "vulnerability_ids",
-      JSON.stringify(vulnerabilityTypeIds)
-    );
+    // Change this line to send vulnerability_ids as a comma-separated string
+    values.vulnerability_ids.forEach((id) => {
+      formData.append("vulnerability_ids", id); // Append each vulnerability ID
+    });
     formData.append("steps_to_reproduce", values.steps_to_reproduce);
     formData.append("description", values.description);
-    formData.append("attachments[]", values.attachments); // File is added to formData
+
+    // Check if an attachment is provided
+     values.attachments.forEach((id) => {
+       formData.append("attachments", id); // Append each vulnerability ID
+     });
 
     try {
       const response = await api.post("/report", formData, {
@@ -106,10 +121,10 @@ const ProgramReport = () => {
         },
       });
       console.log("Report submitted successfully:", response.data);
-      // You can handle success notifications here
+      // Handle success notifications here
     } catch (error) {
       console.error("Error submitting report:", error);
-      // You can handle error notifications here
+      // Handle error notifications here
     }
   };
 
@@ -256,17 +271,16 @@ const ProgramReport = () => {
                   Please select the type(s) of vulnerabilities
                 </p>
                 <Select
-                  isMulti
                   name="vulnerability_ids"
+                  className="text-black"
+                  isMulti
                   options={vulnerabilityOptions}
-                  className="basic-multi-select text-black"
-                  classNamePrefix="select"
-                  onChange={(selectedOptions) =>
+                  onChange={(selectedOptions) => {
                     setFieldValue(
                       "vulnerability_ids",
                       selectedOptions.map((option) => option.value)
-                    )
-                  }
+                    );
+                  }}
                 />
                 <ErrorMessage
                   name="vulnerability_ids"
