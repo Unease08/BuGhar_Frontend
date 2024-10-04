@@ -17,7 +17,7 @@ const OAuthCallback = () => {
     if (error && message) {
       console.log("Error detected:", message);
       toast.error(`Error: ${message}`);
-      navigate("/login");
+      navigate("/auth/login");
     } else if (accessToken && refreshToken) {
       const loadingToastId = toast.loading("Logging in... Please wait.");
 
@@ -33,7 +33,7 @@ const OAuthCallback = () => {
     } else {
       console.error("Error: Tokens are missing");
       toast.error("Error: Tokens are missing or invalid. Please try again.");
-      navigate("/login");
+      navigate("/auth/login");
     }
   }, [navigate]);
 

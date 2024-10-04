@@ -25,7 +25,8 @@ const Navbar = () => {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("token_type");
 
-    toast.success("Logged out successfully");
+    const logoutMessage = "Logout successful!";
+    sessionStorage.setItem("toastMessage", logoutMessage);
 
     window.location.href = "/auth/login";
   };

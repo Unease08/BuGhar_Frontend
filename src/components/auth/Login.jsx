@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import api from "../../library/Api";
 import { Link, useNavigate } from "react-router-dom";
-import toast, { useToaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import config from "../../config";
 
@@ -19,7 +19,6 @@ const handleGoogleSignIn = () => {
 };
 
 const Login = () => {
-  const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -27,10 +26,18 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  //  useEffect(() => navigate("/dashboard"), [isSuccess]);
+  useEffect(() => {
+    // Check if there is a toast message in sessionStorage
+    const message = sessionStorage.getItem("toastMessage");
+    if (message) {
+      toast.success(message);
+      sessionStorage.removeItem("toastMessage"); // Clear message after showing
+    }
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      // API request to login
       const response = await api.post(
         "/auth/login",
         {
@@ -47,23 +54,24 @@ const Login = () => {
 
       const { access_token, refresh_token, token_type } = response.data;
 
-      // Store tokens in localStorage or any state management solution
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
       localStorage.setItem("token_type", token_type);
 
-      toast.success("Login Successful!");
-      setIsSuccess(true);
+      const successMessage = "Login successful!";
+
+      sessionStorage.setItem("toastMessage", successMessage);
+
       window.location.href = "/dashboard";
     } catch (error) {
       console.error("Login error:", error);
-      // Extract error message from the backend response
       const errorMessage =
         (error.response && error.response.data && error.response.data.detail) ||
-        "Unknown error occured"; // Fallback error message
-      toast.error(errorMessage);
+        "Unknown error occurred";
+      toast.error(`Error: ${errorMessage}`);
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   return (
