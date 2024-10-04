@@ -103,7 +103,7 @@ const CompanySideBar = () => {
           />
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight="bold" color={colors.gray[100]}>
-              Company Anish 
+              Company Anish
             </Typography>
           </Box>
         </Box>
@@ -123,7 +123,7 @@ const CompanySideBar = () => {
         >
           <Item
             title="Dashboard"
-            path="/"
+            path="/dashboard"
             colors={colors}
             icon={<DashboardOutlined />}
           />
