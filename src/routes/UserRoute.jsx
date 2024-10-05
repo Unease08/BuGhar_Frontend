@@ -67,7 +67,7 @@ const UserRoutes = () => {
         }
       />
       <Route
-        path="/myreport"
+        path="/my-report"
         element={
           <UserContainer>
             <PrivateRoute element={<MyReport />} />

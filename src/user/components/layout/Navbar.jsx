@@ -104,7 +104,7 @@ const Navbar = () => {
           <i>
             <TbReportAnalytics />
           </i>
-          <Link to="/myreport">My Report</Link>
+          <Link to="/my-report">My Report</Link>
         </span>
         <span className="text-muted flex items-center gap-2 hover:text-foreground cursor-pointer">
           <i>

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { TbReportSearch } from "react-icons/tb";
 import { FaMedal } from "react-icons/fa";
 import { FaBug } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Select from "react-select";
+import { toast } from "react-hot-toast"; // Import the toast function
 import * as Yup from "yup";
 import api from "../../../library/Api";
 import config from "../../../config";
@@ -14,6 +15,7 @@ const ProgramReport = () => {
   const [program, setProgram] = useState(null);
   const [vulnerabilityOptions, setVulnerabilityOptions] = useState([]);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // Fetch the program details
   useEffect(() => {
@@ -119,9 +121,19 @@ const ProgramReport = () => {
         },
       });
       console.log("Report submitted successfully:", response.data);
+
+      // Show a success toast message
+      toast.success(response.data.message);
+
+      navigate("/my-report");
+
       // Handle success notifications here
     } catch (error) {
       console.error("Error submitting report:", error);
+      const errorMessage =
+        (error.response && error.response.data && error.response.data.detail) ||
+        "Unknown error occurred";
+      toast.error(`Error: ${errorMessage}`);
       // Handle error notifications here
     }
   };
