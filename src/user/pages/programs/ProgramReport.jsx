@@ -35,7 +35,7 @@ const ProgramReport = () => {
   useEffect(() => {
     const fetchVulnerabilityTypes = async () => {
       try {
-        const response = await api.get("/vulnerability-type");
+        const response = await api.get("/vulnerability-type/");
         const options = response.data.map((vul) => ({
           value: vul.id,
           label: `${vul.name}`,
@@ -50,20 +50,29 @@ const ProgramReport = () => {
   }, []);
 
   // Handle file uploads
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
+  // Handle file uploads and generate previews
+  const handleFileChange = (event, setFieldValue) => {
+    const files = Array.from(event.target.files); // Convert FileList to an array
+    setFieldValue("attachments", files); // Set all selected files in the Formik state
+
+    // Create an array of promises to read each file as a Data URL
     const newImagePreviews = files.map((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return new Promise((resolve) => {
-        reader.onloadend = () => resolve(reader.result);
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file); // Read the file as a Data URL
       });
     });
 
-    Promise.all(newImagePreviews).then((results) => {
-      setSelectedImages((prevImages) => [...prevImages, ...results]);
-    });
-    event.target.value = "";
+    // Once all files are read, update the selectedImages state
+    Promise.all(newImagePreviews)
+      .then((results) => {
+        setSelectedImages((prevImages) => [...prevImages, ...results]);
+      })
+      .catch((error) => console.error("Error reading files:", error));
+
+    event.target.value = ""; // Reset the file input after selection
   };
 
   const removeImage = (index) => {
@@ -83,41 +92,30 @@ const ProgramReport = () => {
   });
 
   const submitReport = async (values) => {
-    //   console.log("Title:", values.title);
-    //   console.log("Program ID:", id);
-    //   console.log("Impact/Severity:", values.impact);
-    //   console.log("Vulnerability IDs (Array):", values.vulnerability_ids);
-    //   console.log(
-    //     "Vulnerability IDs (String):",
-    //     values.vulnerability_ids.join(",")
-    //   );
-    //   console.log("Steps to Reproduce:", values.steps_to_reproduce);
-    //   console.log("Description:", values.description);
-    //   console.log("Attachments:", values.attachments);
-
-    //  const vulnerabilityId = values.vulnerability_ids.join(",");
-
-    // Prepare the form data to submit
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("program_id", id);
     formData.append("impact", values.impact);
-    // Change this line to send vulnerability_ids as a comma-separated string
-    values.vulnerability_ids.forEach((id) => {
-      formData.append("vulnerability_ids", id); // Append each vulnerability ID
+
+    // Add vulnerability IDs
+    values.vulnerability_ids.forEach((vulnerabilityId) => {
+      formData.append("vulnerability_ids", vulnerabilityId);
     });
+
     formData.append("steps_to_reproduce", values.steps_to_reproduce);
     formData.append("description", values.description);
 
-    // Check if an attachment is provided
-     values.attachments.forEach((id) => {
-       formData.append("attachments", id); // Append each vulnerability ID
-     });
+    // Check if attachments are provided and handle FileList
+    if (values.attachments && values.attachments.length > 0) {
+      Array.from(values.attachments).forEach((file) => {
+        formData.append("attachments", file); // Appending each file
+      });
+    }
 
     try {
-      const response = await api.post("/report", formData, {
+      const response = await api.post("/report/", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Since it's file upload
+          "Content-Type": "multipart/form-data",
         },
       });
       console.log("Report submitted successfully:", response.data);
@@ -203,7 +201,7 @@ const ProgramReport = () => {
             vulnerability_ids: [],
             steps_to_reproduce: "",
             description: "",
-            attachments: null,
+            attachments: [],
           }}
           validationSchema={validationSchema}
           onSubmit={submitReport}
@@ -334,12 +332,11 @@ const ProgramReport = () => {
                 <input
                   type="file"
                   name="attachments"
-                  onChange={(event) => {
-                    setFieldValue("attachments", event.currentTarget.files[0]);
-                    handleFileChange(event);
-                  }}
+                  multiple // allow multiple file selection
+                  onChange={(event) => handleFileChange(event, setFieldValue)} // Pass setFieldValue here
                   className="border border-gray-300 rounded-lg py-2 px-4 mt-2"
                 />
+
                 <ErrorMessage
                   name="attachments"
                   component="div"
