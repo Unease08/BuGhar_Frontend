@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const CustomDropdown = ({ options, value, onChange }) => {
+const CustomDropdown = ({ options, value, onChange, className }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState(options);
   const dropdownRef = useRef(null);
@@ -47,7 +47,7 @@ const CustomDropdown = ({ options, value, onChange }) => {
         value={value}
         onChange={handleChange}
         onClick={toggleDropdown}
-        className="block mt-1 w-full border border-border rounded-md p-2 focus:ring focus:ring-ring bg-gray-900 text-white"
+        className={`block mt-1 w-full border border-gray-300 rounded-md focus:ring focus:ring-blue-500 bg-gray-800 text-white ${className}`}
         placeholder="Select Country"
       />
       {isOpen && (

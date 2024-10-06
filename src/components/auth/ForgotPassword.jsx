@@ -61,7 +61,7 @@ const ForgotPassword = () => {
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-bold ml-1 mb-2 dark:text-white"
+                          className="block text-sm font-bold ml-1 mb-2 text-white"
                         >
                           Email Address
                         </label>
@@ -88,16 +88,14 @@ const ForgotPassword = () => {
                       >
                         {isSubmitting ? "Processing..." : "Reset Password"}
                       </button>
-                      <h3 className="mt-2 dark:text-white">
+                      <h3 className="mt-2 text-white">
                         Remember Your Password?
                         <a
                           className="group text-blue-400 transition-all duration-100 ease-in-out"
                           href="#"
                         >
                           <span className="ml-3 bg-left-bottom underline bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                            <Link to="/auth/login">
-                              Go to Login
-                            </Link>
+                            <Link to="/auth/login">Go to Login</Link>
                           </span>
                         </a>
                       </h3>

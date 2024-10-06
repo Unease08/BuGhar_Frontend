@@ -327,6 +327,7 @@ const Profile = () => {
                                 setFieldValue("country", e.target.value);
                                 setSelectedCountry(e.target.value);
                               }}
+                              className="p-2"
                             />
                             <ErrorMessage
                               name="country"

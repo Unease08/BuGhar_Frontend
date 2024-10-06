@@ -3,7 +3,7 @@ import CompanySideBar from "./layout/sidebar";
 import Dashboard from "./dashboard";
 import Team from "./team";
 import Invoices from "./invoices";
-import Contacts from "./contacts";
+import CompanyVerification from "./companyverification";
 import CompanyInfo from "./companyinfo";
 import Calendar from "./calendar";
 import Bar from "./bar";
@@ -19,7 +19,7 @@ export {
   Dashboard,
   Team,
   Invoices,
-  Contacts,
+  CompanyVerification,
   CompanyInfo,
   Calendar,
   Bar,

@@ -83,7 +83,7 @@ const CompanyRegister = () => {
         <div className="w-full p-8 lg:w-1/2">
           <p className="text-4xl text-white text-center">Secure Your System</p>
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-            <h3 className="dark:text-white">
+            <h3 className="text-white">
               Already have an account?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"
@@ -225,7 +225,7 @@ const CompanyRegister = () => {
           </Formik>
 
           <div className="flex flex-col mt-4 mb-4 items-center justify-center text-sm">
-            <h3 className="dark:text-white">
+            <h3 className="text-white">
               Looking for Researcher Portal?
               <a
                 className="group text-blue-400 transition-all duration-100 ease-in-out"

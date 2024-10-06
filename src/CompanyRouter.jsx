@@ -4,7 +4,6 @@ import {
   Dashboard,
   Team,
   Invoices,
-  Contacts,
   Bar,
   Pie,
   FAQ,
@@ -12,6 +11,7 @@ import {
   Calendar,
   Stream,
   CompanyInfo,
+  CompanyVerification,
 } from "./company/scenes"; // Company scenes
 import NotFound from "./user/pages/NotFound"; // NotFound component
 
@@ -23,7 +23,7 @@ const CompanyRouter = () => {
       {/* Protected routes */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/team" element={<Team />} />
-      <Route path="/contacts" element={<Contacts />} />
+      <Route path="/company-verification" element={<CompanyVerification />} />
       <Route path="/invoices" element={<Invoices />} />
       <Route path="/company-info" element={<CompanyInfo />} />
       <Route path="/calendar" element={<Calendar />} />

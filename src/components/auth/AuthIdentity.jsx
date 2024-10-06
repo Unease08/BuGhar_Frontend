@@ -6,9 +6,9 @@ import { FaMask } from "react-icons/fa";
 const AuthIdentity = () => {
   return (
     <div className="h-screen bg-gray-900">
-      <div className="bg-gray-100 flex justify-center gap-28 items-center h-screen w-full dark:bg-gray-900">
+      <div className="flex justify-center gap-28 items-center h-screen w-full bg-gray-900">
         <Link to="/auth/company/register">
-          <div className="w-full max-w-md px-8 py-10 rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-200 cursor-pointer">
+          <div className="w-full max-w-md px-8 py-10 rounded-lg shadow-md bg-gray-950 text-gray-200 cursor-pointer">
             <i className="flex justify-center text-8xl">
               <GoOrganization />
             </i>
@@ -18,7 +18,7 @@ const AuthIdentity = () => {
           </div>
         </Link>
         <Link to="/auth/login">
-          <div className="w-full max-w-md px-8 py-10 rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-200 cursor-pointer">
+          <div className="w-full max-w-md px-8 py-10 rounded-lg shadow-md bg-gray-950 text-gray-200 cursor-pointer">
             <i className="flex justify-center text-8xl">
               <FaMask />
             </i>

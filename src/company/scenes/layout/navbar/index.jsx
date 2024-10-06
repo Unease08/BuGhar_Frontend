@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   IconButton,
@@ -63,6 +64,29 @@ const CompanyNavbar = () => {
       justifyContent="space-between"
       p={2}
     >
+      <div
+        className="fixed top-2 right-16 z-50 mr-32 -translate-x-1/2 bg-orange-400 p-1 drop-shadow-2xl max-sm:w-11/12" // Changed background color
+        id="gdpr"
+      >
+        <div className="flex items-center justify-between gap-6 text-sm">
+          <div className="content-left pl-4 text-black text-md">
+            {" "}
+            {/* Changed text color for readability */}
+            PLEASE VERIFY YOUR COMPANY TO ADD PROGRAM !!!
+          </div>
+          <Link to="/company-verification">
+            {" "}
+            <div className="content-right text-end">
+              <button
+                className="cursor-pointer rounded-full bg-n-11 px-4 py-2 text-white" // Changed button color to match warning theme
+              >
+                Verify
+              </button>
+            </div>
+          </Link>
+        </div>
+      </div>
+
       <Box display="flex" alignItems="center" gap={2}>
         <IconButton
           sx={{ display: `${isMdDevices ? "flex" : "none"}` }}

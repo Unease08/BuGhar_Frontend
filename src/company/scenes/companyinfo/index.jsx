@@ -2,18 +2,46 @@ import { Box, Button, TextField, useMediaQuery } from "@mui/material";
 import { Header } from "../../components";
 import { useState } from "react";
 import logo from "../../assets/images/avatar.png";
+import useCountries from "../../../customhooks/UseCountries";
+import CustomDropdown from "../../../library/CustomDropdown";
 
 const CompanyInfo = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  const countries = useCountries().map((country) => country.name);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedImage, setSelectedImage] = useState(logo); // Default image is the logo
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result); // Update the selected image
+      };
+      reader.readAsDataURL(file); // Read the uploaded file as a data URL
+    }
+  };
+
   return (
     <Box m="20px">
       <Header title="Company Information" />
-
-      <form>
+      <form className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8">
         <div className="flex justify-center items-center">
-          <div className="w-32 h-32 overflow-hidden rounded-full border-4 border-blue-300 flex justify-center items-center">
-            <img src={logo} alt="Logo" className="object-cover w-full h-full" />
+          <div className="flex justify-center items-center">
+            <label className="w-32 h-32 overflow-hidden rounded-full border-4 border-blue-300 flex justify-center items-center cursor-pointer">
+              <img
+                src={selectedImage}
+                alt="Logo"
+                className="object-cover w-full h-full"
+              />
+              <input
+                type="file"
+                accept="image/*" // Allow only image files
+                onChange={handleImageChange}
+                className="hidden" // Hide the input element
+              />
+            </label>
           </div>
         </div>
 
@@ -21,7 +49,7 @@ const CompanyInfo = () => {
           <div>
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
             >
               Company Name
             </label>
@@ -29,44 +57,48 @@ const CompanyInfo = () => {
               type="text"
               id="first_name"
               name="firstName"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="John"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Company Name"
             />
           </div>
           <div>
             <label
-              htmlFor="last_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="company_website"
+              className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
             >
               Company Website
             </label>
             <input
               type="text"
-              id="last_name"
-              name="lastName"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              id="company_website"
+              name="companyWebsite"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Company Website"
             />
           </div>
           <div>
             <label
-              htmlFor="company"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              htmlFor="country"
+              className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
             >
               Country{" "}
             </label>
-            <input
-              type="email"
-              id="company"
-              name="company"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Country"
+            <CustomDropdown
+              id="country"
+              name="country"
+              style={{ padding: "14px" }}
+              options={countries}
+              value={selectedCountry}
+              onChange={(e) => {
+                setSelectedCountry(e.target.value);
+              }}
+              className="p-[14px]"
             />
           </div>
           <div>
             <label
               htmlFor="phone"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
             >
               Phone number
             </label>
@@ -74,7 +106,7 @@ const CompanyInfo = () => {
               type="tel"
               id="phone"
               name="phone"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
         </div>
@@ -82,21 +114,21 @@ const CompanyInfo = () => {
         <div className="mb-6">
           <label
             htmlFor="company_bio"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
           >
             Company Bio
           </label>
           <textarea
             id="company_bio"
             name="companyBio"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            rows="6" // Adjust the number of rows to increase height
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            rows="6"
             placeholder="Write your company bio here..."
           />
         </div>
 
         <div className="flex justify-end">
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Submit
           </button>
         </div>

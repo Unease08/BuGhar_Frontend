@@ -142,8 +142,8 @@ const CompanySideBar = () => {
             icon={<PeopleAltOutlined />}
           />
           <Item
-            title="Contacts Information"
-            path="/contacts"
+            title="Company Verification"
+            path="/company-verification"
             colors={colors}
             icon={<ContactsOutlined />}
           />
