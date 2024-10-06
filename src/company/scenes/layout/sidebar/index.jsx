@@ -173,8 +173,8 @@ const CompanySideBar = () => {
           }}
         >
           <Item
-            title="Profile Form"
-            path="/form"
+            title="Company Info"
+            path="/company-info"
             colors={colors}
             icon={<PersonOutlined />}
           />
