@@ -156,7 +156,7 @@ const Programs = () => {
         </div>
         {currentItems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentItems.map((item) => (
+            {currentItems.map((item) => (
               <Link to={`/program-details/${item.id}`} key={item.id}>
                 <div
                   key={item.id}
@@ -196,8 +196,8 @@ const Programs = () => {
                   </div>
                 </div>
               </Link>
-              ))}
-            </div>
+            ))}
+          </div>
         ) : (
           <div className="flex justify-center items-center h-64 text-5xl text-white">
             No data to show
