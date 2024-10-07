@@ -2,7 +2,7 @@ import CompanyNavbar from "./layout/navbar";
 import CompanySideBar from "./layout/sidebar";
 import Dashboard from "./dashboard";
 import Team from "./team";
-import Invoices from "./invoices";
+import Program from "./program";
 import CompanyVerification from "./companyverification";
 import CompanyInfo from "./companyinfo";
 import Calendar from "./calendar";
@@ -18,7 +18,7 @@ export {
   CompanySideBar,
   Dashboard,
   Team,
-  Invoices,
+  Program,
   CompanyVerification,
   CompanyInfo,
   Calendar,

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import {
   Dashboard,
   Team,
-  Invoices,
+  Program,
   Bar,
   Pie,
   FAQ,
@@ -24,7 +24,7 @@ const CompanyRouter = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/team" element={<Team />} />
       <Route path="/company-verification" element={<CompanyVerification />} />
-      <Route path="/invoices" element={<Invoices />} />
+      <Route path="/Program" element={<Program />} />
       <Route path="/company-info" element={<CompanyInfo />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/bar" element={<Bar />} />

@@ -148,8 +148,8 @@ const CompanySideBar = () => {
             icon={<ContactsOutlined />}
           />
           <Item
-            title="Invoices Balances"
-            path="/invoices"
+            title="Program"
+            path="/program"
             colors={colors}
             icon={<ReceiptOutlined />}
           />
