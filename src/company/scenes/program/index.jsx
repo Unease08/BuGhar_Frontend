@@ -3,6 +3,7 @@ import { Header } from "../../components";
 import { DataGrid } from "@mui/x-data-grid";
 import { mockDataInvoices } from "../../data/mockData";
 import { tokens } from "../../../theme";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FaSort } from "react-icons/fa";
 
@@ -95,11 +96,13 @@ const Program = () => {
               className="block p-3 text-sm border rounded-lg w-full md:w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for programs"
             />
-            <div className="mr-4">
-              <button className="py-2 px-4 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
-                Add Program
-              </button>
-            </div>
+            <Link to="/add-program">
+              <div className="mr-4">
+                <button className="py-2 px-4 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
+                  Add Program
+                </button>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -230,9 +233,11 @@ const Program = () => {
                   <td className="px-6 py-4">{user.start_date}</td>
                   <td className="px-6 py-4">{user.end_date}</td>
                   <td className="px-6 py-4 space-x-2">
-                    <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
-                      Update
-                    </button>
+                    <Link to="/update-program/:id">
+                      <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
+                        Update
+                      </button>
+                    </Link>
                     <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200">
                       Delete
                     </button>

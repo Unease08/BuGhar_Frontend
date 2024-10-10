@@ -3,6 +3,8 @@ import CompanySideBar from "./layout/sidebar";
 import Dashboard from "./dashboard";
 import Team from "./team";
 import Program from "./program";
+import AddProgram from "./program/AddProgram";
+import UpdateProgram from "./program/UpdateProgram";
 import CompanyVerification from "./companyverification";
 import CompanyInfo from "./companyinfo";
 import Calendar from "./calendar";
@@ -19,6 +21,8 @@ export {
   Dashboard,
   Team,
   Program,
+  AddProgram,
+  UpdateProgram,
   CompanyVerification,
   CompanyInfo,
   Calendar,
