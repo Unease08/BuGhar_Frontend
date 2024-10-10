@@ -3,29 +3,32 @@ import { Header } from "../../components";
 import { useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import api from "../../../library/Api";
+import toast from "react-hot-toast";
 
 const AddProgram = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
+  const Navigate = useNavigate();
 
   const initialValues = {
     title: "",
     in_scope: "",
-    out_scope: "",
+    out_of_scope: "",
     terms: "",
     description: "",
     start_date: "",
     end_date: "",
     min_price: "",
     max_price: "",
-    logo: null,
+    program_logo: null,
   };
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     in_scope: Yup.string().required("In Scope is required"),
-    out_scope: Yup.string().required("Out Scope is required"),
+    out_of_scope: Yup.string().required("Out Scope is required"),
     terms: Yup.string().required("Terms are required"),
     description: Yup.string().required("Description is required"),
     start_date: Yup.date().required("Start Date is required"),
@@ -36,7 +39,7 @@ const AddProgram = () => {
     max_price: Yup.number()
       .required("Maximum Price is required")
       .min(0, "Maximum Price must be a positive number"),
-    logo: Yup.mixed().required("Logo is required"),
+    program_logo: Yup.mixed().required("Program Logo is required"),
   });
 
   const handleImageChange = (event, setFieldValue) => {
@@ -44,20 +47,58 @@ const AddProgram = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
-      setFieldValue("logo", file);
+      setFieldValue("program_logo", file);
     }
   };
 
   const handleRemoveImage = (setFieldValue) => {
     setSelectedImage(null);
-    setFieldValue("logo", null);
+    setFieldValue("program_logo", null);
     if (fileInputRef.current) {
       fileInputRef.current.value = ""; // Reset the file input value
     }
   };
 
-  const handleSubmit = (values) => {
-    console.log("Form Values:", values);
+  const handleSubmit = async (values) => {
+    const formData = new FormData();
+
+    // Convert start_date and end_date to the required format
+    const formattedStartDate = new Date(values.start_date).toISOString();
+    const formattedEndDate = new Date(values.end_date).toISOString();
+
+    // Append all form fields to FormData
+    formData.append("title", values.title);
+    formData.append("in_scope", values.in_scope);
+    formData.append("out_of_scope", values.out_of_scope);
+    formData.append("terms", values.terms);
+    formData.append("description", values.description);
+    formData.append("start_date", formattedStartDate);
+    formData.append("end_date", formattedEndDate);
+    formData.append("min_price", values.min_price);
+    formData.append("max_price", values.max_price);
+    if (values.program_logo) {
+      formData.append("program_logo", values.program_logo);
+    }
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
+
+    try {
+      const response = await api.post("/programs/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success(response.data.message);
+      Navigate("/program");
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      const errorMessage =
+        (error.response && error.response.data && error.response.data.detail) ||
+        "Unknown error occurred";
+      toast.error(`Error: ${errorMessage}`);
+    }
   };
 
   return (
@@ -92,14 +133,18 @@ const AddProgram = () => {
             <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-lg font-medium text-white">
-                  In Scope
+                  In Scope{" "}
+                  <span className="text-sm text-gray-400">
+                    {" "}
+                    (Separate each scope with comma)
+                  </span>
                 </label>
                 <Field
                   type="text"
                   id="in_scope"
                   name="in_scope"
                   className="border text-lg rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
-                  placeholder="In Scope"
+                  placeholder="Eg *.bughar.net, *.bughar.com"
                 />
                 <ErrorMessage
                   name="in_scope"
@@ -109,17 +154,21 @@ const AddProgram = () => {
               </div>
               <div>
                 <label className="block mb-2 text-lg font-medium text-white">
-                  Out Scope
+                  Out Scope{" "}
+                  <span className="text-sm text-gray-400">
+                    {" "}
+                    (Separate each scope with comma)
+                  </span>
                 </label>
                 <Field
                   type="text"
-                  id="out_scope"
-                  name="out_scope"
+                  id="out_of_scope"
+                  name="out_of_scope"
                   className="border text-lg rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
-                  placeholder="Out Scope"
+                  placeholder="Eg beta.bughar.com, internal.bughar.com"
                 />
                 <ErrorMessage
-                  name="out_scope"
+                  name="out_of_scope"
                   component="div"
                   className="text-red-500 mt-1"
                 />
@@ -237,17 +286,17 @@ const AddProgram = () => {
                 />
               </div>
             </div>
-            {/* File input for the logo */}
+            {/* File input for the program_logo */}
             <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-lg font-medium text-white">
-                  Logo
+                  Program Logo
                 </label>
                 <input
                   ref={fileInputRef}
                   className="border text-lg rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
                   type="file"
-                  name="logo"
+                  name="program_logo"
                   onChange={(event) => handleImageChange(event, setFieldValue)}
                 />
                 {selectedImage && (
@@ -267,7 +316,7 @@ const AddProgram = () => {
                   </div>
                 )}
                 <ErrorMessage
-                  name="logo"
+                  name="program_logo"
                   component="div"
                   className="text-red-500 mt-1"
                 />

@@ -44,7 +44,7 @@ function App() {
     <>
       <Toaster
         toastOptions={{
-          duration: 3000,
+          duration: 4000,
         }}
       />
       {routeType === "auth" ? (

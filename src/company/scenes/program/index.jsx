@@ -1,63 +1,30 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { Header } from "../../components";
-import { DataGrid } from "@mui/x-data-grid";
-import { mockDataInvoices } from "../../data/mockData";
-import { tokens } from "../../../theme";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSort } from "react-icons/fa";
+import api from "../../../library/Api";
 
 const Program = () => {
   const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortField, setSortField] = useState("name"); // default sort field
-  const [sortDirection, setSortDirection] = useState("asc"); // default sort direction
-  const [users] = useState([
-    {
-      id: 1,
-      name: "Neil Sims",
-      email: "neil.sims@flowbite.com",
-      position: "React Developer",
-      status: "Active",
-      min_price: 20000,
-      max_price: 5000,
-      start_date: "2024-02-23",
-      end_date: "2024-12-20",
-    },
-    {
-      id: 2,
-      name: "Bonnie Green",
-      email: "bonnie@flowbite.com",
-      position: "Designer",
-      status: "Inactive",
-      min_price: 40000,
-      max_price: 10000,
-      start_date: "2024-02-23",
-      end_date: "2024-12-20",
-    },
-    {
-      id: 3,
-      name: "Jese Leos",
-      email: "jese@flowbite.com",
-      position: "Vue JS Developer",
-      status: "Active",
-      min_price: 60000,
-      max_price: 5000,
-      start_date: "2024-08-23",
-      end_date: "2024-10-20",
-    },
-    {
-      id: 4,
-      name: "Thomas Lean",
-      email: "thomes@flowbite.com",
-      position: "UI/UX Engineer",
-      status: "Inactive",
-      min_price: 30000,
-      max_price: 5000,
-      start_date: "2024-02-23",
-      end_date: "2024-12-20",
-    },
-  ]);
+  const [sortField, setSortField] = useState("name");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [programs, setPrograms] = useState([]);
+
+  // Fetch programs data from the API
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const response = await api.get("/programs/");
+        setPrograms(response.data.reverse()); // Reverse the array to show new data first
+      } catch (error) {
+        console.error("Error fetching programs data:", error);
+      }
+    };
+
+    fetchPrograms();
+  }, []);
 
   const handleSort = (field) => {
     const direction =
@@ -66,26 +33,47 @@ const Program = () => {
     setSortDirection(direction);
   };
 
-  const sortedUsers = [...users].sort((a, b) => {
+  const sortedPrograms = [...programs].sort((a, b) => {
+    // Default values to avoid sorting issues with undefined properties
+    const aValue = a[sortField] !== undefined ? a[sortField] : "";
+    const bValue = b[sortField] !== undefined ? b[sortField] : "";
+
     if (sortField === "min_price" || sortField === "max_price") {
-      return sortDirection === "asc"
-        ? a[sortField] - b[sortField]
-        : b[sortField] - a[sortField];
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
     } else if (sortField === "start_date" || sortField === "end_date") {
       return sortDirection === "asc"
-        ? new Date(a[sortField]) - new Date(b[sortField])
-        : new Date(b[sortField]) - new Date(a[sortField]);
+        ? new Date(aValue) - new Date(bValue)
+        : new Date(bValue) - new Date(aValue);
+    } else if (sortField === "status") {
+      return sortDirection === "asc"
+        ? aValue === bValue
+          ? 0
+          : aValue
+          ? -1
+          : 1 // Sort true before false for ascending
+        : aValue === bValue
+        ? 0
+        : aValue
+        ? 1
+        : -1; // Sort false before true for descending
     } else {
       return sortDirection === "asc"
-        ? a[sortField].localeCompare(b[sortField])
-        : b[sortField].localeCompare(a[sortField]);
+        ? aValue.toString().localeCompare(bValue.toString())
+        : bValue.toString().localeCompare(aValue.toString());
     }
   });
+
+   const formatDate = (dateStr) => {
+     return new Date(dateStr).toLocaleDateString("en-US", {
+       year: "numeric",
+       month: "long",
+       day: "numeric",
+     });
+   };
 
   return (
     <Box m="20px">
       <Header title="Programs" subtitle="List of Programs" />
-
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
           <div className="relative flex justify-between flex-grow items-center">
@@ -198,42 +186,46 @@ const Program = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedUsers
-              .filter((user) =>
-                user.name.toLowerCase().includes(searchTerm.toLowerCase())
+            {sortedPrograms
+              .filter((program) =>
+                program.title.toLowerCase().includes(searchTerm.toLowerCase())
               )
-              .map((user, index) => (
+              .map((program, index) => (
+                
                 <tr
-                  key={user.id}
+                  key={program.id}
                   className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
                 >
                   <td className="px-6 py-4 text-gray-900 dark:text-white">
                     {index + 1}
                   </td>
-                  <td className="flex items-center px-6 py-4  whitespace-nowrap text-white">
-                    <div className="">
-                      <div className="text-base font-semibold">{user.name}</div>
+                  <td className="flex items-center px-6 py-6 whitespace-nowrap text-white">
+                    <div className="text-base font-semibold">
+                      {program.title}
                     </div>
                   </td>
-                  <td className="px-6 py-4">Rs. {user.min_price}</td>
-                  <td className="px-6 py-4">Rs. {user.max_price}</td>
-
+                  <td className="px-6 py-4">Rs. {program.min_price}</td>
+                  <td className="px-6 py-4">Rs. {program.max_price}</td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <div
-                        className={`h-2.5 w-2.5 rounded-full mr-2 ${
-                          user.status.toLowerCase() === "active"
-                            ? "bg-green-500"
-                            : "bg-red-500"
-                        }`}
-                      ></div>
-                      {user.status}
-                    </div>
+                    <td className="px-3 py-4">
+                      <div className="flex items-center">
+                        <div
+                          className={`h-2.5 w-2.5 rounded-full mr-2 ${
+                            program.is_active ? "bg-green-500" : "bg-red-500"
+                          }`}
+                          aria-label={program.is_active ? "Active" : "Inactive"}
+                          role="status"
+                        ></div>
+                        {program.is_active ? "Active" : "Inactive"}
+                      </div>
+                    </td>
                   </td>
-                  <td className="px-6 py-4">{user.start_date}</td>
-                  <td className="px-6 py-4">{user.end_date}</td>
+                  <td className="px-6 py-4">
+                    {formatDate(program.start_date)}
+                  </td>
+                  <td className="px-6 py-4">{formatDate(program.end_date)}</td>
                   <td className="px-6 py-4 space-x-2">
-                    <Link to="/update-program/:id">
+                    <Link to={`/update-program/${program.id}`}>
                       <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
                         Update
                       </button>

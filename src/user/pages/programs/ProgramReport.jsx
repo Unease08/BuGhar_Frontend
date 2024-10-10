@@ -114,6 +114,11 @@ const ProgramReport = () => {
       });
     }
 
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+
+
     try {
       const response = await api.post("/report/", formData, {
         headers: {
