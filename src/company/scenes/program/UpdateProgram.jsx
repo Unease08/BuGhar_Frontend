@@ -3,6 +3,7 @@ import { Header } from "../../components";
 import { useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
 const UpdateProgram = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -61,7 +62,7 @@ const UpdateProgram = () => {
 
   return (
     <Box m="20px">
-      <Header title="Add Program" />
+      <Header title="Update Program" />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -273,7 +274,12 @@ const UpdateProgram = () => {
               </div>
             </div>
             {/* Submit button */}
-            <div className="flex justify-end">
+            <div className="flex justify-between">
+              <Link to="/program">
+                <button className="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center focus:ring-gray-700">
+                  Back
+                </button>
+              </Link>
               <button
                 type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center focus:ring-blue-800"
