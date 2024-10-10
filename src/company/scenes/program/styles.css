@@ -1,0 +1,25 @@
+/* Target the ReactQuill toolbar and its elements */
+.custom-quill-toolbar .ql-toolbar {
+  background-color: #444; /* Optional: Set background color of the toolbar */
+  border: 1px solid #666; /* Optional: Set border color of the toolbar */
+}
+
+.custom-quill-toolbar .ql-toolbar .ql-formats button,
+.custom-quill-toolbar .ql-toolbar .ql-formats select {
+  color: white; /* Set the button and select options text color to white */
+}
+
+.custom-quill-toolbar .ql-toolbar .ql-formats button.ql-active {
+  background-color: #666; /* Optional: Set active button background color */
+  color: white; /* Active button text color */
+}
+
+.custom-quill-toolbar .ql-toolbar .ql-formats button:hover {
+  background-color: #555; /* Optional: Set hover state background color */
+  color: white; /* Hover state text color */
+}
+
+.custom-quill-toolbar .ql-toolbar .ql-picker-label,
+.custom-quill-toolbar .ql-toolbar .ql-picker-item {
+  color: white; /* Set the color of picker labels and items to white */
+}
