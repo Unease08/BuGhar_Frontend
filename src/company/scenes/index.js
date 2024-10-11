@@ -7,6 +7,7 @@ import AddProgram from "./program/AddProgram";
 import UpdateProgram from "./program/UpdateProgram";
 import CompanyVerification from "./companyverification";
 import CompanyInfo from "./companyinfo";
+import Report from "./report"
 import Calendar from "./calendar";
 import Bar from "./bar";
 // import Line from "./line";
@@ -25,6 +26,7 @@ export {
   UpdateProgram,
   CompanyVerification,
   CompanyInfo,
+  Report,
   Calendar,
   Bar,
   // Line,

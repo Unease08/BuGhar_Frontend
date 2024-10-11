@@ -17,6 +17,7 @@ import {
   ReceiptOutlined,
   TimelineOutlined,
   WavesOutlined,
+  SummarizeOutlined
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
 import logo from "../../../assets/images/logo.png";
@@ -117,13 +118,13 @@ const CompanySideBar = () => {
             icon={<DashboardOutlined />}
           />
         </Menu>
-        <Typography
+        {/* <Typography
           variant="h6"
           color={colors.gray[300]}
           sx={{ m: "15px 0 5px 20px" }}
         >
           {!collapsed ? "Data" : " "}
-        </Typography>{" "}
+        </Typography>{" "} */}
         <Menu
           menuItemStyles={{
             button: {
@@ -152,6 +153,12 @@ const CompanySideBar = () => {
             path="/program"
             colors={colors}
             icon={<ReceiptOutlined />}
+          />
+          <Item
+            title="Report"
+            path="/report"
+            colors={colors}
+            icon={<SummarizeOutlined />}
           />
         </Menu>
         <Typography

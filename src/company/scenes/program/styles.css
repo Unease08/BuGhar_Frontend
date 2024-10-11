@@ -1,8 +1,3 @@
-/* Target the toolbar container */
-.ql-toolbar {
-  background-color: #ffffff !important; /* Set the toolbar background to white */
-}
-
 /* Style toolbar buttons */
 .ql-toolbar .ql-picker {
   color: black !important; /* Set text color of dropdowns */
@@ -39,5 +34,14 @@
 
 /* Make the placeholder text white */
 .ql-editor::before {
-  color: rgba(255, 255, 255, 0.5); /* White placeholder with slight transparency */
+  color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); /* White placeholder with slight transparency */
+}
+
+.ql-container .ql-editor::before {
+  color: whitesmoke; /* Set the placeholder text color to white */
 }

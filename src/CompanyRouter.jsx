@@ -14,6 +14,7 @@ import {
   CompanyVerification,
   AddProgram,
   UpdateProgram,
+  Report,
 } from "./company/scenes"; // Company scenes
 import NotFound from "./user/pages/NotFound"; // NotFound component
 
@@ -30,6 +31,7 @@ const CompanyRouter = () => {
       <Route path="/add-program" element={<AddProgram />} />
       <Route path="/update-program/:id" element={<UpdateProgram />} />
       <Route path="/company-info" element={<CompanyInfo />} />
+      <Route path="/report" element={<Report />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/bar" element={<Bar />} />
       <Route path="/pie" element={<Pie />} />

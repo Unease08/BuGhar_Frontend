@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FaSort } from "react-icons/fa";
 import api from "../../../library/Api";
+import { toast } from "react-hot-toast";
 
 const Program = () => {
   const theme = useTheme();
@@ -34,7 +35,6 @@ const Program = () => {
   };
 
   const sortedPrograms = [...programs].sort((a, b) => {
-    // Default values to avoid sorting issues with undefined properties
     const aValue = a[sortField] !== undefined ? a[sortField] : "";
     const bValue = b[sortField] !== undefined ? b[sortField] : "";
 
@@ -50,12 +50,12 @@ const Program = () => {
           ? 0
           : aValue
           ? -1
-          : 1 // Sort true before false for ascending
+          : 1
         : aValue === bValue
         ? 0
         : aValue
         ? 1
-        : -1; // Sort false before true for descending
+        : -1;
     } else {
       return sortDirection === "asc"
         ? aValue.toString().localeCompare(bValue.toString())
@@ -63,13 +63,31 @@ const Program = () => {
     }
   });
 
-   const formatDate = (dateStr) => {
-     return new Date(dateStr).toLocaleDateString("en-US", {
-       year: "numeric",
-       month: "long",
-       day: "numeric",
-     });
-   };
+  const formatDate = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleDelete = async (id) => {
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this program?"
+    );
+    if (!confirmation) return;
+
+    try {
+      await api.delete(`/programs/${id}`);
+      toast.success("Program deleted successfully!");
+      setPrograms((prevPrograms) =>
+        prevPrograms.filter((program) => program.id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting program:", error);
+      toast.error("Failed to delete program.");
+    }
+  };
 
   return (
     <Box m="20px">
@@ -97,15 +115,10 @@ const Program = () => {
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-md uppercase bg-gray-700 text-gray-400">
             <tr>
-              <th
-                scope="col"
-                className="flex items-center px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
-              >
+              <th className="flex items-center px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200">
                 S.N.
               </th>
-
               <th
-                scope="col"
                 className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
                 onClick={() => handleSort("name")}
               >
@@ -117,7 +130,6 @@ const Program = () => {
                 </div>
               </th>
               <th
-                scope="col"
                 className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
                 onClick={() => handleSort("min_price")}
               >
@@ -129,7 +141,6 @@ const Program = () => {
                 </div>
               </th>
               <th
-                scope="col"
                 className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
                 onClick={() => handleSort("max_price")}
               >
@@ -140,11 +151,7 @@ const Program = () => {
                   </i>
                 </div>
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3"
-                onClick={() => handleSort("status")}
-              >
+              <th className="px-6 py-3" onClick={() => handleSort("status")}>
                 <div className="flex">
                   Status
                   <i className="ml-2 mt-1 text-gray-300">
@@ -153,7 +160,6 @@ const Program = () => {
                 </div>
               </th>
               <th
-                scope="col"
                 className="px-6 py-3"
                 onClick={() => handleSort("start_date")}
               >
@@ -165,7 +171,6 @@ const Program = () => {
                 </div>
               </th>
               <th
-                scope="col"
                 className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
                 onClick={() => handleSort("end_date")}
               >
@@ -177,10 +182,7 @@ const Program = () => {
                 </div>
               </th>
 
-              <th
-                scope="col"
-                className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
-              >
+              <th className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200">
                 Action
               </th>
             </tr>
@@ -191,7 +193,6 @@ const Program = () => {
                 program.title.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((program, index) => (
-                
                 <tr
                   key={program.id}
                   className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
@@ -207,18 +208,16 @@ const Program = () => {
                   <td className="px-6 py-4">Rs. {program.min_price}</td>
                   <td className="px-6 py-4">Rs. {program.max_price}</td>
                   <td className="px-6 py-4">
-                    <td className="px-3 py-4">
-                      <div className="flex items-center">
-                        <div
-                          className={`h-2.5 w-2.5 rounded-full mr-2 ${
-                            program.is_active ? "bg-green-500" : "bg-red-500"
-                          }`}
-                          aria-label={program.is_active ? "Active" : "Inactive"}
-                          role="status"
-                        ></div>
-                        {program.is_active ? "Active" : "Inactive"}
-                      </div>
-                    </td>
+                    <div className="flex items-center">
+                      <div
+                        className={`h-2.5 w-2.5 rounded-full mr-2 ${
+                          program.is_active ? "bg-green-500" : "bg-red-500"
+                        }`}
+                        aria-label={program.is_active ? "Active" : "Inactive"}
+                        role="status"
+                      ></div>
+                      {program.is_active ? "Active" : "Inactive"}
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     {formatDate(program.start_date)}
@@ -230,7 +229,10 @@ const Program = () => {
                         Update
                       </button>
                     </Link>
-                    <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200">
+                    <button
+                      onClick={() => handleDelete(program.id)}
+                      className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200"
+                    >
                       Delete
                     </button>
                   </td>
