@@ -7,6 +7,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../../library/Api";
 import toast from "react-hot-toast";
 import config from "../../../config";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "./styles.css"
 
 const UpdateProgram = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -140,7 +143,34 @@ const UpdateProgram = () => {
     }
   };
 
- 
+  // Custom toolbar options
+  const toolbarOptions = [
+    [{ font: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }], // Header dropdown
+    ["bold", "italic", "underline", "strike"], // Toggled buttons
+    [{ list: "ordered" }, { list: "bullet" }], // Lists
+    [{ indent: "-1" }, { indent: "+1" }], // Indent options
+    [{ align: [] }], // Text align options
+    ["link", "image", "video"], // Media options
+    ["clean"], // Remove formatting
+  ];
+
+  // Formats allowed for the editor
+  const formats = [
+    "font",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "list",
+    "bullet",
+    "indent",
+    "align",
+    "link",
+    "image",
+    "video",
+  ];
 
   return (
     <Box m="20px">
@@ -151,7 +181,7 @@ const UpdateProgram = () => {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ setFieldValue }) => (
+        {({ setFieldValue, values }) => (
           <Form className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8">
             <div className="grid gap-2 md:grid-cols-1">
               <div>
@@ -214,41 +244,47 @@ const UpdateProgram = () => {
                 />
               </div>
             </div>
-            <div>
-              <label className="block mb-2 text-lg font-medium text-white">
-                Terms
-              </label>
-              <Field
-                as="textarea"
-                id="terms"
-                name="terms"
-                className="border text-lg rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
-                placeholder="Terms and Conditions"
-                rows="4"
-              />
-              <ErrorMessage
-                name="terms"
-                component="div"
-                className="text-red-500 mt-1"
-              />
+            <div className="grid gap-2 md:grid-cols-1">
+              <div>
+                <label className="block mb-2 text-lg font-medium text-white">
+                  Terms
+                </label>
+                <ReactQuill
+                  value={values.terms}
+                  onChange={(content) => setFieldValue("terms", content)}
+                  theme="snow"
+                  modules={{ toolbar: toolbarOptions }}
+                  formats={formats}
+                  className="border text-xl rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
+                  placeholder="Enter the terms here..."
+                />
+                <ErrorMessage
+                  name="terms"
+                  component="div"
+                  className="text-red-500 mt-1"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block mb-2 text-lg font-medium text-white">
-                Description
-              </label>
-              <Field
-                as="textarea"
-                id="description"
-                name="description"
-                className="border text-lg rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
-                placeholder="Description of the program"
-                rows="4"
-              />
-              <ErrorMessage
-                name="description"
-                component="div"
-                className="text-red-500 mt-1"
-              />
+            <div className="grid gap-2 md:grid-cols-1">
+              <div>
+                <label className="block mb-2 text-lg font-medium text-white">
+                  Description
+                </label>
+                <ReactQuill
+                  value={values.description}
+                  onChange={(content) => setFieldValue("description", content)}
+                  theme="snow"
+                  modules={{ toolbar: toolbarOptions }}
+                  formats={formats}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Write your company description here..."
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="text-red-500 mt-1"
+                />
+              </div>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
               <div>

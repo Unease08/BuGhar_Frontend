@@ -114,10 +114,9 @@ const ProgramReport = () => {
       });
     }
 
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
-
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
 
     try {
       const response = await api.post("/report/", formData, {
@@ -163,7 +162,10 @@ const ProgramReport = () => {
               {program.title}
             </h1>
             <p className="mt-3 text-lg text-muted-foreground text-center">
-              {program.description}
+              <div
+                className="text-gray-400 mt-2"
+                dangerouslySetInnerHTML={{ __html: program.description }}
+              />
             </p>
             <div className="mt-4 text-right mb-2 flex justify-between items-center">
               <span></span>

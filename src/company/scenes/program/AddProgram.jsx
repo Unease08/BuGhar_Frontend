@@ -8,6 +8,7 @@ import api from "../../../library/Api";
 import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import "./styles.css";
 
 const AddProgram = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -218,7 +219,7 @@ const AddProgram = () => {
                   theme="snow"
                   modules={{ toolbar: toolbarOptions }}
                   formats={formats}
-                  className="border text-black text-lg rounded-lg  focus:border-blue-500 block w-full p-2.5 bg-white border-gray-600 dark:placeholder-gray-400 focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="border text-xl rounded-lg focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500"
                   placeholder="Enter the terms here..."
                 />
                 <ErrorMessage

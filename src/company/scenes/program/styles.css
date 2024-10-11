@@ -1,25 +1,43 @@
-/* Target the ReactQuill toolbar and its elements */
-.custom-quill-toolbar .ql-toolbar {
-  background-color: #444; /* Optional: Set background color of the toolbar */
-  border: 1px solid #666; /* Optional: Set border color of the toolbar */
+/* Target the toolbar container */
+.ql-toolbar {
+  background-color: #ffffff !important; /* Set the toolbar background to white */
 }
 
-.custom-quill-toolbar .ql-toolbar .ql-formats button,
-.custom-quill-toolbar .ql-toolbar .ql-formats select {
-  color: white; /* Set the button and select options text color to white */
+/* Style toolbar buttons */
+.ql-toolbar .ql-picker {
+  color: black !important; /* Set text color of dropdowns */
 }
 
-.custom-quill-toolbar .ql-toolbar .ql-formats button.ql-active {
-  background-color: #666; /* Optional: Set active button background color */
-  color: white; /* Active button text color */
+.ql-toolbar .ql-stroke {
+  stroke: black !important; /* Set color of button icons */
 }
 
-.custom-quill-toolbar .ql-toolbar .ql-formats button:hover {
-  background-color: #555; /* Optional: Set hover state background color */
-  color: white; /* Hover state text color */
+.ql-toolbar .ql-fill {
+  fill: black !important; /* Set color of fill icons */
 }
 
-.custom-quill-toolbar .ql-toolbar .ql-picker-label,
-.custom-quill-toolbar .ql-toolbar .ql-picker-item {
-  color: white; /* Set the color of picker labels and items to white */
+.ql-toolbar .ql-picker-label {
+  color: black !important; /* Set color of dropdown labels */
+}
+
+.ql-toolbar .ql-picker-options {
+  background-color: white; /* Ensure dropdown options have a white background */
+}
+
+.ql-toolbar .ql-picker-options .ql-picker-item {
+  color: black !important; /* Ensure dropdown text remains visible */
+}
+
+/* Style the hover and focus effects */
+.ql-toolbar button:hover,
+.ql-toolbar button:focus,
+.ql-toolbar .ql-picker:hover,
+.ql-toolbar .ql-picker:focus {
+  color: black !important; /* Ensure hover and focus text color is black */
+  background-color: #f0f0f0 !important; /* Optional: lighter background on hover */
+}
+
+/* Make the placeholder text white */
+.ql-editor::before {
+  color: rgba(255, 255, 255, 0.5); /* White placeholder with slight transparency */
 }

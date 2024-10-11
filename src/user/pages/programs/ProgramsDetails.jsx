@@ -58,7 +58,10 @@ const ProgramsDetails = () => {
               {program.title}
             </h1>
             <p className="mt-3 text-lg text-muted-foreground text-center">
-              {program.description}
+              <div
+                className="text-gray-400 mt-2"
+                dangerouslySetInnerHTML={{ __html: program.description }}
+              />
             </p>
             <div className="mt-4 text-right mb-2 flex justify-between items-center">
               <span></span>
@@ -116,7 +119,13 @@ const ProgramsDetails = () => {
             <h1 className="font-bold text-indigo-400 text-xl mb-4">
               Information
             </h1>
-            <p className="text-sm leading-6 text-gray-300">{program.terms}</p>
+            <p className="text-sm leading-6 text-gray-300">
+              {" "}
+              <div
+                className="text-gray-400 mt-2"
+                dangerouslySetInnerHTML={{ __html: program.terms }}
+              />
+            </p>
             <hr className="mt-10" />
           </div>
           <div className="font-sans mt-10">

@@ -4,6 +4,7 @@ import { FaSort } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import api from "../../../library/Api";
 import config from "../../../config";
+import "../../../styles.css"
 
 const parseDate = (dateStr) => {
   return new Date(dateStr).toLocaleDateString();
@@ -177,10 +178,17 @@ const Programs = () => {
                       <span>End Date: {formatDate(item.end_date)}</span>
                     </div>
                     <p className="text-gray-400 mt-2">
-                      {item.description.length > 20
-                        ? `${item.description.substring(0, 120)}...`
-                        : item.description}
+                      <div
+                        className="text-gray-400 mt-2"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            item.description.length > 50
+                              ? `${item.description.substring(0, 50)}...`
+                              : item.description,
+                        }}
+                      />
                     </p>
+
                     <div className="flex justify-between items-center mt-4">
                       <span
                         className={`inline-block px-2 py-1 rounded-full ${
