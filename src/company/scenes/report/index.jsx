@@ -3,34 +3,62 @@ import { Header } from "../../components";
 import { Link } from "react-router-dom";
 import { FaSort } from "react-icons/fa";
 
+// Sample JSON data (you can also import this from a separate JSON file)
+const reportData = [
+  {
+    id: 1,
+    program: "Sample Program 1",
+    minPrice: 1000,
+    maxPrice: 5000,
+    status: "Critical",
+    startDate: "2024-01-01",
+    endDate: "2024-12-31",
+  },
+  {
+    id: 2,
+    program: "Sample Program 2",
+    minPrice: 2000,
+    maxPrice: 6000,
+    status: "High",
+    startDate: "2024-02-01",
+    endDate: "2024-11-30",
+  },
+  {
+    id: 3,
+    program: "Sample Program 3",
+    minPrice: 1500,
+    maxPrice: 4500,
+    status: "Moderate",
+    startDate: "2024-03-01",
+    endDate: "2024-09-30",
+  },
+  {
+    id: 4,
+    program: "Sample Program 4",
+    minPrice: 3000,
+    maxPrice: 8000,
+    status: "Low",
+    startDate: "2024-04-01",
+    endDate: "2024-10-30",
+  },
+  {
+    id: 5,
+    program: "Sample Program 5",
+    minPrice: 2500,
+    maxPrice: 7000,
+    status: "Informational",
+    startDate: "2024-05-01",
+    endDate: "2024-08-31",
+  },
+];
+
 const Report = () => {
   return (
     <Box m="20px">
       <Header title="Reports" subtitle="List of Reports" />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
-          <div className="flex space-x-2">
-            <button className="py-2.5 px-3 rounded-lg text-white font-medium bg-red-600 hover:bg-red-700 transition-colors duration-200">
-              Critical
-            </button>
-            <button className="py-2.5 px-3 rounded-lg text-white font-medium bg-orange-500 hover:bg-orange-600 transition-colors duration-200">
-              High
-            </button>
-            <button className="py-2.5 px-3 rounded-lg text-white font-medium bg-yellow-500 hover:bg-yellow-600 transition-colors duration-200">
-              Moderate
-            </button>
-            <button className="py-2.5 px-3 rounded-lg text-white font-medium bg-green-500 hover:bg-green-600 transition-colors duration-200">
-              Low
-            </button>
-            <button className="py-2.5 px-3 rounded-lg text-white font-medium bg-blue-500 hover:bg-blue-600 transition-colors duration-200">
-              Informational
-            </button>
-            <button className="py-2.5 px-3 rounded-lg text-white font-medium bg-gray-500 hover:bg-gray-600 transition-colors duration-200">
-              All
-            </button>
-          </div>
-
-          <div className="relative flex justify-end flex-grow items-center">
+          <div className="relative flex justify-start flex-grow items-center">
             <input
               type="text"
               className="block p-3 text-sm border rounded-lg w-full md:w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -93,75 +121,44 @@ const Report = () => {
                   </i>
                 </div>
               </th>
-
               <th className="px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {/* Static Data */}
-            <tr className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-              <td className="px-6 py-4 text-gray-900 dark:text-white">1</td>
-              <td className="flex items-center px-6 py-6 whitespace-nowrap text-white">
-                <div className="text-base font-semibold">Sample Program 1</div>
-              </td>
-              <td className="px-6 py-4">Rs. 1000</td>
-              <td className="px-6 py-4">Rs. 5000</td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <div
-                    className="h-2.5 w-2.5 rounded-full mr-2 bg-green-500"
-                    aria-label="Active"
-                    role="status"
-                  ></div>
-                  Active
-                </div>
-              </td>
-              <td className="px-6 py-4">2024-01-01</td>
-              <td className="px-6 py-4">2024-12-31</td>
-              <td className="px-6 py-4 space-x-2">
-                <Link to={`/update-program/1`}>
-                  <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
-                    Update
+            {reportData.map((report, index) => (
+              <tr
+                key={report.id}
+                className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
+              >
+                <td className="px-6 py-4 text-gray-900 dark:text-white">
+                  {index + 1}
+                </td>
+                <td className="flex items-center px-6 py-6 whitespace-nowrap text-white">
+                  <div className="text-base font-semibold">
+                    {report.program}
+                  </div>
+                </td>
+                <td className="px-6 py-4">Rs. {report.minPrice}</td>
+                <td className="px-6 py-4">Rs. {report.maxPrice}</td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center">{report.status}</div>
+                </td>
+                <td className="px-6 py-4">{report.startDate}</td>
+                <td className="px-6 py-4">{report.endDate}</td>
+                <td className="px-6 py-4 space-x-2">
+                  <Link to={`/update-program/${report.id}`}>
+                    <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
+                      Update
+                    </button>
+                  </Link>
+                  <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200">
+                    Delete
                   </button>
-                </Link>
-                <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200">
-                  Delete
-                </button>
-              </td>
-            </tr>
-
-            <tr className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-              <td className="px-6 py-4 text-gray-900 dark:text-white">2</td>
-              <td className="flex items-center px-6 py-6 whitespace-nowrap text-white">
-                <div className="text-base font-semibold">Sample Program 2</div>
-              </td>
-              <td className="px-6 py-4">Rs. 2000</td>
-              <td className="px-6 py-4">Rs. 6000</td>
-              <td className="px-6 py-4">
-                <div className="flex items-center">
-                  <div
-                    className="h-2.5 w-2.5 rounded-full mr-2 bg-red-500"
-                    aria-label="Inactive"
-                    role="status"
-                  ></div>
-                  Inactive
-                </div>
-              </td>
-              <td className="px-6 py-4">2024-02-01</td>
-              <td className="px-6 py-4">2024-11-30</td>
-              <td className="px-6 py-4 space-x-2">
-                <Link to={`/update-program/2`}>
-                  <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
-                    Update
-                  </button>
-                </Link>
-                <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200">
-                  Delete
-                </button>
-              </td>
-            </tr>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
