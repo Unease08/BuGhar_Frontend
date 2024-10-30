@@ -1,117 +1,71 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { Link } from "react-router-dom";
-
-// Sample JSON data
-const initialReportData = [
-  {
-    id: 1,
-    program: "Sample Program 1",
-    minPrice: 1000,
-    maxPrice: 5000,
-    impact: "Critical",
-    status: "Opened",
-  },
-  {
-    id: 2,
-    program: "Sample Program 2",
-    minPrice: 2000,
-    maxPrice: 6000,
-    impact: "High",
-    status: "Closed",
-  },
-  {
-    id: 3,
-    program: "Sample Program 3",
-    minPrice: 1500,
-    maxPrice: 4500,
-    impact: "Moderate",
-    status: "Opened",
-  },
-  {
-    id: 4,
-    program: "Sample Program 4",
-    minPrice: 3000,
-    maxPrice: 8000,
-    impact: "Low",
-    status: "Rejected",
-  },
-  {
-    id: 5,
-    program: "Sample Program 5",
-    minPrice: 2500,
-    maxPrice: 7000,
-    impact: "Informational",
-    status: "Opened",
-  },
-  {
-    id: 6,
-    program: "Sample Program 6",
-    minPrice: 1200,
-    maxPrice: 4200,
-    impact: "Critical",
-    status: "Closed",
-  },
-  {
-    id: 7,
-    program: "Sample Program 7",
-    minPrice: 2600,
-    maxPrice: 7100,
-    impact: "High",
-    status: "Opened",
-  },
-  {
-    id: 8,
-    program: "Sample Program 8",
-    minPrice: 3200,
-    maxPrice: 8300,
-    impact: "Moderate",
-    status: "Rejected",
-  },
-  {
-    id: 9,
-    program: "Sample Program 9",
-    minPrice: 2900,
-    maxPrice: 7800,
-    impact: "Informational",
-    status: "Opened",
-  },
-  // Add more data as needed
-];
+import api from "../../../library/Api";
+import { toast } from "react-hot-toast";
 
 const Report = () => {
-  const [reports, setReports] = useState(initialReportData);
+  const [reports, setReports] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedImpact, setSelectedImpact] = useState("All Impact");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
-  const [searchQuery, setSearchQuery] = useState(""); // New state for search input
-  const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 8;
 
-  // Function to handle status change
-  const handleStatusChange = (id, newStatus) => {
-    setReports((prevReports) =>
-      prevReports.map((report) =>
-        report.id === id ? { ...report, status: newStatus } : report
-      )
-    );
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await api.get("/report");
+        setReports(response.data.reverse()); // Reverse the data to show the latest first
+        console.log("Fetched Reports:", response.data); // Log the fetched data
+      } catch (error) {
+        console.error("Error fetching reports data:", error);
+      }
+    };
+
+    fetchReports();
+  }, []);
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await api.patch(`/report/${id}`, { status: newStatus });
+      setReports((prevReports) =>
+        prevReports.map((report) =>
+          report.id === id ? { ...report, status: newStatus } : report
+        )
+      );
+      toast.success("Status updated successfully!");
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast.error("Failed to update status.");
+    }
   };
 
-  // Filter the reports based on selected impact, status, and search query
-  const filteredReports = reports.filter((report) => {
-    const impactFilter =
-      selectedImpact === "All Impact" || report.impact === selectedImpact;
-    const statusFilter =
-      selectedStatus === "All Status" || report.status === selectedStatus;
-    const searchFilter = report.program
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()); // Check if the program name includes the search query
+  const handleDeleteReport = async (id) => {
+    try {
+      await api.delete(`/report/${id}`);
+      setReports((prevReports) =>
+        prevReports.filter((report) => report.id !== id)
+      );
+      toast.success("Report deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting report:", error);
+      toast.error("Failed to delete report.");
+    }
+  };
 
-    return impactFilter && statusFilter && searchFilter;
-  });
+  // Sort and filter reports based on impact and status
+  const filteredReports = reports
+    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at)) // Sort in ascending order of date
+    .filter((report) => {
+      const impactFilter =
+        selectedImpact === "All Impact" || report.impact === selectedImpact;
+      const statusFilter =
+        selectedStatus === "All Status" || report.status === selectedStatus;
+      return impactFilter && statusFilter;
+    });
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
   const currentReports = filteredReports.slice(
@@ -121,6 +75,14 @@ const Report = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const formatDate = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   return (
@@ -133,37 +95,28 @@ const Report = () => {
               <select
                 value={selectedImpact}
                 onChange={(e) => setSelectedImpact(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
                 <option value="All Impact">All Impact</option>
-                <option value="Critical">Critical</option>
-                <option value="High">High</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Low">Low</option>
-                <option value="Informational">Informational</option>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="moderate">Moderate</option>
+                <option value="low">Low</option>
+                <option value="informational">Informational</option>
               </select>
             </div>
             <div>
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
                 <option value="All Status">All Status</option>
-                <option value="Opened">Opened</option>
-                <option value="Closed">Closed</option>
-                <option value="Rejected">Rejected</option>
+                <option value="open">Opened</option>
+                <option value="closed">Closed</option>
+                <option value="rejected">Rejected</option>
               </select>
             </div>
-          </div>
-          <div className="relative flex justify-end flex-grow items-center">
-            <input
-              type="text"
-              value={searchQuery} // Bind the input field to the searchQuery state
-              onChange={(e) => setSearchQuery(e.target.value)} // Update the search query state on input change
-              className="block p-3 text-sm border rounded-lg w-full md:w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search for programs"
-            />
           </div>
         </div>
 
@@ -174,9 +127,9 @@ const Report = () => {
                 <tr>
                   <th className="px-6 py-3">S.N.</th>
                   <th className="px-6 py-3">Program</th>
-                  <th className="px-6 py-3">Min Price</th>
-                  <th className="px-6 py-3">Max Price</th>
+                  <th className="px-6 py-3">Title</th>
                   <th className="px-6 py-3">Impact</th>
+                  <th className="px-6 py-3">Date</th>
                   <th className="px-6 py-3">Status</th>
                   <th className="px-6 py-3">Action</th>
                 </tr>
@@ -187,52 +140,58 @@ const Report = () => {
                     key={report.id}
                     className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
                   >
-                    <td className="px-6 py-4 text-gray-900 dark:text-white">
+                    <td className="px-6 py-4 text-white">
                       {startIdx + index + 1}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-white">
-                      <div className="text-base font-semibold">
-                        {report.program}
-                      </div>
+                    <td className="px-6 py-4 text-white">
+                      {report.program_name}
                     </td>
-                    <td className="px-6 py-4">Rs. {report.minPrice}</td>
-                    <td className="px-6 py-4">Rs. {report.maxPrice}</td>
+                    <td className="px-6 py-4">{report.title}</td>
                     <td className="px-6 py-4">{report.impact}</td>
                     <td className="px-6 py-4">
-                      <select
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={report.status}
-                        onChange={(e) =>
-                          handleStatusChange(report.id, e.target.value)
-                        }
-                      >
-                        <option value="Opened">Opened</option>
-                        <option value="Closed">Closed</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
+                      {formatDate(report.created_at)}
                     </td>
+                    <td className="px-6 py-4 flex items-center space-x-2">
+                      <span
+                        className={`w-3 h-3 rounded-full ${
+                          report.status === "open"
+                            ? "bg-blue-500"
+                            : report.status === "closed"
+                            ? "bg-green-500"
+                            : report.status === "rejected"
+                            ? "bg-red-500"
+                            : "bg-gray-500"
+                        }`}
+                      ></span>
+                      <span>
+                        {report.status === "open"
+                          ? "Opened"
+                          : report.status === "closed"
+                          ? "Closed"
+                          : report.status === "rejected"
+                          ? "Rejected"
+                          : report.status}
+                      </span>
+                    </td>
+
                     <td className="px-6 py-4 space-x-2">
-                      <Link to={`/update-program/${report.id}`}>
-                        <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-green-700 hover:bg-green-900 transition-colors duration-200">
-                          Update
+                      <Link to={`/report-view/${report.id}`}>
+                        <button className="py-2 px-3 text-white bg-blue-700 rounded-lg hover:bg-blue-900">
+                          View
                         </button>
                       </Link>
-                      <button className="py-2.5 px-3 rounded-lg text-sm font-medium text-white bg-red-700 hover:bg-red-900 transition-colors duration-200">
-                        Delete
-                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-
             {/* Pagination */}
             <div className="flex justify-center mt-8">
               <nav className="flex items-center space-x-2">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 border border-gray-300 bg-gray-800 text-white rounded-md disabled:opacity-50"
+                  className="px-4 py-2 border bg-gray-800 text-white rounded-md disabled:opacity-50"
                 >
                   Prev
                 </button>
@@ -240,7 +199,7 @@ const Report = () => {
                   <button
                     key={index}
                     onClick={() => handlePageChange(index + 1)}
-                    className={`px-4 py-2 border border-gray-300 rounded-md ${
+                    className={`px-4 py-2 border rounded-md ${
                       currentPage === index + 1
                         ? "bg-indigo-600 text-white"
                         : "bg-gray-800 text-white"
@@ -252,7 +211,7 @@ const Report = () => {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="px-4 py-2 border border-gray-300 bg-gray-800 text-white rounded-md disabled:opacity-50"
+                  className="px-4 py-2 border bg-gray-800 text-white rounded-md disabled:opacity-50"
                 >
                   Next
                 </button>
