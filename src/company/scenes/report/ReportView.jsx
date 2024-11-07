@@ -76,7 +76,7 @@ const ReportView = () => {
     <Box m="20px">
       <Header title="View Report" subtitle="Details of Report ID" />
       {report ? (
-        <div className="items-center space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
+        <div className="items-center space-y-4 md:space-y-0 py-4 bg-gray-900">
           <div className="flex justify-end mb-4">
             <p
               className={`flex items-center px-4 py-1 rounded-full mr-2 ${getStatusColor(
@@ -181,7 +181,7 @@ const ReportView = () => {
             <select
               id="report-status"
               value={report.status}
-              className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 py-1.5 bg-gray-700 border-gray-600 dark:placeholder-gray-400 text-white"
+              className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
               onChange={(e) => {
                 console.log("Selected status:", e.target.value);
                 // You can add logic here to update the report status

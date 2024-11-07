@@ -89,13 +89,13 @@ const Report = () => {
     <Box m="20px">
       <Header title="Reports" subtitle="List of Reports" />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
+        <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-gray-900">
           <div className="flex gap-5 ml-2">
             <div>
               <select
                 value={selectedImpact}
                 onChange={(e) => setSelectedImpact(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="border  text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 text-white"
               >
                 <option value="All Impact">All Impact</option>
                 <option value="critical">Critical</option>
@@ -109,7 +109,7 @@ const Report = () => {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 text-white"
               >
                 <option value="All Status">All Status</option>
                 <option value="open">Opened</option>
@@ -122,7 +122,7 @@ const Report = () => {
 
         {currentReports.length > 0 ? (
           <>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-400">
               <thead className="text-md uppercase bg-gray-700 text-gray-400">
                 <tr>
                   <th className="px-6 py-3">S.N.</th>
@@ -138,7 +138,7 @@ const Report = () => {
                 {currentReports.map((report, index) => (
                   <tr
                     key={report.id}
-                    className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
+                    className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600 hover:text-white"
                   >
                     <td className="px-6 py-4 text-white">
                       {startIdx + index + 1}

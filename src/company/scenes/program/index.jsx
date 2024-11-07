@@ -93,7 +93,7 @@ const Program = () => {
     <Box m="20px">
       <Header title="Programs" subtitle="List of Programs" />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
+        <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-gray-900">
           <div className="relative flex justify-between flex-grow items-center">
             <input
               type="text"
@@ -112,7 +112,7 @@ const Program = () => {
           </div>
         </div>
 
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-400">
           <thead className="text-md uppercase bg-gray-700 text-gray-400">
             <tr>
               <th className="flex items-center px-6 py-3 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200">
@@ -195,11 +195,9 @@ const Program = () => {
               .map((program, index) => (
                 <tr
                   key={program.id}
-                  className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
+                  className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600 hover:text-white"
                 >
-                  <td className="px-6 py-4 text-gray-900 dark:text-white">
-                    {index + 1}
-                  </td>
+                  <td className="px-6 py-4 text-white">{index + 1}</td>
                   <td className="flex items-center px-6 py-6 whitespace-nowrap text-white">
                     <div className="text-base font-semibold">
                       {program.title}
