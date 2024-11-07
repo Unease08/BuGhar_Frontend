@@ -4,22 +4,15 @@ import { useContext, useState } from "react";
 import { tokens } from "../../../../theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
-  BarChartOutlined,
   CalendarTodayOutlined,
-  ContactsOutlined,
   DashboardOutlined,
-  DonutLargeOutlined,
   HelpOutlineOutlined,
-  MapOutlined,
   MenuOutlined,
-  PeopleAltOutlined,
   PersonOutlined,
-  ReceiptOutlined,
-  TimelineOutlined,
-  WavesOutlined,
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
 import logo from "../../../assets/images/logo.png";
+import bughar from "../../../assets/images/bughar.png";
 import Item from "./Item";
 import { ToggledContext } from "../../../../App";
 
@@ -66,18 +59,10 @@ const AdminSideBar = () => {
                 sx={{ transition: ".3s ease" }}
               >
                 <img
-                  style={{ width: "30px", height: "30px", borderRadius: "8px" }}
-                  src={logo}
-                  alt="Argon"
+                  style={{ borderRadius: "8px" }}
+                  src={bughar}
+                  alt="Bughar"
                 />
-                <Typography
-                  variant="h4"
-                  fontWeight="bold"
-                  textTransform="capitalize"
-                  color={colors.greenAccent[500]}
-                >
-                  Bughar
-                </Typography>
               </Box>
             )}
             <IconButton onClick={() => setCollapsed(!collapsed)}>
@@ -103,7 +88,7 @@ const AdminSideBar = () => {
           />
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight="bold" color={colors.gray[100]}>
-              Admin Anish Shrestha
+              Admin
             </Typography>
           </Box>
         </Box>
@@ -128,50 +113,6 @@ const AdminSideBar = () => {
             icon={<DashboardOutlined />}
           />
         </Menu>
-        <Typography
-          variant="h6"
-          color={colors.gray[300]}
-          sx={{ m: "15px 0 5px 20px" }}
-        >
-          {!collapsed ? "Data" : " "}
-        </Typography>{" "}
-        <Menu
-          menuItemStyles={{
-            button: {
-              ":hover": {
-                color: "#868dfb",
-                background: "transparent",
-                transition: ".4s ease",
-              },
-            },
-          }}
-        >
-          <Item
-            title="Users"
-            path="/team"
-            colors={colors}
-            icon={<PeopleAltOutlined />}
-          />
-          <Item
-            title="Contacts Information"
-            path="/contacts"
-            colors={colors}
-            icon={<ContactsOutlined />}
-          />
-          <Item
-            title="Invoices Balances"
-            path="/invoices"
-            colors={colors}
-            icon={<ReceiptOutlined />}
-          />
-        </Menu>
-        <Typography
-          variant="h6"
-          color={colors.gray[300]}
-          sx={{ m: "15px 0 5px 20px" }}
-        >
-          {!collapsed ? "Pages" : " "}
-        </Typography>
         <Menu
           menuItemStyles={{
             button: {
@@ -200,55 +141,6 @@ const AdminSideBar = () => {
             path="/faq"
             colors={colors}
             icon={<HelpOutlineOutlined />}
-          />
-        </Menu>
-        <Typography
-          variant="h6"
-          color={colors.gray[300]}
-          sx={{ m: "15px 0 5px 20px" }}
-        >
-          {!collapsed ? "Charts" : " "}
-        </Typography>
-        <Menu
-          menuItemStyles={{
-            button: {
-              ":hover": {
-                color: "#868dfb",
-                background: "transparent",
-                transition: ".4s ease",
-              },
-            },
-          }}
-        >
-          <Item
-            title="Bar Chart"
-            path="/bar"
-            colors={colors}
-            icon={<BarChartOutlined />}
-          />
-          <Item
-            title="Pie Chart"
-            path="/pie"
-            colors={colors}
-            icon={<DonutLargeOutlined />}
-          />
-          <Item
-            title="Line Chart"
-            path="/line"
-            colors={colors}
-            icon={<TimelineOutlined />}
-          />
-          <Item
-            title="Geography Chart"
-            path="/geography"
-            colors={colors}
-            icon={<MapOutlined />}
-          />
-          <Item
-            title="Stream Chart"
-            path="/stream"
-            colors={colors}
-            icon={<WavesOutlined />}
           />
         </Menu>
       </Box>

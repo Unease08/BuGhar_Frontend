@@ -16,7 +16,7 @@ const Report = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await api.get("/report");
+        const response = await api.get("/report/");
         setReports(response.data.reverse()); // Reverse the data to show the latest first
         console.log("Fetched Reports:", response.data); // Log the fetched data
       } catch (error) {
@@ -151,7 +151,7 @@ const Report = () => {
                     <td className="px-6 py-4">
                       {formatDate(report.created_at)}
                     </td>
-                    <td className="px-6 py-4 flex items-center space-x-2">
+                    <td className="px-6 py-6 flex items-center space-x-2">
                       <span
                         className={`w-3 h-3 rounded-full ${
                           report.status === "open"

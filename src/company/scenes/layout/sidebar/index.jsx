@@ -4,19 +4,12 @@ import { useContext, useState } from "react";
 import { tokens } from "../../../../theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
-  BarChartOutlined,
-  CalendarTodayOutlined,
   ContactsOutlined,
   DashboardOutlined,
-  DonutLargeOutlined,
-  HelpOutlineOutlined,
-  MapOutlined,
   MenuOutlined,
   PeopleAltOutlined,
   PersonOutlined,
   ReceiptOutlined,
-  TimelineOutlined,
-  WavesOutlined,
   SummarizeOutlined,
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
@@ -67,7 +60,7 @@ const CompanySideBar = () => {
                 gap="12px"
                 sx={{ transition: ".3s ease" }}
               >
-                <img style={{ borderRadius: "8px" }} src={bughar} alt="Argon" />
+                <img style={{ borderRadius: "8px" }} src={bughar} alt="Bughar" />
               </Box>
             )}
             <IconButton onClick={() => setCollapsed(!collapsed)}>
