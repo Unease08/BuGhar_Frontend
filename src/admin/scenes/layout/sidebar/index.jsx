@@ -125,8 +125,8 @@ const AdminSideBar = () => {
           }}
         >
           <Item
-            title="Profile Form"
-            path="/form"
+            title="Company"
+            path="/company"
             colors={colors}
             icon={<PersonOutlined />}
           />

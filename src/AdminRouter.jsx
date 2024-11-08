@@ -13,12 +13,14 @@ import {
   Geography,
   Calendar,
   Stream,
+  CompanyVerification,
 } from "./admin/scenes";
 
 const AdminRouter = () => {
   return (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/company" element={<CompanyVerification />} />
       <Route path="/team" element={<Team />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/invoices" element={<Invoices />} />

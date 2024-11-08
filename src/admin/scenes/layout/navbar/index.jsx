@@ -1,12 +1,16 @@
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   IconButton,
   InputBase,
   useMediaQuery,
   useTheme,
+  Popover,
+  Typography,
+  Button,
 } from "@mui/material";
 import { tokens, ColorModeContext } from "../../../../theme";
-import { useContext } from "react";
 import {
   DarkModeOutlined,
   LightModeOutlined,
@@ -17,6 +21,8 @@ import {
   SettingsOutlined,
 } from "@mui/icons-material";
 import { ToggledContext } from "../../../../App";
+import toast from "react-hot-toast";
+
 const AdminNavbar = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
@@ -24,6 +30,33 @@ const AdminNavbar = () => {
   const isMdDevices = useMediaQuery("(max-width:768px)");
   const isXsDevices = useMediaQuery("(max-width:466px)");
   const colors = tokens(theme.palette.mode);
+
+  // State to manage popover visibility
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  // Function to handle popover open and close
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("token_type");
+
+    const logoutMessage = "Logout successful!";
+    sessionStorage.setItem("toastMessage", logoutMessage);
+
+    window.location.href = "/auth/login";
+  };
+
   return (
     <Box
       display="flex"
@@ -66,9 +99,38 @@ const AdminNavbar = () => {
         <IconButton>
           <SettingsOutlined />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={handlePopoverOpen}>
           <PersonOutlined />
         </IconButton>
+        {/* Popover for user options */}
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handlePopoverClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Box p={2}>
+            <Typography variant="subtitle1" mb={1}>
+              User Options
+              <hr className="mt-2" />
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleLogout}
+              fullWidth
+            >
+              Logout
+            </Button>
+          </Box>
+        </Popover>
       </Box>
     </Box>
   );
