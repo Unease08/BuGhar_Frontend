@@ -2,11 +2,18 @@ import { Box, useTheme } from "@mui/material";
 import { Header } from "../../components";
 import Select from "react-select";
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import api from "../../../library/Api";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CompanyVerification = () => {
   const theme = useTheme();
-  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
-  const [preview, setPreview] = useState(null); // State to hold the preview URL
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [uploadError, setUploadError] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const options = [
     { value: "Company Registration", label: "Company Registration" },
@@ -17,27 +24,61 @@ const CompanyVerification = () => {
     { value: "Contract Agreement", label: "Contract Agreement" },
   ];
 
-  // Handle file selection and create a preview
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
-      const objectUrl = URL.createObjectURL(file); // Create a URL for the selected file
-      setPreview(objectUrl); // Set the preview URL
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
     }
   };
 
-  // Handle closing the preview
   const handleClosePreview = () => {
     setPreview(null);
-    setSelectedFile(null); // Clear the selected file
+    setSelectedFile(null);
+  };
+
+  const handleOptionChange = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!selectedFile || !selectedOption) {
+      toast.error("Please select a document type and upload a file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("document", selectedFile);
+    formData.append("document_type", selectedOption.value);
+
+    try {
+      const response = await api.post("/company/upload-document/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success(response.data.message);
+      navigate("/program");
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      const errorMessage =
+        (error.response && error.response.data && error.response.data.detail) ||
+        "Unknown error occurred";
+      toast.error(`Error: ${errorMessage}`);
+    }
   };
 
   return (
     <Box m="20px">
       <Header title="Company Verification" />
 
-      <form className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8"
+      >
         <div className="flex-1 w-full">
           <label
             htmlFor="countries"
@@ -50,38 +91,39 @@ const CompanyVerification = () => {
             options={options}
             classNamePrefix="react-select"
             className="react-select-container"
+            onChange={handleOptionChange}
             styles={{
               control: (provided) => ({
                 ...provided,
-                border: "1px solid #D1D5DB", // Tailwind gray-300
-                borderRadius: "0.5rem", // Tailwind rounded-lg
-                padding: "0.5rem", // Tailwind p-2.5
-                backgroundColor: "#374151", // Tailwind gray-700
+                border: "1px solid #D1D5DB",
+                borderRadius: "0.5rem",
+                padding: "0.5rem",
+                backgroundColor: "#374151",
               }),
               singleValue: (provided) => ({
                 ...provided,
-                color: "#FFFFFF", // Tailwind white for text color
+                color: "#FFFFFF",
               }),
               input: (provided) => ({
                 ...provided,
-                color: "#FFFFFF", // Text color for typed input
+                color: "#FFFFFF",
               }),
               menu: (provided) => ({
                 ...provided,
-                zIndex: 9999, // Ensure dropdown is above other elements
-                backgroundColor: "#374151", // Set background color to dark gray-700
-                borderRadius: "0.5rem", // Add border radius to match control
+                zIndex: 9999,
+                backgroundColor: "#374151",
+                borderRadius: "0.5rem",
               }),
               option: (provided, { isFocused, isSelected }) => ({
                 ...provided,
                 backgroundColor: isFocused
-                  ? "#141B2D" // Tailwind blue-500 for focused option
+                  ? "#141B2D"
                   : isSelected
-                  ? "#1F2937" // Tailwind blue-500 for selected option
-                  : "#374151", // Default background color for options
-                color: isSelected ? "#FFFFFF" : "#FFFFFF", // Text color for selected
-                padding: "10px 20px", // Add some padding for better spacing
-                cursor: "pointer", // Change cursor to pointer for better UX
+                  ? "#1F2937"
+                  : "#374151",
+                color: isSelected ? "#FFFFFF" : "#FFFFFF",
+                padding: "10px 20px",
+                cursor: "pointer",
               }),
             }}
           />
@@ -141,11 +183,10 @@ const CompanyVerification = () => {
               id="upload-doc"
               type="file"
               className="sr-only"
-              onChange={handleFileChange} // Add the change handler
+              onChange={handleFileChange}
             />
           </label>
 
-          {/* Preview section with close button */}
           {preview && (
             <div className="mt-3 relative">
               <img
@@ -154,10 +195,10 @@ const CompanyVerification = () => {
                 className="w-full h-auto rounded-md border border-gray-500 shadow-lg"
               />
               <button
-                onClick={handleClosePreview} // Close button functionality
+                onClick={handleClosePreview}
                 className="absolute top-1 right-1 bg-red-600 text-white h-8 w-8 flex items-center justify-center rounded-full hover:bg-red-700 transition duration-200"
               >
-                &times; {/* Close icon */}
+                &times;
               </button>
             </div>
           )}
@@ -165,6 +206,7 @@ const CompanyVerification = () => {
             <button
               type="submit"
               className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+              disabled={!selectedFile || !selectedOption}
             >
               Submit Document
             </button>

@@ -9,6 +9,8 @@ import {
   HelpOutlineOutlined,
   MenuOutlined,
   PersonOutlined,
+  ApartmentRounded,
+  FeedOutlined,
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
 import logo from "../../../assets/images/logo.png";
@@ -128,7 +130,13 @@ const AdminSideBar = () => {
             title="Company"
             path="/company"
             colors={colors}
-            icon={<PersonOutlined />}
+            icon={<ApartmentRounded />}
+          />
+          <Item
+            title="Logger"
+            path="/logger"
+            colors={colors}
+            icon={<FeedOutlined />}
           />
           <Item
             title="Calendar"

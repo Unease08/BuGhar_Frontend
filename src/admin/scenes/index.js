@@ -12,6 +12,7 @@ import Stream from "./stream";
 import FAQ from "./faq";
 import Geography from "./geography";
 import CompanyVerification from "./companyverification";
+import Logger from "./logger"
 
 export {
   AdminNavbar,
@@ -28,4 +29,5 @@ export {
   FAQ,
   Geography,
   CompanyVerification,
+  Logger,
 };
