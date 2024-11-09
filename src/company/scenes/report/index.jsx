@@ -100,7 +100,7 @@ const Report = () => {
                 <option value="All Impact">All Impact</option>
                 <option value="critical">Critical</option>
                 <option value="high">High</option>
-                <option value="moderate">Moderate</option>
+                <option value="medium">Medium</option>
                 <option value="low">Low</option>
                 <option value="informational">Informational</option>
               </select>
@@ -134,6 +134,7 @@ const Report = () => {
                 <tr>
                   <th className="px-6 py-3">S.N.</th>
                   <th className="px-6 py-3">Program</th>
+                  <th className="px-6 py-3">Reporter</th>
                   <th className="px-6 py-3">Title</th>
                   <th className="px-6 py-3">Impact</th>
                   <th className="px-6 py-3">Date</th>
@@ -147,12 +148,12 @@ const Report = () => {
                     key={report.id}
                     className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600 hover:text-white"
                   >
-                    <td className="px-6 py-4 text-white">
-                      {startIdx + index + 1}
+                    <td className="px-6 py-4">{startIdx + index + 1}</td>
+                    <td className="px-6 py-4">{report.program_name}</td>
+                    <td className="px-6 py-4">
+                      {report.first_name} {report.last_name}
                     </td>
-                    <td className="px-6 py-4 text-white">
-                      {report.program_name}
-                    </td>
+
                     <td className="px-6 py-4">{report.title}</td>
                     <td className="px-6 py-4">{report.impact}</td>
                     <td className="px-6 py-4">

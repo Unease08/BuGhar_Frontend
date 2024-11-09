@@ -264,7 +264,7 @@ const ProgramReport = () => {
                         <option value="">Select severity</option>
                         <option value="critical">Critical</option>
                         <option value="high">High</option>
-                        <option value="moderate">Moderate</option>
+                        <option value="medium">medium</option>
                         <option value="low">Low</option>
                         <option value="informational">Informational</option>
                       </Field>

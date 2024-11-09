@@ -179,7 +179,7 @@ const Profile = () => {
                             imagePreview ||
                             "https://saugat-nepal.com.np/assets/img/profile-img.png"
                           }
-                          className="rounded-full w-40 h-40 border-2 border-black shadow-xl cursor-pointer"
+                         oint className="rounded-full w-40 h-40 border-2 border-black shadow-xl cursor-per"
                           alt="Profile"
                           onClick={handleProfilePicClick}
                         />
