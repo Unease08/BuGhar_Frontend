@@ -112,7 +112,7 @@ const Report = () => {
                 className="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 text-white ml-4"
               >
                 <option value="All Status">All Status</option>
-                <option value="opened">Opened</option>
+                <option value="new">New</option>
                 <option value="triaged">Triaged</option>
                 <option value="pending">Pending</option>
                 <option value="in_progress">In Progress</option>
@@ -162,7 +162,7 @@ const Report = () => {
                     <td className="px-6 py-6 flex items-center space-x-2">
                       <span
                         className={`w-3 h-3 rounded-full ${
-                          report.status === "opened"
+                          report.status === "new"
                             ? "bg-blue-600 text-white" // Blue for opened
                             : report.status === "triaged"
                             ? "bg-yellow-500 text-white" // Yellow for triaged
@@ -186,8 +186,8 @@ const Report = () => {
                         }`}
                       ></span>
                       <span>
-                        {report.status === "opened"
-                          ? "Opened"
+                        {report.status === "new"
+                          ? "New"
                           : report.status === "triaged"
                           ? "Triaged"
                           : report.status === "pending"

@@ -20,13 +20,17 @@ const ReportView = () => {
   const [selectedImage, setSelectedImage] = useState(""); // State for selected image
   const [comment, setComment] = useState(""); // State to hold comment text
   const [comments, setComments] = useState([]); // State to hold list of comments
+  const [impact, setImpact] = useState(""); // Initially empty
+  const [status, setStatus] = useState(""); // Initially empty
 
+  // Fetch report data
   useEffect(() => {
     const fetchReport = async () => {
       try {
         const response = await api.get(`/report/${id}`); // Fetch report data
-        setReport(response.data);
-        console.log("Fetched Report:", response.data); // Log fetched data
+        setReport(response.data); // Set the report data
+        setImpact(response.data.impact || ""); // Set initial impact value
+        setStatus(response.data.status || ""); // Set initial status value
       } catch (error) {
         console.error("Error fetching report data:", error);
         toast.error("Failed to fetch report data.");
@@ -38,7 +42,7 @@ const ReportView = () => {
 
   const getStatusLabel = (status) => {
     const statusLabels = {
-      opened: "Opened",
+      new: "New",
       triaged: "Triaged",
       pending: "Pending",
       in_progress: "In Progress",
@@ -54,7 +58,7 @@ const ReportView = () => {
 
   const getStatusColor = (status) => {
     const statusColors = {
-      opened: "bg-blue-600 text-white",
+      new: "bg-blue-600 text-white",
       triaged: "bg-yellow-500 text-white",
       pending: "bg-orange-500 text-white",
       in_progress: "bg-indigo-600 text-white",
@@ -100,6 +104,51 @@ const ReportView = () => {
       toast.success("Comment added successfully.");
     } else {
       toast.error("Comment cannot be empty.");
+    }
+  };
+
+  // Handle impact change
+  const handleImpactChange = (event) => {
+    setImpact(event.target.value); // Update impact value
+  };
+
+  // Handle status change
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value); // Update status value
+  };
+
+  const handleUpdate = async () => {
+    const formData = new FormData();
+    formData.append("impact", impact); // Append updated impact value
+    formData.append("status", status); // Append updated status value
+
+    try {
+      const response = await api.put(`/report/${id}/impact_status`, formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded", // Or "multipart/form-data" if sending files
+        },
+      });
+
+      // Check if the status is 200 and success is true in the response data
+      if (response.status === 200 && response.data.message) {
+        // Show a success toast with the success message from the backend
+        toast.success(response.data.message || "Report updated successfully!");
+        setReport((prev) => ({
+          ...prev,
+          impact: impact,
+          status: status,
+        }));
+      } else {
+        // If the response data doesn't contain success message, show a generic error
+        toast.error(response.data.message || "Failed to update report.");
+      }
+    } catch (error) {
+      console.error("Error updating report:", error);
+
+      // Use error message from backend response, if available
+      const errorMessage =
+        error.response?.data?.detail || "Unknown error occurred";
+      toast.error(errorMessage);
     }
   };
 
@@ -300,24 +349,27 @@ const ReportView = () => {
                           <p className="text-sm font-bold">Impact:</p>
                           <select
                             id="report-impact"
-                            value={report.impact}
+                            value={impact} // Bind value to state
+                            onChange={handleImpactChange} // Handle value change
                             className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                           >
                             <option value="critical">Critical</option>
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
-                            <option value="none">None</option>
+                            <option value="informative">Informative</option>
                           </select>
                         </div>
+
                         <div className="mt-4">
                           <p className="text-sm font-bold">Status:</p>
                           <select
                             id="report-status"
-                            value={report.status}
+                            value={status} // Bind value to state
+                            onChange={handleStatusChange} // Handle value change
                             className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                           >
-                            <option value="opened">Opened</option>
+                            <option value="new">New</option>
                             <option value="triaged">Triaged</option>
                             <option value="pending">Pending</option>
                             <option value="in_progress">In Progress</option>
@@ -331,8 +383,12 @@ const ReportView = () => {
                             <option value="closed">Closed</option>
                           </select>
                         </div>
+
                         <div className="mt-8 flex justify-end">
-                          <button className="bg-indigo-600 text-white py-1 px-4 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                          <button
+                            onClick={handleUpdate} // Call the update function
+                            className="bg-indigo-600 text-white py-1 px-4 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+                          >
                             Update
                           </button>
                         </div>
