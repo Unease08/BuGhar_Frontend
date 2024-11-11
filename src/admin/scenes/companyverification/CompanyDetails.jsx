@@ -2,46 +2,46 @@ import { Box, Grid, Dialog, DialogContent, IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { Link, useParams } from "react-router-dom";
-import api from "../../../library/Api"; // Assuming this is the API service file
+import api from "../../../library/Api";
 import { toast } from "react-hot-toast";
 import config from "../../../config";
 
 const CompanyDetails = () => {
-  const { id } = useParams(); // Get the company ID from the URL
-  const [companyData, setCompanyData] = useState(null); // Initialize with null to handle loading state
+  const { id } = useParams();
+  const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState(""); // State to hold the current status
-  const [openModal, setOpenModal] = useState(false); // Modal state
-  const [selectedImage, setSelectedImage] = useState(""); // Selected image state for the modal
+  const [status, setStatus] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`/company/details/${id}`); // Fetch data based on ID
+        const response = await api.get(`/company/details/${id}`);
         console.log("Data fetched from API:", response.data);
-        setCompanyData(response.data); // Set the company data
-        setStatus(response.data.verifications?.[0]?.status || "Not Verified"); // Set the initial status
+        setCompanyData(response.data);
+        setStatus(response.data.verifications?.[0]?.status || "Not Verified");
       } catch (error) {
         console.error("Error fetching company data:", error);
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
     fetchData();
-  }, [id]); // The effect will run whenever the `id` changes
+  }, [id]);
 
   const getStatusColor = (status) => {
     switch (status) {
       case "approved":
-        return "bg-green-500"; // Green for approved
+        return "bg-green-500";
       case "pending":
-        return "bg-yellow-500"; // Yellow for pending
+        return "bg-yellow-500";
       case "rejected":
-        return "bg-red-500"; // Red for rejected
+        return "bg-red-500";
       case "submitted":
-        return "bg-blue-500"; // Blue for submitted
+        return "bg-blue-500";
       default:
-        return "bg-gray-500"; // Default gray if status is unknown
+        return "bg-gray-500";
     }
   };
 
@@ -70,16 +70,14 @@ const CompanyDetails = () => {
 
   const handleStatusChange = async (event) => {
     const newStatus = event.target.value;
-    setStatus(newStatus); // Update local state
+    setStatus(newStatus);
 
     try {
-      // Prepare URL-encoded data
       const data = new URLSearchParams({
         status: newStatus,
-        notes: "", // You can add a note if needed, or leave it empty
+        notes: "",
       }).toString();
 
-      // Send the updated status to the server
       const response = await api.put(`/admin/verify-company/${id}`, data, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -93,26 +91,26 @@ const CompanyDetails = () => {
   };
 
   const handleImageClick = (src) => {
-    setSelectedImage(src); // Set the selected image for the modal
-    setOpenModal(true); // Open the modal
+    setSelectedImage(src);
+    setOpenModal(true);
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false); // Close the modal
-    setSelectedImage(""); // Clear the selected image
+    setOpenModal(false);
+    setSelectedImage("");
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading state while data is being fetched
+    return <div>Loading...</div>;
   }
 
   if (!companyData) {
-    return <div>No company data found.</div>; // Handle case where no data is found
+    return <div>No company data found.</div>;
   }
 
   const companyLogoUrl = companyData.company_logo
     ? `${config.BASE_URL}/${companyData.company_logo}`
-    : "https://saugat-nepal.com.np/assets/img/profile-img.png"; // Use default URL if logo is missing
+    : "https://saugat-nepal.com.np/assets/img/profile-img.png";
 
   return (
     <Box m="20px">
@@ -124,7 +122,7 @@ const CompanyDetails = () => {
               status
             )}`}
           >
-            {getStatusLabel(status)} {/* Display the status label */}
+            {getStatusLabel(status)}
           </p>
         </div>
         <div className="flex justify-center items-center">
@@ -132,7 +130,7 @@ const CompanyDetails = () => {
             <img
               alt="Logo"
               className="object-cover w-full h-full"
-              src={companyLogoUrl} // Display the company logo or the default logo
+              src={companyLogoUrl}
             />
           </label>
         </div>
@@ -183,7 +181,7 @@ const CompanyDetails = () => {
                   {companyData.documents.map((document, index) => (
                     <div key={index} className="flex-shrink-0 m-2">
                       <img
-                        src={`${config.BASE_URL}/${document.document_url}`} // Use the document URL to display the image
+                        src={`${config.BASE_URL}/${document.document_url}`}
                         alt={`Document ${document.document_type} - ${
                           index + 1
                         }`}
@@ -193,7 +191,7 @@ const CompanyDetails = () => {
                           handleImageClick(
                             `${config.BASE_URL}/${document.document_url}`
                           )
-                        } // Open the image in a modal
+                        }
                       />
                     </div>
                   ))}
@@ -214,8 +212,8 @@ const CompanyDetails = () => {
           </div>
           <select
             id="report-status"
-            value={status} // Bind the select value to the status state
-            onChange={handleStatusChange} // Handle status change
+            value={status}
+            onChange={handleStatusChange}
             className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
           >
             <option value="approved">Approved</option>
@@ -224,7 +222,6 @@ const CompanyDetails = () => {
         </div>
       </form>
 
-      {/* Modal Dialog for Image */}
       <Dialog
         open={openModal}
         onClose={handleCloseModal}

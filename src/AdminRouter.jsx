@@ -29,7 +29,10 @@ const AdminRouter = () => {
       <Route path="/company/:id" element={<CompanyDetails />} />
       <Route path="/logger" element={<Logger />} />
       <Route path="/vulnerability" element={<Vulnerability />} />
-      <Route path="/update-vulnerability/:id" element={<UpdateVulnerability />} />
+      <Route
+        path="/update-vulnerability/:id"
+        element={<UpdateVulnerability />}
+      />
       <Route path="/add-vulnerability" element={<AddVulnerability />} />
       <Route path="/team" element={<Team />} />
       <Route path="/contacts" element={<Contacts />} />
