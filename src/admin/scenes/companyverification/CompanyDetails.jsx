@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { Link, useParams } from "react-router-dom";
 import api from "../../../library/Api"; // Assuming this is the API service file
+import { toast } from "react-hot-toast";
 import config from "../../../config";
 
 const CompanyDetails = () => {
@@ -72,11 +73,22 @@ const CompanyDetails = () => {
     setStatus(newStatus); // Update local state
 
     try {
+      // Prepare URL-encoded data
+      const data = new URLSearchParams({
+        status: newStatus,
+        notes: "", // You can add a note if needed, or leave it empty
+      }).toString();
+
       // Send the updated status to the server
-      await api.put(`/company/update-status/${id}`, { status: newStatus });
-      console.log("Status updated successfully");
+      const response = await api.put(`/admin/verify-company/${id}`, data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      toast.success(response.data.message);
     } catch (error) {
-      console.error("Error updating status:", error);
+      toast.error(response.data.detail);
     }
   };
 
@@ -206,9 +218,7 @@ const CompanyDetails = () => {
             onChange={handleStatusChange} // Handle status change
             className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
           >
-            <option value="pending">Pending</option>
             <option value="approved">Approved</option>
-            <option value="submitted">Submitted</option>
             <option value="rejected">Rejected</option>
           </select>
         </div>
