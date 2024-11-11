@@ -15,8 +15,11 @@ import {
   Stream,
   CompanyVerification,
   Logger,
+  Vulnerability,
+  AddVulnerability,
 } from "./admin/scenes";
 import CompanyDetails from "./admin/scenes/companyverification/CompanyDetails";
+import UpdateVulnerability from "./admin/scenes/vulnerability/UpdateVulnerability";
 
 const AdminRouter = () => {
   return (
@@ -25,6 +28,9 @@ const AdminRouter = () => {
       <Route path="/company" element={<CompanyVerification />} />
       <Route path="/company/:id" element={<CompanyDetails />} />
       <Route path="/logger" element={<Logger />} />
+      <Route path="/vulnerability" element={<Vulnerability />} />
+      <Route path="/update-vulnerability/:id" element={<UpdateVulnerability />} />
+      <Route path="/add-vulnerability" element={<AddVulnerability />} />
       <Route path="/team" element={<Team />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/invoices" element={<Invoices />} />

@@ -12,7 +12,9 @@ import Stream from "./stream";
 import FAQ from "./faq";
 import Geography from "./geography";
 import CompanyVerification from "./companyverification";
-import Logger from "./logger"
+import Logger from "./logger";
+import Vulnerability from "./vulnerability";
+import AddVulnerability from "./vulnerability/AddVulnerability";
 
 export {
   AdminNavbar,
@@ -30,4 +32,6 @@ export {
   Geography,
   CompanyVerification,
   Logger,
+  Vulnerability,
+  AddVulnerability,
 };
