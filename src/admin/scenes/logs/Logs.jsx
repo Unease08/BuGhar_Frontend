@@ -1,62 +1,73 @@
-import {
-  Box,
-  Grid,
-  Dialog,
-  DialogContent,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Header } from "../../components";
-import api from "../../../library/Api"; // Ensure this is your API instance
+import api from "../../../library/Api";
 import { toast } from "react-hot-toast";
-import config from "../../../config"; // Ensure this import path is correct for your project
 
 const Logs = () => {
-  const [logs, setLogs] = useState([]);
-  const [logLimit, setLogLimit] = useState(100); // State for the selected log limit
+  const [allLogs, setAllLogs] = useState([]);
+  const [filteredLogs, setFilteredLogs] = useState([]);
+  const [logLimit, setLogLimit] = useState(100);
+  const [requestMethod, setRequestMethod] = useState("");
 
-  // Function to fetch logs with the selected limit
-  const fetchLogs = async () => {
+  const fetchLogs = async (limit) => {
     try {
-      const response = await api.get(`/logs?limit=${logLimit}`);
-      console.log("API Response:", response.data); // Log the response to the console
-      const logsString = response.data.logs; // Get the log string
-      const parsedLogs = parseLogs(logsString); // Parse the logs into a more readable format
-      setLogs(parsedLogs); // Store the parsed logs in the state
+      const response = await api.get(`/logs`, {
+        params: { limit },
+      });
+      const logsString = response.data.logs;
+      const parsedLogs = parseLogs(logsString);
+      setAllLogs(parsedLogs); // Store all logs in the state
+      applyFilters(parsedLogs, requestMethod, limit); // Apply filters based on the current method and limit
     } catch (error) {
       console.error("Error fetching logs:", error);
       toast.error("Failed to fetch logs");
     }
   };
 
-  // UseEffect to fetch logs when the component mounts or when logLimit changes
-  useEffect(() => {
-    fetchLogs(); // Call the function to fetch logs with the current logLimit
-  }, [logLimit]); // Dependency array ensures this runs whenever the logLimit changes
-
   // Function to parse the log string into an array of log entries
   const parseLogs = (logsString) => {
-    const logEntries = logsString.split("\n"); // Split the string by new lines
+    const logEntries = logsString.split("\n");
     return logEntries
-      .filter((entry) => entry.trim() !== "") // Filter out empty entries
+      .filter((entry) => entry.trim() !== "")
       .map((entry) => {
-        // Extract different parts of the log for better readability
-        const timestamp = entry.split(" - ")[0]; // Timestamp
-        const action = entry.split("Request: ")[1]?.split(" - ")[0] || ""; // Action (GET/POST)
-        const response = entry.split("Response: ")[1]?.split(" - ")[0] || ""; // Response status code
-        const ip = entry.split("IP: ")[1]?.split(" - ")[0] || ""; // IP address
-        const userAgent = entry.split("User-Agent: ")[1]?.split(" - ")[0] || ""; // User Agent
-        const userId = entry.split("user_id: ")[1]?.split(" - ")[0] || ""; // User ID
+        const timestamp = entry.split(" - ")[0];
+        const action = entry.split("Request: ")[1]?.split(" - ")[0] || "";
+        const response = entry.split("Response: ")[1]?.split(" - ")[0] || "";
+        const ip = entry.split("IP: ")[1]?.split(" - ")[0] || "";
+        const userAgent = entry.split("User-Agent: ")[1]?.split(" - ")[0] || "";
+        const userId = entry.split("user_id: ")[1]?.split(" - ")[0] || "";
 
-        return { timestamp, action, response, ip, userAgent, userId }; // Return structured log entry
+        return { timestamp, action, response, ip, userAgent, userId };
       });
   };
 
+  // Function to apply filters for request method and limit on the logs
+  const applyFilters = (logs, method, limit) => {
+    const methodFilteredLogs = method
+      ? logs.filter((log) => log.action.startsWith(method))
+      : logs;
+
+    const limitedLogs = methodFilteredLogs.slice(0, limit); // Apply limit to the filtered logs
+    setFilteredLogs(limitedLogs);
+  };
+
+  // UseEffect to fetch logs when the component mounts or when logLimit changes
+  useEffect(() => {
+    fetchLogs(logLimit); // Call fetchLogs with the selected logLimit
+  }, [logLimit]); // Run whenever logLimit changes
+
   // Function to handle the change event of the log limit dropdown
   const handleLimitChange = (event) => {
-    const selectedLimit = event.target.value; // Get the selected limit
+    const selectedLimit = Number(event.target.value);
     setLogLimit(selectedLimit); // Update the logLimit state
+  };
+
+  // Function to handle the change event for the request method filter
+  const handleRequestMethodChange = (event) => {
+    const selectedMethod = event.target.value;
+    setRequestMethod(selectedMethod); // Update the requestMethod state
+    applyFilters(allLogs, selectedMethod, logLimit); // Apply the new filter on the existing logs
   };
 
   return (
@@ -68,7 +79,10 @@ const Logs = () => {
             <div className="col-span-4 sm:col-span-3">
               <div className="bg-gray-800 shadow rounded-lg p-6 h-[650px]">
                 <div className="flex flex-col">
-                  <div class="">
+                  <h1 className="flex justify-center text-xl text-indigo-400 font-bold">
+                    Log Filter
+                  </h1>
+                  <div className="mt-8">
                     <label
                       htmlFor="logLimit"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -77,8 +91,8 @@ const Logs = () => {
                     </label>
                     <select
                       id="logLimit"
-                      value={logLimit} // Set the current selected limit as the value
-                      onChange={handleLimitChange} // Call the handler when value changes
+                      value={logLimit}
+                      onChange={handleLimitChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option value="50">50</option>
@@ -86,6 +100,28 @@ const Logs = () => {
                       <option value="200">200</option>
                       <option value="500">500</option>
                       <option value="1000">1000</option>
+                    </select>
+                  </div>
+
+                  <div className="mt-5">
+                    <label
+                      htmlFor="requestMethod"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      HTTP Request Method
+                    </label>
+                    <select
+                      id="requestMethod"
+                      value={requestMethod}
+                      onChange={handleRequestMethodChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option value="">ALL</option>
+                      <option value="GET">GET</option>
+                      <option value="POST">POST</option>
+                      <option value="PUT">PUT</option>
+                      <option value="DELETE">DELETE</option>
+                      <option value="OPTIONS">OPTIONS</option>
                     </select>
                   </div>
                 </div>
@@ -97,14 +133,13 @@ const Logs = () => {
                 <div>
                   <div className="mt-5 ml-4">
                     <div className="h-[550px] mr-2">
-                      <h2 className="text-lg font-bold">
-                        Server Log ({logs.length}){" "}
-                        {/* Dynamically display log count */}
+                      <h2 className="text-lg font-bold text-indigo-400">
+                        Server Log ({filteredLogs.length})
                       </h2>
                       <div className="p-4 mt-2 border h-full overflow-y-auto">
-                        {logs.length > 0 ? (
+                        {filteredLogs.length > 0 ? (
                           <div className="font-mono">
-                            {logs.map((log, index) => (
+                            {filteredLogs.map((log, index) => (
                               <div key={index} className="mb-4">
                                 <div>
                                   <strong>Timestamp:</strong> {log.timestamp}
