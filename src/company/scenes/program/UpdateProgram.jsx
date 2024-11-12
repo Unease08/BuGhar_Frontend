@@ -46,7 +46,7 @@ const UpdateProgram = () => {
     max_price: Yup.number()
       .required("Maximum Price is required")
       .min(0, "Maximum Price must be a positive number"),
-    program_logo: Yup.mixed().required("Program Logo is required"),
+    program_logo: Yup.mixed().nullable(),
   });
 
   useEffect(() => {
@@ -108,11 +108,9 @@ const UpdateProgram = () => {
   const handleSubmit = async (values) => {
     const formData = new FormData();
 
-    // Convert start_date and end_date to the required format
     const formattedStartDate = new Date(values.start_date).toISOString();
     const formattedEndDate = new Date(values.end_date).toISOString();
 
-    // Append all form fields to FormData
     formData.append("title", values.title);
     formData.append("in_scope", values.in_scope);
     formData.append("out_of_scope", values.out_of_scope);
@@ -122,6 +120,7 @@ const UpdateProgram = () => {
     formData.append("end_date", formattedEndDate);
     formData.append("min_price", values.min_price);
     formData.append("max_price", values.max_price);
+
     if (values.program_logo) {
       formData.append("program_logo", values.program_logo);
     }
@@ -142,7 +141,6 @@ const UpdateProgram = () => {
       toast.error(`Error: ${errorMessage}`);
     }
   };
-
   // Custom toolbar options
   const toolbarOptions = [
     [{ font: [] }],

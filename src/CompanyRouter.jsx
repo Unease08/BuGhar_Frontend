@@ -15,6 +15,7 @@ import {
   AddProgram,
   UpdateProgram,
   Report,
+  ViewDocument,
 } from "./company/scenes"; // Company scenes
 import NotFound from "./user/pages/NotFound"; // NotFound component
 import ReportView from "./company/scenes/report/ReportView";
@@ -28,6 +29,7 @@ const CompanyRouter = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/team" element={<Team />} />
       <Route path="/company-verification" element={<CompanyVerification />} />
+      <Route path="/view-document" element={<ViewDocument />} />
       <Route path="/Program" element={<Program />} />
       <Route path="/add-program" element={<AddProgram />} />
       <Route path="/update-program/:id" element={<UpdateProgram />} />

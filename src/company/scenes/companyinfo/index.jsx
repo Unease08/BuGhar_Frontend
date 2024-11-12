@@ -1,112 +1,206 @@
-import { Box, Button, TextField, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import { Header } from "../../components";
-import { useState } from "react";
-import logo from "../../assets/images/avatar.png";
+import { useState, useEffect } from "react";
 import useCountries from "../../../customhooks/UseCountries";
 import CustomDropdown from "../../../library/CustomDropdown";
+import api from "../../../library/Api";
+import config from "../../../config"; // Assuming you have a config file for BASE_URL
+import toast from "react-hot-toast";
 
 const CompanyInfo = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-
   const countries = useCountries().map((country) => country.name);
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedImage, setSelectedImage] = useState(logo); // Default image is the logo
+  const [selectedImage, setSelectedImage] = useState(
+    "https://saugat-nepal.com.np/assets/img/profile-img.png"
+  ); // Default fallback image
+  const [imageFile, setImageFile] = useState(null);
+  const [companyDetails, setCompanyDetails] = useState({
+    company_name: "",
+    website: "",
+    phone_number: "",
+    description: "",
+  });
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setImageFile(file); // Store the file in state for form submission
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result); // Update the selected image
+        setSelectedImage(reader.result);
       };
-      reader.readAsDataURL(file); // Read the uploaded file as a data URL
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCompanyDetails = async () => {
+      try {
+        const response = await api.get(`/company/company-detail/`);
+        console.log("API Response:", response.data); // Log the response to the console
+
+        const {
+          company_name,
+          website,
+          phone_number,
+          description,
+          country,
+          company_logo,
+        } = response.data;
+
+        // Set company details and country
+        setCompanyDetails({ company_name, website, phone_number, description });
+        setSelectedCountry(country);
+
+        // Set the company logo if available, otherwise use the fallback image
+        const imageUrl = company_logo
+          ? `${config.BASE_URL}/${company_logo}`
+          : "https://saugat-nepal.com.np/assets/img/profile-img.png";
+        setSelectedImage(imageUrl);
+      } catch (error) {
+        console.error("Error fetching company details:", error);
+      }
+    };
+
+    fetchCompanyDetails();
+  }, []);
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData();
+      if (companyDetails.company_name)
+        formData.append("company_name", companyDetails.company_name);
+      if (companyDetails.website)
+        formData.append("website", companyDetails.website);
+      if (companyDetails.phone_number)
+        formData.append("phone_number", companyDetails.phone_number);
+      if (companyDetails.description)
+        formData.append("description", companyDetails.description);
+      if (selectedCountry) formData.append("country", selectedCountry);
+
+      if (imageFile) {
+        formData.append("company_logo", imageFile);
+      }
+
+      const response = await api.put(`/company/update`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Update Response:", response.data);
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error updating company details:", error);
+      toast.error(response.data.detail);
     }
   };
 
   return (
     <Box m="20px">
       <Header title="Company Information" />
-      <form className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8">
+      <form
+        onSubmit={handleFormSubmit}
+        className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8"
+      >
         <div className="flex justify-center items-center">
-          <div className="flex justify-center items-center">
-            <label className="w-32 h-32 overflow-hidden rounded-full border-4 border-blue-300 flex justify-center items-center cursor-pointer">
-              <img
-                src={selectedImage}
-                alt="Logo"
-                className="object-cover w-full h-full"
-              />
-              <input
-                type="file"
-                accept="image/*" // Allow only image files
-                onChange={handleImageChange}
-                className="hidden" // Hide the input element
-              />
-            </label>
-          </div>
+          <label className="w-32 h-32 overflow-hidden rounded-full border-4 border-blue-300 flex justify-center items-center cursor-pointer">
+            <img
+              src={selectedImage}
+              alt="Company Logo"
+              className="object-cover w-full h-full"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+          </label>
         </div>
 
         <div className="grid gap-6 mt-5 mb-6 md:grid-cols-2">
           <div>
             <label
-              htmlFor="first_name"
+              htmlFor="company_name"
               className="block mb-2 text-lg font-medium text-white"
             >
               Company Name
             </label>
             <input
               type="text"
-              id="first_name"
-              name="firstName"
-              className="border text-lg rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              id="company_name"
+              name="company_name"
+              value={companyDetails.company_name}
+              onChange={(e) =>
+                setCompanyDetails({
+                  ...companyDetails,
+                  company_name: e.target.value,
+                })
+              }
+              className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="Company Name"
             />
           </div>
           <div>
             <label
               htmlFor="company_website"
-              className="block mb-2 text-lg font-medium  text-white"
+              className="block mb-2 text-lg font-medium text-white"
             >
               Company Website
             </label>
             <input
               type="text"
               id="company_website"
-              name="companyWebsite"
-              className=" border  text-lg rounded-lg   block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              name="website"
+              value={companyDetails.website}
+              onChange={(e) =>
+                setCompanyDetails({
+                  ...companyDetails,
+                  website: e.target.value,
+                })
+              }
+              className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="Company Website"
             />
           </div>
           <div>
             <label
               htmlFor="country"
-              className="block mb-2 text-lg font-medium  text-white"
+              className="block mb-2 text-lg font-medium text-white"
             >
-              Country{" "}
+              Country
             </label>
             <CustomDropdown
               id="country"
               name="country"
-              style={{ padding: "14px" }}
               options={countries}
               value={selectedCountry}
-              onChange={(e) => {
-                setSelectedCountry(e.target.value);
-              }}
+              onChange={(e) => setSelectedCountry(e.target.value)}
               className="p-[14px]"
             />
           </div>
           <div>
             <label
-              htmlFor="phone"
-              className="block mb-2 text-lg font-medium  text-white"
+              htmlFor="phone_number"
+              className="block mb-2 text-lg font-medium text-white"
             >
-              Phone number
+              Phone Number
             </label>
             <input
               type="tel"
-              id="phone"
-              name="phone"
-              className="border   text-lg rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              id="phone_number"
+              name="phone_number"
+              value={companyDetails.phone_number}
+              onChange={(e) =>
+                setCompanyDetails({
+                  ...companyDetails,
+                  phone_number: e.target.value,
+                })
+              }
+              className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>
@@ -114,21 +208,31 @@ const CompanyInfo = () => {
         <div className="mb-6">
           <label
             htmlFor="company_bio"
-            className="block mb-2 text-lg font-medium  text-white"
+            className="block mb-2 text-lg font-medium text-white"
           >
             Company Bio
           </label>
           <textarea
             id="company_bio"
-            name="companyBio"
-            className=" border  text-lg rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            name="description"
+            value={companyDetails.description}
+            onChange={(e) =>
+              setCompanyDetails({
+                ...companyDetails,
+                description: e.target.value,
+              })
+            }
+            className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             rows="6"
             placeholder="Write your company bio here..."
           />
         </div>
 
         <div className="flex justify-end">
-          <button className="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+          <button
+            type="submit"
+            className="text-white font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+          >
             Submit
           </button>
         </div>

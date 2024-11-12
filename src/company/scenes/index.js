@@ -7,10 +7,10 @@ import AddProgram from "./program/AddProgram";
 import UpdateProgram from "./program/UpdateProgram";
 import CompanyVerification from "./companyverification";
 import CompanyInfo from "./companyinfo";
-import Report from "./report"
+import Report from "./report";
+import ViewDocument from "./companyverification/ViewDocument";
 import Calendar from "./calendar";
 import Bar from "./bar";
-// import Line from "./line";
 import Pie from "./pie";
 import Stream from "./stream";
 import FAQ from "./faq";
@@ -27,9 +27,9 @@ export {
   CompanyVerification,
   CompanyInfo,
   Report,
+  ViewDocument,
   Calendar,
   Bar,
-  // Line,
   Pie,
   Stream,
   FAQ,

@@ -4,7 +4,7 @@ import Select from "react-select";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import api from "../../../library/Api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 
 const CompanyVerification = () => {
   const theme = useTheme();
@@ -79,6 +79,14 @@ const CompanyVerification = () => {
         onSubmit={handleSubmit}
         className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8"
       >
+        <div className="flex justify-end">
+          <Link to="/view-document">
+            <a className="text-white bg-gray-700 hover:bg-gray-500 focus:ring-4 focus:ring-gray-400 font-medium rounded-lg text-sm px-2 py-2 focus:outline-none cursor-pointer">
+              View Document
+            </a>
+          </Link>
+        </div>
+
         <div className="flex-1 w-full">
           <label
             htmlFor="countries"
