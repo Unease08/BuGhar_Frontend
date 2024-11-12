@@ -4,9 +4,7 @@ import { useContext, useState } from "react";
 import { tokens } from "../../../../theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
-  CalendarTodayOutlined,
   DashboardOutlined,
-  HelpOutlineOutlined,
   MenuOutlined,
   ApartmentRounded,
   FeedOutlined,
@@ -140,21 +138,9 @@ const AdminSideBar = () => {
           />
           <Item
             title="Logs"
-            path="/logger"
+            path="/logs"
             colors={colors}
             icon={<FeedOutlined />}
-          />
-          <Item
-            title="Calendar"
-            path="/calendar"
-            colors={colors}
-            icon={<CalendarTodayOutlined />}
-          />
-          <Item
-            title="FAQ Page"
-            path="/faq"
-            colors={colors}
-            icon={<HelpOutlineOutlined />}
           />
         </Menu>
       </Box>
