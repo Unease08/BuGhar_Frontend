@@ -9,6 +9,7 @@ const Logs = () => {
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [logLimit, setLogLimit] = useState(100);
   const [requestMethod, setRequestMethod] = useState("");
+  const [responseCode, setResponseCode] = useState(""); // New state for response code search
 
   const fetchLogs = async (limit) => {
     try {
@@ -18,7 +19,7 @@ const Logs = () => {
       const logsString = response.data.logs;
       const parsedLogs = parseLogs(logsString);
       setAllLogs(parsedLogs); // Store all logs in the state
-      applyFilters(parsedLogs, requestMethod, limit); // Apply filters based on the current method and limit
+      applyFilters(parsedLogs, requestMethod, limit, responseCode); // Apply filters based on the current method, limit, and response code
     } catch (error) {
       console.error("Error fetching logs:", error);
       toast.error("Failed to fetch logs");
@@ -42,13 +43,19 @@ const Logs = () => {
       });
   };
 
-  // Function to apply filters for request method and limit on the logs
-  const applyFilters = (logs, method, limit) => {
+  // Function to apply filters for request method, response code, and limit on the logs
+  const applyFilters = (logs, method, limit, responseCode) => {
     const methodFilteredLogs = method
       ? logs.filter((log) => log.action.startsWith(method))
       : logs;
 
-    const limitedLogs = methodFilteredLogs.slice(0, limit); // Apply limit to the filtered logs
+    const responseFilteredLogs = responseCode
+      ? methodFilteredLogs.filter((log) =>
+          log.response.startsWith(responseCode)
+        )
+      : methodFilteredLogs;
+
+    const limitedLogs = responseFilteredLogs.slice(0, limit); // Apply limit to the filtered logs
     setFilteredLogs(limitedLogs);
   };
 
@@ -67,7 +74,14 @@ const Logs = () => {
   const handleRequestMethodChange = (event) => {
     const selectedMethod = event.target.value;
     setRequestMethod(selectedMethod); // Update the requestMethod state
-    applyFilters(allLogs, selectedMethod, logLimit); // Apply the new filter on the existing logs
+    applyFilters(allLogs, selectedMethod, logLimit, responseCode); // Apply the new filter on the existing logs
+  };
+
+  // Function to handle the change event for the response code search
+  const handleResponseCodeChange = (event) => {
+    const code = event.target.value;
+    setResponseCode(code); // Update the responseCode state
+    applyFilters(allLogs, requestMethod, logLimit, code); // Apply the response code filter
   };
 
   return (
@@ -85,7 +99,7 @@ const Logs = () => {
                   <div className="mt-8">
                     <label
                       htmlFor="logLimit"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-white"
                     >
                       Log Limit
                     </label>
@@ -93,7 +107,7 @@ const Logs = () => {
                       id="logLimit"
                       value={logLimit}
                       onChange={handleLimitChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="border  text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     >
                       <option value="50">50</option>
                       <option value="100">100</option>
@@ -106,7 +120,7 @@ const Logs = () => {
                   <div className="mt-5">
                     <label
                       htmlFor="requestMethod"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-white"
                     >
                       HTTP Request Method
                     </label>
@@ -114,7 +128,7 @@ const Logs = () => {
                       id="requestMethod"
                       value={requestMethod}
                       onChange={handleRequestMethodChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     >
                       <option value="">ALL</option>
                       <option value="GET">GET</option>
@@ -123,6 +137,25 @@ const Logs = () => {
                       <option value="DELETE">DELETE</option>
                       <option value="OPTIONS">OPTIONS</option>
                     </select>
+                  </div>
+
+                  <div className="mt-8">
+                    <label
+                      htmlFor="responseCode"
+                      className="block mb-2 text-sm font-medium text-white"
+                    >
+                      Search for Response Code
+                    </label>
+                    <div className="relative mt-2">
+                      <input
+                        type="text"
+                        id="responseCode"
+                        value={responseCode}
+                        onChange={handleResponseCodeChange}
+                        className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="200"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
