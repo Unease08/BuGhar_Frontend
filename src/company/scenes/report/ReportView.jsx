@@ -11,26 +11,26 @@ import { useParams, Link } from "react-router-dom";
 import { Header } from "../../components";
 import api from "../../../library/Api";
 import { toast } from "react-hot-toast";
-import config from "../../../config"; // Ensure this import path is correct for your project
+import config from "../../../config";
 
 const ReportView = () => {
-  const { id } = useParams(); // Extract 'id' from the URL
+  const { id } = useParams();
   const [report, setReport] = useState(null);
-  const [openModal, setOpenModal] = useState(false); // Modal visibility state
-  const [selectedImage, setSelectedImage] = useState(""); // State for selected image
-  const [comment, setComment] = useState(""); // State to hold comment text
-  const [comments, setComments] = useState([]); // State to hold list of comments
-  const [impact, setImpact] = useState(""); // Initially empty
-  const [status, setStatus] = useState(""); // Initially empty
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [impact, setImpact] = useState("");
+  const [status, setStatus] = useState("");
 
-  // Fetch report data
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const response = await api.get(`/report/${id}`); // Fetch report data
-        setReport(response.data); // Set the report data
-        setImpact(response.data.impact || ""); // Set initial impact value
-        setStatus(response.data.status || ""); // Set initial status value
+        const response = await api.get(`/report/${id}`);
+        console.log("Response data", response);
+        setReport(response.data);
+        setImpact(response.data.impact || "");
+        setStatus(response.data.status || "");
       } catch (error) {
         console.error("Error fetching report data:", error);
         toast.error("Failed to fetch report data.");
@@ -81,17 +81,17 @@ const ReportView = () => {
   };
 
   const handleImageClick = (src) => {
-    setSelectedImage(src); // Set selected image for modal
-    setOpenModal(true); // Open modal
+    setSelectedImage(src);
+    setOpenModal(true);
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false); // Close modal
-    setSelectedImage(""); // Clear selected image
+    setOpenModal(false);
+    setSelectedImage("");
   };
 
   const handleCommentChange = (event) => {
-    setComment(event.target.value); // Update comment state
+    setComment(event.target.value);
   };
 
   const handleCommentSubmit = () => {
@@ -100,38 +100,34 @@ const ReportView = () => {
         ...comments,
         { text: comment, author: "Anonymous", date: new Date() },
       ]);
-      setComment(""); // Clear the comment box after submission
+      setComment("");
       toast.success("Comment added successfully.");
     } else {
       toast.error("Comment cannot be empty.");
     }
   };
 
-  // Handle impact change
   const handleImpactChange = (event) => {
-    setImpact(event.target.value); // Update impact value
+    setImpact(event.target.value);
   };
 
-  // Handle status change
   const handleStatusChange = (event) => {
-    setStatus(event.target.value); // Update status value
+    setStatus(event.target.value);
   };
 
   const handleUpdate = async () => {
     const formData = new FormData();
-    formData.append("impact", impact); // Append updated impact value
-    formData.append("status", status); // Append updated status value
+    formData.append("impact", impact);
+    formData.append("status", status);
 
     try {
       const response = await api.put(`/report/${id}/impact_status`, formData, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // Or "multipart/form-data" if sending files
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
-      // Check if the status is 200 and success is true in the response data
       if (response.status === 200 && response.data.message) {
-        // Show a success toast with the success message from the backend
         toast.success(response.data.message || "Report updated successfully!");
         setReport((prev) => ({
           ...prev,
@@ -139,13 +135,11 @@ const ReportView = () => {
           status: status,
         }));
       } else {
-        // If the response data doesn't contain success message, show a generic error
         toast.error(response.data.message || "Failed to update report.");
       }
     } catch (error) {
       console.error("Error updating report:", error);
 
-      // Use error message from backend response, if available
       const errorMessage =
         error.response?.data?.detail || "Unknown error occurred";
       toast.error(errorMessage);
@@ -158,7 +152,6 @@ const ReportView = () => {
       <div className="bg-gray-900 text-white min-h-screen mt-4">
         <div className="container mx-auto py-4 px-4">
           <div className="grid grid-cols-4 sm:grid-cols-12 gap-3">
-            {/* Report Content */}
             <div className="col-span-4 sm:col-span-9">
               <div className="bg-gray-800 shadow rounded-lg p-4">
                 {report ? (
@@ -209,19 +202,16 @@ const ReportView = () => {
                     </div>
                     <hr className="mt-10" />
 
-                    {/* Comment Box */}
                     <div className="mt-10 ml-4">
                       <h1 className="text-indigo-400 font-bold text-lg">
                         Add a Comment
                       </h1>
                       <div className="mt-4 flex">
-                        {/* User Profile Image */}
                         <img
-                          src="https://saugat-nepal.com.np/assets/img/profile-img.png" // Replace with dynamic user image URL if necessary
+                          src="https://saugat-nepal.com.np/assets/img/profile-img.png"
                           alt="User Avatar"
                           className="rounded-full w-6 h-6 border-2 border-black mr-3"
                         />
-                        {/* Comment Text Field */}
                         <div className="flex-1">
                           <TextField
                             fullWidth
@@ -236,7 +226,6 @@ const ReportView = () => {
                         </div>
                       </div>
 
-                      {/* Post Button */}
                       <div className="flex justify-end mt-3">
                         <Button
                           onClick={handleCommentSubmit}
@@ -249,7 +238,6 @@ const ReportView = () => {
                       </div>
                     </div>
 
-                    {/* Comments Section */}
                     <div className="mt-5 ml-4">
                       <h1 className="text-indigo-400 font-bold text-lg">
                         Comments
@@ -260,15 +248,13 @@ const ReportView = () => {
                             key={index}
                             className="p-2 bg-gray-800 rounded-md mb-3"
                           >
-                            {/* Author Image, Name, and Date on the same row */}
                             <div className="flex justify-between items-center">
                               <div className="flex items-center gap-2">
-                                {/* Image on the left side of the name */}
                                 <img
                                   src={
                                     comment.authorImage ||
                                     "https://via.placeholder.com/30"
-                                  } // Placeholder if no image
+                                  }
                                   alt={comment.author}
                                   className="w-8 h-8 rounded-full border-2 border-gray-600"
                                 />
@@ -280,7 +266,6 @@ const ReportView = () => {
                                 {formatDate(comment.date)}
                               </span>
                             </div>
-                            {/* Comment Text */}
                             <p className="text-sm mt-1 ml-10 text-gray-300">
                               {comment.text}
                             </p>
@@ -298,7 +283,6 @@ const ReportView = () => {
               </div>
             </div>
 
-            {/* Report Metadata */}
             <div className="col-span-4 sm:col-span-3">
               <div className="bg-gray-800 shadow rounded-lg p-6 h-[650px]">
                 <div className="flex flex-col">
@@ -314,7 +298,7 @@ const ReportView = () => {
                             report.profile_picture &&
                             report.profile_picture !== null
                               ? `${config.BASE_URL}${report.profile_picture}`
-                              : "https://saugat-nepal.com.np/assets/img/profile-img.png" // Default image when profile picture is null or undefined
+                              : "https://saugat-nepal.com.np/assets/img/profile-img.png"
                           }
                           className="rounded-full w-6 h-6 border-2 border-black shadow-xl cursor-pointer"
                           alt="Profile"
@@ -349,8 +333,8 @@ const ReportView = () => {
                           <p className="text-sm font-bold">Impact:</p>
                           <select
                             id="report-impact"
-                            value={impact} // Bind value to state
-                            onChange={handleImpactChange} // Handle value change
+                            value={impact}
+                            onChange={handleImpactChange}
                             className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                           >
                             <option value="critical">Critical</option>
@@ -365,8 +349,8 @@ const ReportView = () => {
                           <p className="text-sm font-bold">Status:</p>
                           <select
                             id="report-status"
-                            value={status} // Bind value to state
-                            onChange={handleStatusChange} // Handle value change
+                            value={status}
+                            onChange={handleStatusChange}
                             className="border mt-2 mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white"
                           >
                             <option value="new">New</option>
@@ -386,7 +370,7 @@ const ReportView = () => {
 
                         <div className="mt-8 flex justify-end">
                           <button
-                            onClick={handleUpdate} // Call the update function
+                            onClick={handleUpdate}
                             className="bg-indigo-600 text-white py-1 px-4 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                           >
                             Update
@@ -404,7 +388,6 @@ const ReportView = () => {
         </div>
       </div>
 
-      {/* Modal for displaying the selected image */}
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
