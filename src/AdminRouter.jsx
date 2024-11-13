@@ -17,6 +17,8 @@ import {
   Vulnerability,
   AddVulnerability,
   Logs,
+  UserDetails,
+  UpdateUser,
 } from "./admin/scenes";
 import CompanyDetails from "./admin/scenes/companyverification/CompanyDetails";
 import UpdateVulnerability from "./admin/scenes/vulnerability/UpdateVulnerability";
@@ -34,6 +36,8 @@ const AdminRouter = () => {
       />
       <Route path="/add-vulnerability" element={<AddVulnerability />} />
       <Route path="/logs" element={<Logs />} />
+      <Route path="/users" element={<UserDetails />} />
+      <Route path="/update-user/:id" element={<UpdateUser />} />
       <Route path="/team" element={<Team />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/invoices" element={<Invoices />} />

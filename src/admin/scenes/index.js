@@ -14,7 +14,9 @@ import Geography from "./geography";
 import CompanyVerification from "./companyverification";
 import Vulnerability from "./vulnerability";
 import AddVulnerability from "./vulnerability/AddVulnerability";
-import Logs from "./logs/Logs"; 
+import Logs from "./logs/Logs";
+import UserDetails from "./userdetails/UserDetails";
+import UpdateUser from "./userdetails/UpdateUser";
 
 export {
   AdminNavbar,
@@ -34,4 +36,6 @@ export {
   Vulnerability,
   AddVulnerability,
   Logs,
+  UserDetails,
+  UpdateUser,
 };

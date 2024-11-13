@@ -9,6 +9,7 @@ import {
   ApartmentRounded,
   FeedOutlined,
   PolicyOutlined,
+  PeopleAltOutlined,
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
 import logo from "../../../assets/images/logo.png";
@@ -124,6 +125,13 @@ const AdminSideBar = () => {
             },
           }}
         >
+          <Item
+            title="User Details"
+            path="/users"
+            colors={colors}
+            icon={<PeopleAltOutlined />}
+          />
+
           <Item
             title="Company"
             path="/company"
