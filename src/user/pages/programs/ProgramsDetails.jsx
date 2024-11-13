@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import profile1 from "../../../assets/profile1.jpg";
 import { TbReportSearch } from "react-icons/tb";
 import { FaMedal, FaBug } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
@@ -8,16 +7,27 @@ import config from "../../../config";
 
 const ProgramsDetails = () => {
   const [program, setProgram] = useState(null);
+  const [bounties, setBounties] = useState(null); // State to hold the bounty data
   const { id } = useParams();
 
   useEffect(() => {
     const fetchProgram = async () => {
       try {
-        const response = await api.get(`/programs/${id}`); // Fixed API call to use string
+        const response = await api.get(`/programs/${id}`); // Fetching program details
         console.log("API response", response.data);
         setProgram(response.data); // Assuming the response contains program details
+
+        // Fetching bounty calculation data
+        const bountyResponse = await api.get(
+          `/programs/${id}/calculate_bounties`
+        );
+        console.log("Bounty Calculation Response:", bountyResponse.data);
+
+        // Convert the bounties object to an array of key-value pairs
+        const bountyArray = Object.entries(bountyResponse.data.bounties);
+        setBounties(bountyArray);
       } catch (error) {
-        console.error("Error fetching program:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -39,18 +49,16 @@ const ProgramsDetails = () => {
     .split(",")
     .map((target) => target.trim());
 
-  
-    
-
   return (
     <div className="bg-gray-900 text-white min-h-screen">
+      {/* Program details section */}
       <div className="flex justify-start ml-48 gap-40">
         <div className="bg-gray-700 text-card-foreground p-4 rounded-lg w-[1080px] relative overflow-visible transform mt-24">
           <div className="relative">
             <div className="h-32 w-32 mt-10 mr-5 border-4 border-white rounded-full overflow-hidden shadow-lg absolute -top-48 left-1/2 transform -translate-x-1/2">
               <img
                 src={`${config.BASE_URL}/${program.program_logo}`}
-                alt="Profile"
+                alt="Program Logo"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -108,6 +116,8 @@ const ProgramsDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Program Scope and Rewards Section */}
       <div className="bg-card mt-2 ml-48 h-14 bg-gray-700 text-card-foreground p-4 rounded-xl w-[1080px]">
         <div className="flex gap-10 mb-2 font-bold text-lg ml-4 text-gray-400 cursor-pointer">
           <span className="text-indigo-500 underline">Program Details</span>
@@ -115,21 +125,8 @@ const ProgramsDetails = () => {
       </div>
       <div className="bg-card mt-5 ml-48 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[1080px] mx-auto shadow-lg">
         <div className="w-full mt-2">
-          <div className="font-sans">
-            <h1 className="font-bold text-indigo-400 text-xl mb-4">
-              Information
-            </h1>
-            <p className="text-sm leading-6 text-gray-300">
-              {" "}
-              <div
-                className="text-gray-400 mt-2"
-                dangerouslySetInnerHTML={{ __html: program.terms }}
-              />
-            </p>
-            <hr className="mt-10" />
-          </div>
+          {/* In Scope and Out of Scope Section */}
           <div className="font-sans mt-10">
-            <h1 className="font-bold text-indigo-400 text-xl mb-4">Target</h1>
             <span className="text-black font-extrabold ml-1">In Scope</span>
             <div className="block w-full overflow-x-auto border mt-5">
               <table className="items-center w-full bg-transparent border-collapse">
@@ -154,6 +151,7 @@ const ProgramsDetails = () => {
             </div>
           </div>
 
+          {/* Out of Scope Section */}
           <div className="font-sans mt-10">
             <span className="text-black font-extrabold ml-1">Out Scope</span>
             <div className="block w-full overflow-x-auto border mt-5">
@@ -179,6 +177,8 @@ const ProgramsDetails = () => {
             </div>
             <hr className="mt-10" />
           </div>
+
+          {/* Reward Section */}
           <div className="font-sans mt-10">
             <h1 className="font-bold text-indigo-400 text-xl mb-4">Reward</h1>
             <div className="block w-full overflow-x-auto border mt-5">
@@ -189,43 +189,32 @@ const ProgramsDetails = () => {
                       Severity
                     </th>
                     <th className="px-4 bg-gray-50 text-gray-700 align-middle py-3 text-md font-bold text-left uppercase border-l-0 border-r-0 whitespace-nowrap">
-                      Reward
+                      Bounty Range
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  <tr className="text-white">
-                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
-                      Critical
-                    </th>
-                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
-                      Rs 2,500
-                    </td>
-                  </tr>
-                  <tr className="text-white">
-                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
-                      High
-                    </th>
-                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
-                      Rs 1,500
-                    </td>
-                  </tr>
-                  <tr className="text-white">
-                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
-                      Medium
-                    </th>
-                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
-                      Rs 750
-                    </td>
-                  </tr>
-                  <tr className="text-white">
-                    <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
-                      Low
-                    </th>
-                    <td className="border-t-0 px-4 align-middle text-sm font-medium text-white whitespace-nowrap p-4 cursor-pointer">
-                      Rs 500
-                    </td>
-                  </tr>
+                  {Array.isArray(bounties) && bounties.length > 0 ? (
+                    bounties.map(
+                      ([severity, { range, bounty_value }], index) => (
+                        <tr className="text-white" key={index}>
+                          <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                            {severity}{" "}
+                            {/* This is the key (e.g., Informational, Low, etc.) */}
+                          </th>
+                          <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
+                            {range[0]} - {range[1]} {/* This is the range */}
+                          </th>
+                        </tr>
+                      )
+                    )
+                  ) : (
+                    <tr>
+                      <td colSpan="3" className="text-center text-white">
+                        No bounties available
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
