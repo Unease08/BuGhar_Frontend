@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { Header } from "../../components";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import CustomDropdown from "../../../library/CustomDropdown";
@@ -320,7 +320,14 @@ const UpdateUser = () => {
               />
             </div>
 
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-between mt-4">
+              <div className="ml-4">
+                <Link to="/users">
+                  <button className="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center focus:ring-gray-700">
+                    Back
+                  </button>
+                </Link>
+              </div>
               <button
                 type="submit"
                 className="bg-blue-600 text-white py-2 px-6 rounded-lg"
