@@ -9,6 +9,9 @@ const UserDetails = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedRole, setSelectedRole] = useState("All Roles");
+  const [selectedVerification, setSelectedVerification] =
+    useState("All Status");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -34,12 +37,46 @@ const UserDetails = () => {
     const role = event.target.value;
     setSelectedRole(role);
     setCurrentPage(1);
+    filterUsers(role, selectedVerification, searchQuery);
+  };
 
-    if (role === "All Roles") {
-      setFilteredUsers(users);
-    } else {
-      setFilteredUsers(users.filter((user) => user.role === role));
+  const handleVerificationChange = (event) => {
+    const verification = event.target.value;
+    setSelectedVerification(verification);
+    setCurrentPage(1);
+    filterUsers(selectedRole, verification, searchQuery);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
+    filterUsers(selectedRole, selectedVerification, event.target.value);
+  };
+
+  const filterUsers = (role, verification, search) => {
+    let filtered = users;
+
+    if (role !== "All Roles") {
+      filtered = filtered.filter((user) => user.role === role);
     }
+
+    if (verification !== "All Status") {
+      const isVerified = verification === "true";
+      filtered = filtered.filter((user) => user.is_verified === isVerified);
+    }
+
+    if (search) {
+      filtered = filtered.filter(
+        (user) =>
+          user.email.toLowerCase().includes(search.toLowerCase()) ||
+          `${user.first_name} ${user.last_name}`
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          user.country?.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    setFilteredUsers(filtered);
   };
 
   const handlePageChange = (page) => {
@@ -58,6 +95,21 @@ const UserDetails = () => {
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-gray-900">
           <div className="flex gap-5 ml-2">
+            <div className="flex items-center max-w-sm mx-auto">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  id="simple-search"
+                  className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="By email, fullname, or country"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
             <div>
               <select
                 className="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 text-white"
@@ -68,6 +120,17 @@ const UserDetails = () => {
                 <option value="company">Company</option>
                 <option value="user">Researcher</option>
                 <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div>
+              <select
+                className="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 text-white"
+                value={selectedVerification}
+                onChange={handleVerificationChange}
+              >
+                <option value="All Status">All Status</option>
+                <option value="true">Verified</option>
+                <option value="false">Pending</option>
               </select>
             </div>
           </div>
@@ -121,11 +184,6 @@ const UserDetails = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 space-x-2">
-                    <Link>
-                      <button className="py-2 px-3 text-white bg-blue-700 rounded-lg hover:bg-blue-900">
-                        View
-                      </button>
-                    </Link>
                     <Link to={`/update-user/${user.id}`}>
                       <button className="py-2 px-3 text-white bg-green-700 rounded-lg hover:bg-green-900">
                         Update
