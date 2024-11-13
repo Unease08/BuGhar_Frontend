@@ -87,6 +87,39 @@ const MyReport = () => {
                   <span className="text-2xl text-indigo-400">
                     {report.program_name}
                   </span>
+                  <div className="flex items-center space-x-2 mr-4">
+                    <span
+                      className={`w-3 h-3 rounded-full ${
+                        report.status === "new"
+                          ? "bg-blue-600" // Blue for opened
+                          : report.status === "triaged"
+                          ? "bg-yellow-500" // Yellow for triaged
+                          : report.status === "pending"
+                          ? "bg-orange-500" // Orange for pending
+                          : report.status === "in_progress"
+                          ? "bg-indigo-600" // Indigo for in progress
+                          : report.status === "resolved"
+                          ? "bg-green-600" // Green for resolved
+                          : report.status === "not_applicable"
+                          ? "bg-gray-500" // Gray for not applicable
+                          : report.status === "duplicate"
+                          ? "bg-gray-400" // Light Gray for duplicate
+                          : report.status === "wont_fix"
+                          ? "bg-red-600" // Red for won't fix
+                          : report.status === "informative"
+                          ? "bg-teal-500" // Teal for informative
+                          : report.status === "closed"
+                          ? "bg-green-600" // Green for closed
+                          : "bg-gray-200" // Default gray for unknown statuses
+                      }`}
+                    ></span>
+                    <span className="text-white font-bold">
+                      {report.status
+                        .replace("_", " ")
+                        .toLowerCase()
+                        .replace(/\b\w/g, (char) => char.toUpperCase())}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex flex-col mt-1 space-y-1">
                   <div className="flex items-center space-x-1">
