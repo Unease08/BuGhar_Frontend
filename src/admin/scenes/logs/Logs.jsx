@@ -171,28 +171,33 @@ const Logs = () => {
                       </h2>
                       <div className="p-4 mt-2 border h-full overflow-y-auto">
                         {filteredLogs.length > 0 ? (
-                          <div className="font-mono">
+                          <div className="font-mono text-sm">
                             {filteredLogs.map((log, index) => (
-                              <div key={index} className="mb-4">
-                                <div>
-                                  <strong>Timestamp:</strong> {log.timestamp}
+                              <div
+                                key={index}
+                                className="mb-4 p-2 bg-gray-700 rounded-lg shadow-sm"
+                              >
+                                <div className="flex justify-between text-indigo-400">
+                                  <span>
+                                    <strong>Timestamp:</strong> {log.timestamp}
+                                  </span>
+                                  <span>
+                                    <strong>Response Code:</strong>{" "}
+                                    {log.response}
+                                  </span>
                                 </div>
-                                <div>
+                                <div className="mt-2">
                                   <strong>Action:</strong> {log.action}
                                 </div>
-                                <div>
-                                  <strong>Response Code:</strong> {log.response}
-                                </div>
-                                <div>
+                                <div className="mt-2">
                                   <strong>IP Address:</strong> {log.ip}
                                 </div>
-                                <div>
+                                <div className="mt-2">
                                   <strong>User-Agent:</strong> {log.userAgent}
                                 </div>
-                                <div>
+                                <div className="mt-2">
                                   <strong>User ID:</strong> {log.userId}
                                 </div>
-                                <hr />
                               </div>
                             ))}
                           </div>
