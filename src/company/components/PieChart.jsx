@@ -1,105 +1,64 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
-import { mockPieData as data } from "../data/mockData";
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const data = [
+    {
+      id: "Approved",
+      label: "Approved",
+      value: 100,
+      color: "#4caf50",
+    },
+    {
+      id: "Pending",
+      label: "Pending",
+      value: 100,
+      color: "#ffeb3b",
+    },
+  ];
+
   return (
     <ResponsivePie
       data={data}
-      theme={{
-        axis: {
-          domain: {
-            line: {
-              stroke: colors.gray[100],
-            },
-          },
-          legend: {
-            text: {
-              fill: colors.gray[100],
-            },
-          },
-          ticks: {
-            line: {
-              stroke: colors.gray[100],
-              strokeWidth: 1,
-            },
-            text: {
-              fill: colors.gray[100],
-            },
-          },
-        },
-        legends: {
-          text: {
-            fill: colors.gray[100],
-          },
-        },
-      }}
-      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+      margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
-      activeOuterRadiusOffset={8}
-      borderColor={{
-        from: "color",
-        modifiers: [["darker", 0.2]],
-      }}
+      colors={{ datum: "data.color" }}
+      borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor={colors.gray[100]}
-      arcLinkLabelsThickness={2}
-      arcLinkLabelsColor={{ from: "color" }}
       enableArcLabels={false}
-      arcLabelsRadiusOffset={0.4}
-      arcLabelsSkipAngle={7}
-      arcLabelsTextColor={{
-        from: "color",
-        modifiers: [["darker", 2]],
-      }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
+      tooltip={({ datum: { id, value, color } }) => (
+        <div
+          style={{
+            padding: "5px",
+            color: "#000",
+            background: "white",
+            borderRadius: "5px",
+            boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.15)",
+          }}
+        >
+          <strong>{id}</strong>: {value}
+        </div>
+      )}
       legends={[
         {
-          anchor: "bottom",
-          direction: "row",
+          anchor: "top-right",
+          direction: "column",
           justify: false,
           translateX: 0,
-          translateY: 56,
-          itemsSpacing: 0,
-          itemWidth: 100,
-          itemHeight: 18,
-          itemTextColor: "#999",
-          itemDirection: "left-to-right",
-          itemOpacity: 1,
-          symbolSize: 18,
+          translateY: -40,
+          itemsSpacing: 10,
+          itemWidth: 80,
+          itemHeight: 20,
+          itemTextColor: colors.gray[100],
+          symbolSize: 10,
           symbolShape: "circle",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemTextColor: "#000",
-              },
-            },
-          ],
         },
       ]}
     />

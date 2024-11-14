@@ -9,6 +9,7 @@ import {
 import {
   Header,
   StatBox,
+  PieChart,
   LineChart,
   ProgressCircle,
   BarChart,
@@ -22,21 +23,8 @@ import {
   Traffic,
 } from "@mui/icons-material";
 import { tokens } from "../../../theme";
-import { mockTransactions } from "../../data/mockData";
-import toast from "react-hot-toast";
-import { useEffect } from "react";
 
 function Dashboard() {
-
-  useEffect(() => {
-    // Check if there is a toast message in sessionStorage
-    const message = sessionStorage.getItem("toastMessage");
-    if (message) {
-      toast.success(message);
-      sessionStorage.removeItem("toastMessage"); // Clear message after showing
-    }
-  }, []);
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isXlDevices = useMediaQuery("(min-width: 1260px)");
@@ -45,32 +33,9 @@ function Dashboard() {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">
-        <Header title="DASHBOARD" subtitle="Welcome to your company dashboard"  />
-        {!isXsDevices && (
-          <Box>
-            {/* <Button
-              variant="contained"
-              sx={{
-                bgcolor: colors.blueAccent[700],
-                color: "#fcfcfc",
-                fontSize: isMdDevices ? "14px" : "10px",
-                fontWeight: "bold",
-                p: "10px 20px",
-                mt: "18px",
-                transition: ".3s ease",
-                ":hover": {
-                  bgcolor: colors.blueAccent[800],
-                },
-              }}
-              startIcon={<DownloadOutlined />}
-            >
-              DOWNLOAD REPORTS
-            </Button> */}
-          </Box>
-        )}
+        <Header title="DASHBOARD" subtitle="Welcome to your Admin dashboard" />
       </Box>
 
-      {/* GRID & CHARTS */}
       <Box
         display="grid"
         gridTemplateColumns={
@@ -83,7 +48,6 @@ function Dashboard() {
         gridAutoRows="140px"
         gap="20px"
       >
-        {/* User box  */}
         <Box
           gridColumn="span 3"
           bgcolor={colors.primary[400]}
@@ -153,171 +117,41 @@ function Dashboard() {
           />
         </Box>
 
-        {/* ---------------- Row 2 ---------------- */}
+        {/* Graph and Barchart */}
 
-        {/* Line Chart */}
-        {/* <Box
+        <Box
           gridColumn={
-            isXlDevices ? "span 8" : isMdDevices ? "span 6" : "span 3"
+            isXlDevices ? "span 6" : isMdDevices ? "span 3" : "span 3"
           }
-          gridRow="span 2"
+          gridRow="span 3"
           bgcolor={colors.primary[400]}
         >
-          <Box
-            mt="25px"
-            px="30px"
-            display="flex"
-            justifyContent="space-between"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.gray[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h5"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <IconButton>
-              <DownloadOutlined
-                sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-              />
-            </IconButton>
+          <Box px="10px">
+            <Typography variant="h5" fontWeight="600" mt="15px">
+              Pie Chart
+            </Typography>
           </Box>
-          <Box height="250px" mt="-20px">
-            <LineChart isDashboard={true} />
+          <Box height="400px">
+            <PieChart isDashboard={true} />
           </Box>
-        </Box> */}
+        </Box>
 
-        {/* Transaction Data */}
-        {/* <Box
-          gridColumn={isXlDevices ? "span 4" : "span 3"}
-          gridRow="span 2"
+        <Box
+          gridColumn={
+            isXlDevices ? "span 6" : isMdDevices ? "span 3" : "span 3"
+          }
+          gridRow="span 3"
           bgcolor={colors.primary[400]}
-          overflow="auto"
         >
-          <Box borderBottom={`4px solid ${colors.primary[500]}`} p="15px">
-            <Typography color={colors.gray[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+          <Box px="10px">
+            <Typography variant="h5" fontWeight="600" mt="15px">
+              Bar Chart
             </Typography>
           </Box>
-
-          {mockTransactions.map((transaction, index) => (
-            <Box
-              key={`${transaction.txId}-${index}`}
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.gray[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Typography color={colors.gray[100]}>
-                {transaction.date}
-              </Typography>
-              <Box
-                bgcolor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-        </Box> */}
-
-        {/* Revenue Details */}
-        {/* <Box
-          gridColumn={isXlDevices ? "span 4" : "span 3"}
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Campaign
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="125" />
-            <Typography
-              textAlign="center"
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
-            </Typography>
-            <Typography textAlign="center">
-              Includes extra misc expenditures and costs
-            </Typography>
-          </Box>
-        </Box> */}
-
-        {/* Bar Chart */}
-        {/* <Box
-          gridColumn={isXlDevices ? "span 4" : "span 3"}
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ p: "30px 30px 0 30px" }}
-          >
-            Sales Quantity
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="250px"
-            mt="-20px"
-          >
+          <Box height="400px">
             <BarChart isDashboard={true} />
           </Box>
-        </Box> */}
-
-        {/* Geography Chart */}
-        {/* <Box
-          gridColumn={isXlDevices ? "span 4" : "span 3"}
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          <Typography variant="h5" fontWeight="600" mb="15px">
-            Geography Based Traffic
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="200px"
-          >
-            <GeographyChart isDashboard={true} />
-          </Box>
-        </Box> */}
+        </Box>
       </Box>
     </Box>
   );
