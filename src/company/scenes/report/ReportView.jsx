@@ -118,7 +118,7 @@ const ReportView = () => {
   const handleUpdate = async () => {
     const formData = new FormData();
     formData.append("impact", impact);
-    formData.append("status", status);
+    formData.append("new_status", status);
 
     try {
       const response = await api.put(`/report/${id}/impact_status`, formData, {

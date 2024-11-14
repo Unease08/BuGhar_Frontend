@@ -30,6 +30,7 @@ function Dashboard() {
   const isXlDevices = useMediaQuery("(min-width: 1260px)");
   const isMdDevices = useMediaQuery("(min-width: 724px)");
   const isXsDevices = useMediaQuery("(max-width: 436px)");
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">

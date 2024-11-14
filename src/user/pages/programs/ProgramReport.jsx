@@ -5,7 +5,7 @@ import { FaBug } from "react-icons/fa";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Select from "react-select";
-import { toast } from "react-hot-toast"; // Import the toast function
+import { toast } from "react-hot-toast";
 import * as Yup from "yup";
 import api from "../../../library/Api";
 import config from "../../../config";
@@ -17,7 +17,6 @@ const ProgramReport = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Fetch the program details
   useEffect(() => {
     const fetchProgram = async () => {
       try {
@@ -33,7 +32,6 @@ const ProgramReport = () => {
     }
   }, [id]);
 
-  // Fetch vulnerability types and transform for react-select
   useEffect(() => {
     const fetchVulnerabilityTypes = async () => {
       try {
@@ -51,30 +49,26 @@ const ProgramReport = () => {
     fetchVulnerabilityTypes();
   }, []);
 
-  // Handle file uploads
-  // Handle file uploads and generate previews
   const handleFileChange = (event, setFieldValue) => {
-    const files = Array.from(event.target.files); // Convert FileList to an array
-    setFieldValue("attachments", files); // Set all selected files in the Formik state
+    const files = Array.from(event.target.files);
+    setFieldValue("attachments", files);
 
-    // Create an array of promises to read each file as a Data URL
     const newImagePreviews = files.map((file) => {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
-        reader.readAsDataURL(file); // Read the file as a Data URL
+        reader.readAsDataURL(file);
       });
     });
 
-    // Once all files are read, update the selectedImages state
     Promise.all(newImagePreviews)
       .then((results) => {
         setSelectedImages((prevImages) => [...prevImages, ...results]);
       })
       .catch((error) => console.error("Error reading files:", error));
 
-    event.target.value = ""; // Reset the file input after selection
+    event.target.value = "";
   };
 
   const removeImage = (index) => {
@@ -99,7 +93,6 @@ const ProgramReport = () => {
     formData.append("program_id", id);
     formData.append("impact", values.impact);
 
-    // Add vulnerability IDs
     values.vulnerability_ids.forEach((vulnerabilityId) => {
       formData.append("vulnerability_ids", vulnerabilityId);
     });
@@ -107,10 +100,9 @@ const ProgramReport = () => {
     formData.append("steps_to_reproduce", values.steps_to_reproduce);
     formData.append("description", values.description);
 
-    // Check if attachments are provided and handle FileList
     if (values.attachments && values.attachments.length > 0) {
       Array.from(values.attachments).forEach((file) => {
-        formData.append("attachments", file); // Appending each file
+        formData.append("attachments", file);
       });
     }
 
@@ -125,20 +117,14 @@ const ProgramReport = () => {
         },
       });
       console.log("Report submitted successfully:", response.data);
-
-      // Show a success toast message
       toast.success(response.data.message);
-
       navigate("/my-report");
-
-      // Handle success notifications here
     } catch (error) {
       console.error("Error submitting report:", error);
       const errorMessage =
         (error.response && error.response.data && error.response.data.detail) ||
         "Unknown error occurred";
       toast.error(`Error: ${errorMessage}`);
-      // Handle error notifications here
     }
   };
 
@@ -285,20 +271,20 @@ const ProgramReport = () => {
                   Vulnerability Type
                 </h1>
                 <p className="text-md leading-6 text-gray-300">
-                  Please select the type(s) of vulnerabilities
+                  Please select the type of vulnerability
                 </p>
                 <Select
                   name="vulnerability_ids"
                   className="text-black"
-                  isMulti
                   options={vulnerabilityOptions}
-                  onChange={(selectedOptions) => {
+                  onChange={(selectedOption) => {
                     setFieldValue(
                       "vulnerability_ids",
-                      selectedOptions.map((option) => option.value)
+                      selectedOption ? [selectedOption.value] : []
                     );
                   }}
                 />
+
                 <ErrorMessage
                   name="vulnerability_ids"
                   component="div"
@@ -351,8 +337,8 @@ const ProgramReport = () => {
                 <input
                   type="file"
                   name="attachments"
-                  multiple // allow multiple file selection
-                  onChange={(event) => handleFileChange(event, setFieldValue)} // Pass setFieldValue here
+                  multiple
+                  onChange={(event) => handleFileChange(event, setFieldValue)}
                   className="border border-gray-300 rounded-lg py-2 px-4 mt-2"
                 />
 
@@ -371,11 +357,11 @@ const ProgramReport = () => {
                         className="w-full h-full object-cover rounded-lg"
                       />
                       <button
-                        onClick={() => removeImage(index)} // Call the remove function
+                        onClick={() => removeImage(index)}
                         className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-700"
                         aria-label="Remove image"
                       >
-                        &times; {/* Close icon */}
+                        &times;
                       </button>
                     </div>
                   ))}
