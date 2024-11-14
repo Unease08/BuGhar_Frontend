@@ -9,7 +9,7 @@ const Logs = () => {
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [logLimit, setLogLimit] = useState(100);
   const [requestMethod, setRequestMethod] = useState("");
-  const [responseCode, setResponseCode] = useState(""); // New state for response code search
+  const [responseCode, setResponseCode] = useState(""); 
 
   const fetchLogs = async (limit) => {
     try {
@@ -18,15 +18,14 @@ const Logs = () => {
       });
       const logsString = response.data.logs;
       const parsedLogs = parseLogs(logsString);
-      setAllLogs(parsedLogs); // Store all logs in the state
-      applyFilters(parsedLogs, requestMethod, limit, responseCode); // Apply filters based on the current method, limit, and response code
+      setAllLogs(parsedLogs); 
+      applyFilters(parsedLogs, requestMethod, limit, responseCode); 
     } catch (error) {
       console.error("Error fetching logs:", error);
       toast.error("Failed to fetch logs");
     }
   };
 
-  // Function to parse the log string into an array of log entries
   const parseLogs = (logsString) => {
     const logEntries = logsString.split("\n");
     return logEntries
@@ -43,7 +42,6 @@ const Logs = () => {
       });
   };
 
-  // Function to apply filters for request method, response code, and limit on the logs
   const applyFilters = (logs, method, limit, responseCode) => {
     const methodFilteredLogs = method
       ? logs.filter((log) => log.action.startsWith(method))
@@ -55,33 +53,28 @@ const Logs = () => {
         )
       : methodFilteredLogs;
 
-    const limitedLogs = responseFilteredLogs.slice(0, limit); // Apply limit to the filtered logs
+    const limitedLogs = responseFilteredLogs.slice(0, limit);
     setFilteredLogs(limitedLogs);
   };
 
-  // UseEffect to fetch logs when the component mounts or when logLimit changes
   useEffect(() => {
-    fetchLogs(logLimit); // Call fetchLogs with the selected logLimit
-  }, [logLimit]); // Run whenever logLimit changes
-
-  // Function to handle the change event of the log limit dropdown
+    fetchLogs(logLimit); 
+  }, [logLimit]); 
   const handleLimitChange = (event) => {
     const selectedLimit = Number(event.target.value);
-    setLogLimit(selectedLimit); // Update the logLimit state
+    setLogLimit(selectedLimit); 
   };
 
-  // Function to handle the change event for the request method filter
   const handleRequestMethodChange = (event) => {
     const selectedMethod = event.target.value;
-    setRequestMethod(selectedMethod); // Update the requestMethod state
-    applyFilters(allLogs, selectedMethod, logLimit, responseCode); // Apply the new filter on the existing logs
+    setRequestMethod(selectedMethod); 
+    applyFilters(allLogs, selectedMethod, logLimit, responseCode); 
   };
 
-  // Function to handle the change event for the response code search
   const handleResponseCodeChange = (event) => {
     const code = event.target.value;
-    setResponseCode(code); // Update the responseCode state
-    applyFilters(allLogs, requestMethod, logLimit, code); // Apply the response code filter
+    setResponseCode(code);
+    applyFilters(allLogs, requestMethod, logLimit, code); 
   };
 
   return (

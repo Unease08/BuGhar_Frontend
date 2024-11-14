@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import FaEye and FaEyeSlash
-import api from "../../library/Api"; // Adjust the import path as necessary
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import api from "../../library/Api"; 
 import toast from "react-hot-toast";
 
-// Validation schema for new password and confirm password
 const validationSchema = Yup.object().shape({
   newPassword: Yup.string()
     .min(8, "Password must be at least 8 characters")
@@ -17,8 +16,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const ResetPassword = () => {
-  const { id } = useParams(); // Extracting the ID from the URL
-  const navigate = useNavigate(); // Initialize the navigate function
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
 
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -33,10 +32,9 @@ const ResetPassword = () => {
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // Sending POST request to reset the password
       const response = await api.post(
-        `/auth/reset-password`, // API endpoint with id
-        { token: id, new_password: values.newPassword }, // Send new password
+        `/auth/reset-password`, 
+        { token: id, new_password: values.newPassword }, 
         {
           headers: {
             "Content-Type": "application/json",
@@ -45,17 +43,15 @@ const ResetPassword = () => {
       );
 
       const { message } = response.data;
-      toast.success(message); // Show success message from the backend
+      toast.success(message); 
 
-      // Redirect to the login page after a successful password reset
       navigate("/auth/researcher/login");
     } catch (error) {
       if (error.response && error.response.data.detail) {
-        // Display backend error message in toast
         toast.error(error.response.data.detail);
         setFieldError("newPassword", error.response.data.detail);
       } else {
-        toast.error("An error occurred while resetting your password."); // Default message if no backend message is returned
+        toast.error("An error occurred while resetting your password."); 
       }
     }
     setSubmitting(false);
@@ -81,7 +77,6 @@ const ResetPassword = () => {
                 {({ isSubmitting }) => (
                   <Form>
                     <div className="grid gap-y-4">
-                      {/* New Password Field */}
                       <div>
                         <label
                           htmlFor="newPassword"
@@ -91,7 +86,7 @@ const ResetPassword = () => {
                         </label>
                         <div className="relative">
                           <Field
-                            type={showNewPassword ? "text" : "password"} // Toggle between text and password
+                            type={showNewPassword ? "text" : "password"}
                             id="newPassword"
                             name="newPassword"
                             placeholder="New Password"
@@ -111,7 +106,6 @@ const ResetPassword = () => {
                         </div>
                       </div>
 
-                      {/* Confirm Password Field */}
                       <div>
                         <label
                           htmlFor="confirmPassword"
@@ -121,7 +115,7 @@ const ResetPassword = () => {
                         </label>
                         <div className="relative">
                           <Field
-                            type={showConfirmPassword ? "text" : "password"} // Toggle between text and password
+                            type={showConfirmPassword ? "text" : "password"} 
                             id="confirmPassword"
                             name="confirmPassword"
                             placeholder="Confirm Password"

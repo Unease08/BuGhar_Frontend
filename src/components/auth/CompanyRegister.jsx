@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../library/Api"; // Adjust the import path as necessary
+import api from "../../library/Api"; 
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
     .email("Invalid email address")
     .required("Email is required"),
   phone_number: Yup.string()
-    .matches(/^\d+$/, "Phone number must contain only digits") // Ensures only numbers are allowed
+    .matches(/^\d+$/, "Phone number must contain only digits") 
     .min(10, "Phone number must be exactly 10 digits")
     .max(10, "Phone number must be exactly 10 digits")
     .required("Number is required"),

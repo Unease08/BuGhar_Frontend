@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../library/Api"; // Adjust the import path as necessary
+import api from "../../library/Api"; 
 import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
@@ -14,7 +14,6 @@ const validationSchema = Yup.object().shape({
 const ForgotPassword = () => {
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // Assuming you have an API endpoint to handle password reset requests
       const response = await api.post(
         "/auth/forgot-password",
         { email: values.email },
@@ -26,9 +25,8 @@ const ForgotPassword = () => {
       );
 
       const { message } = response.data;
-      toast.success(message); // Display success message
+      toast.success(message); 
     } catch (error) {
-      // Handle error responses
       if (error.response && error.response.data.message) {
         setFieldError("email", error.response.data.message);
       } else {

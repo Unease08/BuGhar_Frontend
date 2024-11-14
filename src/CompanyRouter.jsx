@@ -16,16 +16,13 @@ import {
   UpdateProgram,
   Report,
   ViewDocument,
-} from "./company/scenes"; // Company scenes
-import NotFound from "./user/pages/NotFound"; // NotFound component
+} from "./company/scenes"; 
+import NotFound from "./user/pages/NotFound"; 
 import ReportView from "./company/scenes/report/ReportView";
 
 const CompanyRouter = () => {
   return (
     <Routes>
-      {/* Public routes */}
-
-      {/* Protected routes */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/team" element={<Team />} />
       <Route path="/company-verification" element={<CompanyVerification />} />
@@ -42,8 +39,6 @@ const CompanyRouter = () => {
       <Route path="/stream" element={<Stream />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/geography" element={<Geography />} />
-
-      {/* Catch-all route for undefined paths */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -31,10 +31,8 @@ const AdminNavbar = () => {
   const isXsDevices = useMediaQuery("(max-width:466px)");
   const colors = tokens(theme.palette.mode);
 
-  // State to manage popover visibility
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // Function to handle popover open and close
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,7 +43,6 @@ const AdminNavbar = () => {
 
   const open = Boolean(anchorEl);
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
@@ -102,7 +99,6 @@ const AdminNavbar = () => {
         <IconButton onClick={handlePopoverOpen}>
           <PersonOutlined />
         </IconButton>
-        {/* Popover for user options */}
         <Popover
           open={open}
           anchorEl={anchorEl}

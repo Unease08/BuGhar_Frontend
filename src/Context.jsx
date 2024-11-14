@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 export const RouteTypeContext = createContext();
 
 export const RouteTypeProvider = ({ children }) => {
-  const [routeType, setRouteType] = useState("user"); // Default route type
+  const [routeType, setRouteType] = useState("user"); 
 
   return (
     <RouteTypeContext.Provider value={{ routeType, setRouteType }}>

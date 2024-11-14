@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../library/Api"; // Adjust the import path as necessary
+import api from "../../library/Api"; 
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
@@ -44,9 +44,9 @@ const ResearcherRegister = () => {
 
       const { message } = response.data;
 
-      toast.success(message); // Display success message
+      toast.success(message); 
 
-      navigate("/auth/login"); // Redirect to login page after successful registration
+      navigate("/auth/login"); 
     } catch (error) {
       const errorMessage =
         (error.response && error.response.data && error.response.data.detail) ||

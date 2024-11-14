@@ -8,14 +8,14 @@ import AdminRouter from "./AdminRouter";
 import { Toaster } from "react-hot-toast";
 import CompanyRouter from "./CompanyRouter";
 import AuthRoutes from "./routes/AuthRoutes";
-import { jwtDecode } from "jwt-decode"; // Ensure this is imported correctly
+import { jwtDecode } from "jwt-decode";
 
 export const ToggledContext = createContext(null);
 
 function App() {
   const [theme, colorMode] = useMode();
   const [toggled, setToggled] = useState(false);
-  const [routeType, setRouteType] = useState("auth"); // Default to "auth"
+  const [routeType, setRouteType] = useState("auth");
 
   const values = { toggled, setToggled };
 
@@ -24,7 +24,7 @@ function App() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        const userRole = decodedToken.role; // Adjust this if your token has a different structure
+        const userRole = decodedToken.role;
         setRouteType(
           userRole === "admin"
             ? "admin"
@@ -57,7 +57,6 @@ function App() {
             <CssBaseline />
             <ToggledContext.Provider value={values}>
               <Box sx={{ display: "flex", height: "100vh", maxWidth: "100%" }}>
-                {/* Conditional rendering for Navbar and Sidebar based on role */}
                 {routeType === "admin" ? (
                   <>
                     <AdminSideBar />

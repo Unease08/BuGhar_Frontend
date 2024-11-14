@@ -137,7 +137,6 @@ const CompanyVerification = () => {
           </tbody>
         </table>
 
-        {/* Pagination Controls */}
         <div className="flex justify-center mt-8">
           <nav className="flex items-center space-x-2">
             <button
