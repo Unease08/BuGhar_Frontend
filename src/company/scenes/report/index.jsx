@@ -16,9 +16,9 @@ const Report = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await api.get("/report/");
-        setReports(response.data.reverse()); // Reverse the data to show the latest first
-        console.log("Fetched Reports:", response.data); // Log the fetched data
+        const response = await api.get("/report/company/reports");
+        setReports(response.data.reverse());
+        console.log("Fetched Reports:", response.data);
       } catch (error) {
         console.error("Error fetching reports data:", error);
       }
@@ -55,9 +55,8 @@ const Report = () => {
     }
   };
 
-  // Sort and filter reports based on impact and status
   const filteredReports = reports
-    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at)) // Sort in ascending order of date
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .filter((report) => {
       const impactFilter =
         selectedImpact === "All Impact" || report.impact === selectedImpact;
@@ -163,26 +162,26 @@ const Report = () => {
                       <span
                         className={`w-3 h-3 rounded-full ${
                           report.status === "new"
-                            ? "bg-blue-600 text-white" // Blue for opened
+                            ? "bg-blue-600 text-white"
                             : report.status === "triaged"
-                            ? "bg-yellow-500 text-white" // Yellow for triaged
+                            ? "bg-yellow-500 text-white"
                             : report.status === "pending"
-                            ? "bg-orange-500 text-white" // Orange for pending
+                            ? "bg-orange-500 text-white"
                             : report.status === "in_progress"
-                            ? "bg-indigo-600 text-white" // Indigo for in progress
+                            ? "bg-indigo-600 text-white"
                             : report.status === "resolved"
-                            ? "bg-green-600 text-white" // Green for resolved
+                            ? "bg-green-600 text-white"
                             : report.status === "not_applicable"
-                            ? "bg-gray-500 text-white" // Gray for not applicable
+                            ? "bg-gray-500 text-white"
                             : report.status === "duplicate"
-                            ? "bg-gray-400 text-white" // Light Gray for duplicate
+                            ? "bg-gray-400 text-white"
                             : report.status === "wont_fix"
-                            ? "bg-red-600 text-white" // Red for won't fix
+                            ? "bg-red-600 text-white"
                             : report.status === "informative"
-                            ? "bg-teal-500 text-white" // Teal for informative
+                            ? "bg-teal-500 text-white"
                             : report.status === "closed"
-                            ? "bg-green-600 text-white" // Green for closed
-                            : "bg-gray-200 text-black" // Default gray for unknown statuses
+                            ? "bg-green-600 text-white"
+                            : "bg-gray-200 text-black"
                         }`}
                       ></span>
                       <span>
@@ -221,7 +220,6 @@ const Report = () => {
                 ))}
               </tbody>
             </table>
-            {/* Pagination */}
             <div className="flex justify-center mt-8">
               <nav className="flex items-center space-x-2">
                 <button

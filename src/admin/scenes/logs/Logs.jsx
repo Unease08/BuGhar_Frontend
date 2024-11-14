@@ -9,7 +9,7 @@ const Logs = () => {
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [logLimit, setLogLimit] = useState(100);
   const [requestMethod, setRequestMethod] = useState("");
-  const [responseCode, setResponseCode] = useState(""); 
+  const [responseCode, setResponseCode] = useState("");
 
   const fetchLogs = async (limit) => {
     try {
@@ -18,8 +18,8 @@ const Logs = () => {
       });
       const logsString = response.data.logs;
       const parsedLogs = parseLogs(logsString);
-      setAllLogs(parsedLogs); 
-      applyFilters(parsedLogs, requestMethod, limit, responseCode); 
+      setAllLogs(parsedLogs);
+      applyFilters(parsedLogs, requestMethod, limit, responseCode);
     } catch (error) {
       console.error("Error fetching logs:", error);
       toast.error("Failed to fetch logs");
@@ -58,23 +58,21 @@ const Logs = () => {
   };
 
   useEffect(() => {
-    fetchLogs(logLimit); 
-  }, [logLimit]); 
+    fetchLogs(logLimit);
+  }, [logLimit]);
+
   const handleLimitChange = (event) => {
-    const selectedLimit = Number(event.target.value);
-    setLogLimit(selectedLimit); 
+    setLogLimit(Number(event.target.value));
   };
 
   const handleRequestMethodChange = (event) => {
-    const selectedMethod = event.target.value;
-    setRequestMethod(selectedMethod); 
-    applyFilters(allLogs, selectedMethod, logLimit, responseCode); 
+    setRequestMethod(event.target.value);
+    applyFilters(allLogs, event.target.value, logLimit, responseCode);
   };
 
   const handleResponseCodeChange = (event) => {
-    const code = event.target.value;
-    setResponseCode(code);
-    applyFilters(allLogs, requestMethod, logLimit, code); 
+    setResponseCode(event.target.value);
+    applyFilters(allLogs, requestMethod, logLimit, event.target.value);
   };
 
   return (
@@ -84,7 +82,7 @@ const Logs = () => {
         <div className="container mx-auto py-4 px-4">
           <div className="grid grid-cols-4 sm:grid-cols-12 gap-3">
             <div className="col-span-4 sm:col-span-3">
-              <div className="bg-gray-800 shadow rounded-lg p-6 h-[650px]">
+              <div className="bg-gray-800 shadow rounded-lg p-6 h-[640px]">
                 <div className="flex flex-col">
                   <h1 className="flex justify-center text-xl text-indigo-400 font-bold">
                     Log Filter
@@ -100,7 +98,7 @@ const Logs = () => {
                       id="logLimit"
                       value={logLimit}
                       onChange={handleLimitChange}
-                      className="border  text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     >
                       <option value="50">50</option>
                       <option value="100">100</option>
@@ -139,16 +137,14 @@ const Logs = () => {
                     >
                       Search for Response Code
                     </label>
-                    <div className="relative mt-2">
-                      <input
-                        type="text"
-                        id="responseCode"
-                        value={responseCode}
-                        onChange={handleResponseCodeChange}
-                        className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="200"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      id="responseCode"
+                      value={responseCode}
+                      onChange={handleResponseCodeChange}
+                      className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="200"
+                    />
                   </div>
                 </div>
               </div>
@@ -156,50 +152,33 @@ const Logs = () => {
 
             <div className="col-span-4 sm:col-span-9">
               <div className="bg-gray-800 h-[650px] shadow rounded-lg p-4">
-                <div>
-                  <div className="mt-5 ml-4">
-                    <div className="h-[550px] mr-2">
-                      <h2 className="text-lg font-bold text-indigo-400">
-                        Server Log ({filteredLogs.length})
-                      </h2>
-                      <div className="p-4 mt-2 border h-full overflow-y-auto">
-                        {filteredLogs.length > 0 ? (
-                          <div className="font-mono text-sm">
-                            {filteredLogs.map((log, index) => (
-                              <div
-                                key={index}
-                                className="mb-4 p-2 bg-gray-700 rounded-lg shadow-sm"
-                              >
-                                <div className="flex justify-between text-indigo-400">
-                                  <span>
-                                    <strong>Timestamp:</strong> {log.timestamp}
-                                  </span>
-                                  <span>
-                                    <strong>Response Code:</strong>{" "}
-                                    {log.response}
-                                  </span>
-                                </div>
-                                <div className="mt-2">
-                                  <strong>Action:</strong> {log.action}
-                                </div>
-                                <div className="mt-2">
-                                  <strong>IP Address:</strong> {log.ip}
-                                </div>
-                                <div className="mt-2">
-                                  <strong>User-Agent:</strong> {log.userAgent}
-                                </div>
-                                <div className="mt-2">
-                                  <strong>User ID:</strong> {log.userId}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p>No logs available.</p>
-                        )}
+                <h2 className="text-lg font-bold text-indigo-400 mb-4">
+                  Server Log ({filteredLogs.length})
+                </h2>
+                <div className="p-4 border overflow-y-auto overflow-x-hidden font-mono text-sm bg-black text-green-500 h-[580px]">
+                  {filteredLogs.length > 0 ? (
+                    filteredLogs.map((log, index) => (
+                      <div key={index} className="mb-1">
+                        <span className="text-blue-400">[{log.timestamp}]</span>
+                        <span className="text-yellow-400"> {log.action}</span>
+                        <span className="text-green-400">
+                          {" "}
+                          - Response: {log.response}
+                        </span>
+                        <span className="text-purple-400"> - IP: {log.ip}</span>
+                        <span className="text-pink-400">
+                          {" "}
+                          - User-Agent: {log.userAgent}
+                        </span>
+                        <span className="text-cyan-400">
+                          {" "}
+                          - User ID: {log.userId}
+                        </span>
                       </div>
-                    </div>
-                  </div>
+                    ))
+                  ) : (
+                    <p>No logs available.</p>
+                  )}
                 </div>
               </div>
             </div>

@@ -125,7 +125,7 @@ const AdminSideBar = () => {
           }}
         >
           <Item
-            title="User Details"
+            title="Users"
             path="/users"
             colors={colors}
             icon={<PeopleAltOutlined />}

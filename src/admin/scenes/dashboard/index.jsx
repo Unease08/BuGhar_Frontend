@@ -33,7 +33,7 @@ function Dashboard() {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">
-        <Header title="DASHBOARD" subtitle="Welcome to your Admin dashboard"  />
+        <Header title="DASHBOARD" subtitle="Welcome to your Admin dashboard" />
         {!isXsDevices && (
           <Box>
             {/* <Button

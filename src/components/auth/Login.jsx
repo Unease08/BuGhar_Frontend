@@ -27,15 +27,17 @@ const Login = () => {
   };
 
   useEffect(() => {
+    // Check if there is a toast message in sessionStorage
     const message = sessionStorage.getItem("toastMessage");
     if (message) {
       toast.success(message);
-      sessionStorage.removeItem("toastMessage"); 
+      sessionStorage.removeItem("toastMessage"); // Clear message after showing
     }
   }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      // API request to login
       const response = await api.post(
         "/auth/login",
         {
