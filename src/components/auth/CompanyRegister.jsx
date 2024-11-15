@@ -6,7 +6,6 @@ import api from "../../library/Api";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-// Updated validationSchema
 const validationSchema = Yup.object().shape({
   company_name: Yup.string()
     .min(3, "Company Name must be at least 3 characters")

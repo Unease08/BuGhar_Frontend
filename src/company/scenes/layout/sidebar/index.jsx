@@ -60,7 +60,11 @@ const CompanySideBar = () => {
                 gap="12px"
                 sx={{ transition: ".3s ease" }}
               >
-                <img style={{ borderRadius: "8px" }} src={bughar} alt="Bughar" />
+                <img
+                  style={{ borderRadius: "8px" }}
+                  src={bughar}
+                  alt="Bughar"
+                />
               </Box>
             )}
             <IconButton onClick={() => setCollapsed(!collapsed)}>
@@ -129,12 +133,6 @@ const CompanySideBar = () => {
             },
           }}
         >
-          <Item
-            title="Users"
-            path="/team"
-            colors={colors}
-            icon={<PeopleAltOutlined />}
-          />
           <Item
             title="Company Verification"
             path="/company-verification"

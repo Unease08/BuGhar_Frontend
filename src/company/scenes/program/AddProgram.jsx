@@ -58,18 +58,16 @@ const AddProgram = () => {
     setSelectedImage(null);
     setFieldValue("program_logo", null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset the file input value
+      fileInputRef.current.value = ""; 
     }
   };
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
-
-    // Convert start_date and end_date to the required format
+    
     const formattedStartDate = new Date(values.start_date).toISOString();
     const formattedEndDate = new Date(values.end_date).toISOString();
 
-    // Append all form fields to FormData
     formData.append("title", values.title);
     formData.append("in_scope", values.in_scope);
     formData.append("out_of_scope", values.out_of_scope);
@@ -104,19 +102,18 @@ const AddProgram = () => {
     }
   };
 
-  // Custom toolbar options
+  
   const toolbarOptions = [
     [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }], // Header dropdown
-    ["bold", "italic", "underline", "strike"], // Toggled buttons
-    [{ list: "ordered" }, { list: "bullet" }], // Lists
-    [{ indent: "-1" }, { indent: "+1" }], // Indent options
-    [{ align: [] }], // Text align options
-    ["link", "image", "video"], // Media options
-    ["clean"], // Remove formatting
+    [{ header: [1, 2, 3, 4, 5, 6, false] }], 
+    ["bold", "italic", "underline", "strike"], 
+    [{ list: "ordered" }, { list: "bullet" }], 
+    [{ indent: "-1" }, { indent: "+1" }], 
+    [{ align: [] }], 
+    ["link", "image", "video"], 
+    ["clean"], 
   ];
 
-  // Formats allowed for the editor
   const formats = [
     "font",
     "header",
@@ -207,7 +204,7 @@ const AddProgram = () => {
               </div>
             </div>
 
-            {/* Terms Field with Rich Text Editor */}
+           
             <div className="grid gap-2 md:grid-cols-1">
               <div>
                 <label className="block mb-2 text-lg font-medium text-white">
@@ -230,7 +227,7 @@ const AddProgram = () => {
               </div>
             </div>
 
-            {/* Description Field with Rich Text Editor */}
+           
             <div className="grid gap-2 md:grid-cols-1">
               <div>
                 <label className="block mb-2 text-lg font-medium text-white">
@@ -324,7 +321,7 @@ const AddProgram = () => {
                 />
               </div>
             </div>
-            {/* File input for the program_logo */}
+           
             <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label className="block mb-2 text-lg font-medium text-white">

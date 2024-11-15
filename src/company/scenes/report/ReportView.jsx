@@ -22,15 +22,23 @@ const ReportView = () => {
   const [comments, setComments] = useState([]);
   const [impact, setImpact] = useState("");
   const [status, setStatus] = useState("");
+  const [showBountyButton, setShowBountyButton] = useState(false);
+  const [calculatedBounty, setCalculatedBounty] = useState(null);
+  const [isBountyCalculated, setIsBountyCalculated] = useState(false);
 
   useEffect(() => {
     const fetchReport = async () => {
       try {
         const response = await api.get(`/report/${id}`);
         console.log("Response data", response);
-        setReport(response.data);
-        setImpact(response.data.impact || "");
-        setStatus(response.data.status || "");
+        const reportData = response.data;
+
+        setReport(reportData);
+        setImpact(reportData.impact || "");
+        setStatus(reportData.status || "");
+
+        const bountyStatuses = ["triaged", "resolved", "closed"];
+        setShowBountyButton(bountyStatuses.includes(reportData.status));
       } catch (error) {
         console.error("Error fetching report data:", error);
         toast.error("Failed to fetch report data.");
@@ -39,38 +47,6 @@ const ReportView = () => {
 
     fetchReport();
   }, [id]);
-
-  const getStatusLabel = (status) => {
-    const statusLabels = {
-      new: "New",
-      triaged: "Triaged",
-      pending: "Pending",
-      in_progress: "In Progress",
-      resolved: "Resolved",
-      not_applicable: "Not Applicable",
-      duplicate: "Duplicate",
-      wont_fix: "Won't Fix",
-      informative: "Informative",
-      closed: "Closed",
-    };
-    return statusLabels[status] || status;
-  };
-
-  const getStatusColor = (status) => {
-    const statusColors = {
-      new: "bg-blue-600 text-white",
-      triaged: "bg-yellow-500 text-white",
-      pending: "bg-orange-500 text-white",
-      in_progress: "bg-indigo-600 text-white",
-      resolved: "bg-green-600 text-white",
-      not_applicable: "bg-gray-500 text-white",
-      duplicate: "bg-gray-400 text-white",
-      wont_fix: "bg-red-600 text-white",
-      informative: "bg-teal-500 text-white",
-      closed: "bg-green-600 text-white",
-    };
-    return statusColors[status] || "bg-gray-200 text-black";
-  };
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-US", {
@@ -134,6 +110,9 @@ const ReportView = () => {
           impact: impact,
           status: status,
         }));
+
+        const bountyStatuses = ["triaged", "resolved", "closed"];
+        setShowBountyButton(bountyStatuses.includes(status));
       } else {
         toast.error(response.data.message || "Failed to update report.");
       }
@@ -143,6 +122,24 @@ const ReportView = () => {
       const errorMessage =
         error.response?.data?.detail || "Unknown error occurred";
       toast.error(errorMessage);
+    }
+  };
+
+  const handleCalculateBounty = async () => {
+    try {
+      const response = await api.get(`/reward/calculate_bounty/${id}`);
+      console.log("Bounty calculation response:", response.data);
+
+      // Set the fetched amount to state
+      setCalculatedBounty(response.data.amount);
+
+      toast.success("Bounty calculation successful!");
+
+      // Set state to show bounty section
+      setIsBountyCalculated(true);
+    } catch (error) {
+      console.error("Error calculating bounty:", error);
+      toast.error("Failed to calculate bounty. Please try again.");
     }
   };
 
@@ -284,7 +281,7 @@ const ReportView = () => {
             </div>
 
             <div className="col-span-4 sm:col-span-3">
-              <div className="bg-gray-800 shadow rounded-lg p-6 h-[650px]">
+              <div className="bg-gray-800 shadow rounded-lg p-6 h-[700px]">
                 <div className="flex flex-col">
                   {report ? (
                     <>
@@ -376,6 +373,40 @@ const ReportView = () => {
                             Update
                           </button>
                         </div>
+                        {showBountyButton && (
+                          <div className="mt-8">
+                            <div className="flex flex-col items-center bg-gray-600 p-6 rounded-lg shadow-lg">
+                              <h2 className="text-2xl font-bold text-indigo-400 mb-2">
+                                Bounty Section
+                              </h2>
+                              <p className="text-lg text-gray-300">
+                                Bounty:{" "}
+                                <strong className="text-green-400 text-sm">
+                                  Rs.{" "}
+                                  {calculatedBounty !== null
+                                    ? calculatedBounty
+                                    : ""}
+                                </strong>
+                              </p>
+                              <div className="mt-2">
+                                <button className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 transform transition-transform duration-200 hover:scale-105">
+                                  Pay
+                                </button>
+                              </div>
+                            </div>
+
+                            {!isBountyCalculated && (
+                              <div className="flex justify-center mt-4">
+                                <button
+                                  onClick={handleCalculateBounty}
+                                  className="bg-green-700 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                                >
+                                  Calculate Bounty
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </>
                   ) : (

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import useCountries from "../../../customhooks/UseCountries";
 import CustomDropdown from "../../../library/CustomDropdown";
 import api from "../../../library/Api";
-import config from "../../../config"; // Assuming you have a config file for BASE_URL
+import config from "../../../config";
 import toast from "react-hot-toast";
 
 const CompanyInfo = () => {
@@ -12,7 +12,7 @@ const CompanyInfo = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedImage, setSelectedImage] = useState(
     "https://saugat-nepal.com.np/assets/img/profile-img.png"
-  ); // Default fallback image
+  );
   const [imageFile, setImageFile] = useState(null);
   const [companyDetails, setCompanyDetails] = useState({
     company_name: "",
@@ -21,10 +21,11 @@ const CompanyInfo = () => {
     description: "",
   });
 
+  // Handle Image Change
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImageFile(file); // Store the file in state for form submission
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result);
@@ -33,30 +34,38 @@ const CompanyInfo = () => {
     }
   };
 
+  // Fetch Company Details
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       try {
         const response = await api.get(`/company/company-detail/`);
-        console.log("API Response:", response.data); // Log the response to the console
 
-        const {
-          company_name,
-          website,
-          phone_number,
-          description,
-          country,
-          company_logo,
-        } = response.data;
+        // Check if the response has data and it's an array
+        if (response.data && response.data.length > 0) {
+          const {
+            company_name = "",
+            website = "",
+            phone_number = "",
+            description = "",
+            country = "",
+            company_logo,
+          } = response.data[0]; // Access the first object
 
-        // Set company details and country
-        setCompanyDetails({ company_name, website, phone_number, description });
-        setSelectedCountry(country);
+          setCompanyDetails({
+            company_name,
+            website,
+            phone_number,
+            description,
+          });
+          setSelectedCountry(country);
 
-        // Set the company logo if available, otherwise use the fallback image
-        const imageUrl = company_logo
-          ? `${config.BASE_URL}/${company_logo}`
-          : "https://saugat-nepal.com.np/assets/img/profile-img.png";
-        setSelectedImage(imageUrl);
+          const imageUrl = company_logo
+            ? `${config.BASE_URL}/${company_logo}`
+            : "https://saugat-nepal.com.np/assets/img/profile-img.png";
+          setSelectedImage(imageUrl);
+        } else {
+          console.warn("No company details found.");
+        }
       } catch (error) {
         console.error("Error fetching company details:", error);
       }
@@ -65,20 +74,17 @@ const CompanyInfo = () => {
     fetchCompanyDetails();
   }, []);
 
+  // Handle Form Submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const formData = new FormData();
-      if (companyDetails.company_name)
-        formData.append("company_name", companyDetails.company_name);
-      if (companyDetails.website)
-        formData.append("website", companyDetails.website);
-      if (companyDetails.phone_number)
-        formData.append("phone_number", companyDetails.phone_number);
-      if (companyDetails.description)
-        formData.append("description", companyDetails.description);
-      if (selectedCountry) formData.append("country", selectedCountry);
+      formData.append("company_name", companyDetails.company_name || "");
+      formData.append("website", companyDetails.website || "");
+      formData.append("phone_number", companyDetails.phone_number || "");
+      formData.append("description", companyDetails.description || "");
+      formData.append("country", selectedCountry || "");
 
       if (imageFile) {
         formData.append("company_logo", imageFile);
@@ -94,7 +100,7 @@ const CompanyInfo = () => {
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error updating company details:", error);
-      toast.error(response.data.detail);
+      toast.error("Failed to update company details");
     }
   };
 
@@ -105,6 +111,7 @@ const CompanyInfo = () => {
         onSubmit={handleFormSubmit}
         className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8"
       >
+        {/* Logo Upload */}
         <div className="flex justify-center items-center">
           <label className="w-32 h-32 overflow-hidden rounded-full border-4 border-blue-300 flex justify-center items-center cursor-pointer">
             <img
@@ -121,6 +128,7 @@ const CompanyInfo = () => {
           </label>
         </div>
 
+        {/* Input Fields */}
         <div className="grid gap-6 mt-5 mb-6 md:grid-cols-2">
           <div>
             <label
@@ -135,10 +143,10 @@ const CompanyInfo = () => {
               name="company_name"
               value={companyDetails.company_name}
               onChange={(e) =>
-                setCompanyDetails({
-                  ...companyDetails,
+                setCompanyDetails((prevState) => ({
+                  ...prevState,
                   company_name: e.target.value,
-                })
+                }))
               }
               className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="Company Name"
@@ -157,10 +165,10 @@ const CompanyInfo = () => {
               name="website"
               value={companyDetails.website}
               onChange={(e) =>
-                setCompanyDetails({
-                  ...companyDetails,
+                setCompanyDetails((prevState) => ({
+                  ...prevState,
                   website: e.target.value,
-                })
+                }))
               }
               className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="Company Website"
@@ -195,16 +203,17 @@ const CompanyInfo = () => {
               name="phone_number"
               value={companyDetails.phone_number}
               onChange={(e) =>
-                setCompanyDetails({
-                  ...companyDetails,
+                setCompanyDetails((prevState) => ({
+                  ...prevState,
                   phone_number: e.target.value,
-                })
+                }))
               }
               className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>
 
+        {/* Text Area */}
         <div className="mb-6">
           <label
             htmlFor="company_bio"
@@ -217,10 +226,10 @@ const CompanyInfo = () => {
             name="description"
             value={companyDetails.description}
             onChange={(e) =>
-              setCompanyDetails({
-                ...companyDetails,
+              setCompanyDetails((prevState) => ({
+                ...prevState,
                 description: e.target.value,
-              })
+              }))
             }
             className="border text-lg rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             rows="6"

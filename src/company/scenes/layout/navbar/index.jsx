@@ -32,12 +32,10 @@ const CompanyNavbar = () => {
   const isXsDevices = useMediaQuery("(max-width:466px)");
   const colors = tokens(theme.palette.mode);
 
-  // State to manage popover visibility and verification status
   const [anchorEl, setAnchorEl] = useState(null);
   const [verificationStatus, setVerificationStatus] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState(""); // Store current status
+  const [currentStatus, setCurrentStatus] = useState(""); 
 
-  // Function to handle popover open and close
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -48,7 +46,6 @@ const CompanyNavbar = () => {
 
   const open = Boolean(anchorEl);
 
-  // Fetch verification status
   const fetchVerificationStatus = async () => {
     try {
       const response = await api.get("/company/verification-status");
@@ -60,10 +57,10 @@ const CompanyNavbar = () => {
   };
 
   useEffect(() => {
-    fetchVerificationStatus(); // Fetch verification status on component mount
+    fetchVerificationStatus(); 
   }, []);
 
-  // Determine status color based on current status
+ 
   const getStatusStyles = (status) => {
     switch (status) {
       case "approved":
@@ -79,7 +76,7 @@ const CompanyNavbar = () => {
     }
   };
 
-  // Logout function
+  
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
@@ -98,7 +95,7 @@ const CompanyNavbar = () => {
       justifyContent="space-between"
       p={2}
     >
-      {/* Conditional rendering of verification message */}
+     
       {!verificationStatus && (
         <div
           className="fixed top-2 right-16 z-50 mr-32 -translate-x-1/2 bg-orange-400 p-1 drop-shadow-2xl max-sm:w-11/12"
@@ -147,7 +144,7 @@ const CompanyNavbar = () => {
           </Box>
         </Box>
 
-        {/* Display current status with background color and white text */}
+       
         <Box>
           <p
             className="flex justify-end items-center px-2 py-0.5 rounded-full mr-2"
@@ -165,7 +162,7 @@ const CompanyNavbar = () => {
         <IconButton onClick={handlePopoverOpen}>
           <PersonOutlined />
         </IconButton>
-        {/* Popover for user options */}
+       
         <Popover
           open={open}
           anchorEl={anchorEl}

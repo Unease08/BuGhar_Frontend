@@ -12,13 +12,9 @@ import {
 } from "@mui/material";
 import { tokens, ColorModeContext } from "../../../../theme";
 import {
-  DarkModeOutlined,
-  LightModeOutlined,
   MenuOutlined,
-  NotificationsOutlined,
   PersonOutlined,
   SearchOutlined,
-  SettingsOutlined,
 } from "@mui/icons-material";
 import { ToggledContext } from "../../../../App";
 import toast from "react-hot-toast";
@@ -83,19 +79,6 @@ const AdminNavbar = () => {
       </Box>
 
       <Box>
-        <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <LightModeOutlined />
-          ) : (
-            <DarkModeOutlined />
-          )}
-        </IconButton>
-        <IconButton>
-          <NotificationsOutlined />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlined />
-        </IconButton>
         <IconButton onClick={handlePopoverOpen}>
           <PersonOutlined />
         </IconButton>

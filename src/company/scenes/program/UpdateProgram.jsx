@@ -28,7 +28,7 @@ const UpdateProgram = () => {
 
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the ID from the URL
+  const { id } = useParams(); 
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
@@ -57,27 +57,26 @@ const UpdateProgram = () => {
 
         const program = response.data;
 
-        // Set initial values with the fetched data
+        
         setInitialValues({
           title: program.title,
           in_scope: program.in_scope,
           out_of_scope: program.out_of_scope,
           terms: program.terms,
           description: program.description,
-          start_date: program.start_date.split("T")[0], // Format date as YYYY-MM-DD
-          end_date: program.end_date.split("T")[0], // Format date as YYYY-MM-DD
+          start_date: program.start_date.split("T")[0], 
+          end_date: program.end_date.split("T")[0],
           min_price: program.min_price,
           max_price: program.max_price,
-          program_logo: null, // Reset this as you'll handle the image upload separately
+          program_logo: null, 
         });
 
-        // Set selectedImage if program has an existing logo
+        
         if (program.program_logo) {
-          // Construct the full image URL using config.BASE_URL
           const imageUrl = `${config.BASE_URL}/${program.program_logo}`;
-          setSelectedImage(imageUrl); // Set the formatted URL to state for preview
+          setSelectedImage(imageUrl); 
         } else {
-          setSelectedImage(null); // If no image, reset preview to null
+          setSelectedImage(null); 
         }
       } catch (error) {
         console.error("Error fetching program data:", error);
@@ -86,7 +85,7 @@ const UpdateProgram = () => {
     };
 
     fetchProgramData();
-  }, [id]); // Dependency on id to refetch if it changes
+  }, [id]); 
 
   const handleImageChange = (event, setFieldValue) => {
     const file = event.target.files[0];
@@ -101,7 +100,7 @@ const UpdateProgram = () => {
     setSelectedImage(null);
     setFieldValue("program_logo", null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset the file input value
+      fileInputRef.current.value = "";
     }
   };
 
@@ -141,19 +140,18 @@ const UpdateProgram = () => {
       toast.error(`Error: ${errorMessage}`);
     }
   };
-  // Custom toolbar options
   const toolbarOptions = [
     [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }], // Header dropdown
-    ["bold", "italic", "underline", "strike"], // Toggled buttons
-    [{ list: "ordered" }, { list: "bullet" }], // Lists
-    [{ indent: "-1" }, { indent: "+1" }], // Indent options
-    [{ align: [] }], // Text align options
-    ["link", "image", "video"], // Media options
-    ["clean"], // Remove formatting
+    [{ header: [1, 2, 3, 4, 5, 6, false] }], 
+    ["bold", "italic", "underline", "strike"], 
+    [{ list: "ordered" }, { list: "bullet" }], 
+    [{ indent: "-1" }, { indent: "+1" }], 
+    [{ align: [] }], 
+    ["link", "image", "video"], 
+    ["clean"], 
   ];
 
-  // Formats allowed for the editor
+  
   const formats = [
     "font",
     "header",

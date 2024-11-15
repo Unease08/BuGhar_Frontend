@@ -13,12 +13,11 @@ const Program = () => {
   const [sortDirection, setSortDirection] = useState("asc");
   const [programs, setPrograms] = useState([]);
 
-  // Fetch programs data from the API
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
         const response = await api.get("/programs/");
-        setPrograms(response.data.reverse()); // Reverse the array to show new data first
+        setPrograms(response.data.reverse()); 
       } catch (error) {
         console.error("Error fetching programs data:", error);
       }
