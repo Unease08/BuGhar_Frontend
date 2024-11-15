@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { useParams } from "react-router-dom";
 import api from "../../../library/Api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Payment = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
-  const [bounty, setBounty] = useState(null);
+  const [bounty, setBounty] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchReportDetails = async () => {
@@ -24,7 +26,7 @@ const Payment = () => {
     const fetchBountyDetails = async () => {
       try {
         const response = await api.get(`/reward/calculate_bounty/${id}`);
-        setBounty(response.data);
+        setBounty(response.data.amount);
       } catch (error) {
         console.error("Error fetching bounty details:", error);
       }
@@ -38,6 +40,48 @@ const Payment = () => {
 
     fetchData();
   }, [id]);
+
+  const handleBountyChange = (e) => {
+    setBounty(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      // Create a payload object matching the backend's expected format
+      const payload = {
+        report_id: parseInt(id), // Ensure report_id is an integer
+        amount: parseFloat(bounty), // Ensure amount is a valid float
+        reward_status: "paid", // You can modify this value if needed
+      };
+
+      console.log("Request Payload:", payload);
+
+      // Make the API request with application/json content-type
+      const response = await api.post("/reward/pay", payload, {
+        headers: {
+          "Content-Type": "application/json", // Ensure the correct content type for JSON
+        },
+      });
+
+      alert("Bounty amount updated successfully!");
+      navigate("/company");
+    } catch (error) {
+      console.error("Error updating bounty amount:", error);
+      if (error.response) {
+        console.error("Server Response:", error.response.data); // Log server error details
+        alert(
+          `Failed to update the bounty amount: ${
+            error.response.data.message || "Unknown error"
+          }`
+        );
+      } else {
+        alert("Failed to update the bounty amount.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-US", {
@@ -115,8 +159,8 @@ const Payment = () => {
                   id="calculated_bounty"
                   className="w-full md:w-48 border text-sm rounded-lg p-3 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
                   placeholder="Enter amount"
-                  value={bounty?.amount || ""}
-                  readOnly
+                  value={bounty}
+                  onChange={handleBountyChange}
                 />
               </div>
             </Grid>
@@ -130,11 +174,13 @@ const Payment = () => {
               </Link>
             </div>
             <div className="ml-4 mt-4">
-              <Link to="/company">
-                <button className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center focus:ring-gray-700">
-                  Submit
-                </button>
-              </Link>
+              <button
+                className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center focus:ring-gray-700"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </button>
             </div>
           </div>
         </div>

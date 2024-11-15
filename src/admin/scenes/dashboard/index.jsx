@@ -7,7 +7,6 @@ import {
   ApartmentRounded,
 } from "@mui/icons-material";
 import { tokens } from "../../../theme";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import api from "../../../library/Api";
 

@@ -1,28 +1,14 @@
+import React, { useEffect, useState } from "react";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Header, StatBox, PieChart, BarChart } from "../../components";
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import {
-  Header,
-  StatBox,
-  PieChart,
-  LineChart,
-  ProgressCircle,
-  BarChart,
-  GeographyChart,
-} from "../../components";
-import {
-  DownloadOutlined,
-  Person,
-  PersonAdd,
-  PointOfSale,
-  Traffic,
+  ReceiptOutlined,
+  SummarizeOutlined,
+  MonetizationOnOutlined,
+  EmojiEventsOutlined,
 } from "@mui/icons-material";
 import { tokens } from "../../../theme";
+import api from "../../../library/Api";
 
 function Dashboard() {
   const theme = useTheme();
@@ -30,6 +16,25 @@ function Dashboard() {
   const isXlDevices = useMediaQuery("(min-width: 1260px)");
   const isMdDevices = useMediaQuery("(min-width: 724px)");
   const isXsDevices = useMediaQuery("(max-width: 436px)");
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/company/dashboard");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!data) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <Box m="20px">
@@ -57,10 +62,10 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="11,361"
-            subtitle="User"
+            title={data.program_count}
+            subtitle="Program"
             icon={
-              <Person
+              <ReceiptOutlined
                 sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
               />
             }
@@ -74,10 +79,28 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
+            title={data.report_count}
+            subtitle="Reports"
             icon={
-              <PointOfSale
+              <SummarizeOutlined
+                sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
+              />
+            }
+          />
+        </Box>
+
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={data.reward_count}
+            subtitle="No. of reward"
+            icon={
+              <EmojiEventsOutlined
                 sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
               />
             }
@@ -91,27 +114,10 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
+            title={data.total_rewards_paid}
+            subtitle="Total Reward (in Rs.)"
             icon={
-              <PersonAdd
-                sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="1,325,134"
-            subtitle="Income"
-            icon={
-              <Traffic
+              <MonetizationOnOutlined
                 sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
               />
             }
