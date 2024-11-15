@@ -1,10 +1,10 @@
-import { Box, Grid, Dialog, DialogContent, IconButton } from "@mui/material";
+import { Box, Grid, Dialog, DialogContent} from "@mui/material";
 import { useState, useEffect } from "react";
 import { Header } from "../../components";
 import api from "../../../library/Api";
 import { toast } from "react-hot-toast";
 import config from "../../../config";
-import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
 
 const ViewDocument = () => {
   const [documents, setDocuments] = useState([]);
@@ -50,7 +50,14 @@ const ViewDocument = () => {
 
   return (
     <Box m="20px">
-      <Header title="Company Information" />
+      <div className="flex justify-between items-center">
+        <Header title="Company Information" />
+        <Link to="/company-verification">
+          <button className="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center focus:ring-gray-700">
+            Back
+          </button>
+        </Link>
+      </div>
       <div className="max-w-8xl mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-lg flex flex-col gap-8">
         <Grid container spacing={8}>
           {documents.map((doc) => (

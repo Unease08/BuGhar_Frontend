@@ -61,7 +61,7 @@ const CompanyVerification = () => {
         },
       });
       toast.success(response.data.message);
-      navigate("/program");
+      navigate("/view-document");
     } catch (error) {
       console.error("Error submitting report:", error);
       const errorMessage =

@@ -1,28 +1,63 @@
 import { ResponsiveBar } from "@nivo/bar";
 import { useTheme } from "@mui/material";
+import { useState, useEffect } from "react";
+import api from "../../library/Api";
 
 const BarChart = ({ isDashboard = false }) => {
   const theme = useTheme();
+  const [barData, setBarData] = useState([]);
 
-  const data = [
-    { month: "Jan", "hot dog": 13 },
-    { month: "Feb", "hot dog": 5 },
-    { month: "Mar", "hot dog": 10 },
-    { month: "Apr", "hot dog": 13 },
-    { month: "May", "hot dog": 8 },
-    { month: "June", "hot dog": 6 },
-    { month: "July", "hot dog": 8 },
-    { month: "Aug", "hot dog": 9 },
-    { month: "Sept", "hot dog": 11 },
-    { month: "Oct", "hot dog": 9 },
-    { month: "Nov", "hot dog": 1 },
-    { month: "Dec", "hot dog": 7 },
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await api.get("/admin/dashboard");
+        console.log(response.data);
+
+        const { companies_by_month } = response.data;
+
+        const monthDataMap = monthNames.reduce((acc, month) => {
+          acc[month] = 0;
+          return acc;
+        }, {});
+
+        companies_by_month.forEach((item) => {
+          const monthName = monthNames[item.month - 1];
+          monthDataMap[monthName] = item.total_companies;
+        });
+
+        const formattedData = Object.keys(monthDataMap).map((month) => ({
+          month: month,
+          total_companies: monthDataMap[month],
+        }));
+
+        setBarData(formattedData);
+      } catch (error) {
+        console.error("Error fetching dashboard data", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <ResponsiveBar
-      data={data}
-      keys={["hot dog"]}
+      data={barData}
+      keys={["total_companies"]}
       indexBy="month"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
@@ -44,7 +79,7 @@ const BarChart = ({ isDashboard = false }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "Hot Dog Sales",
+        legend: isDashboard ? undefined : "Total Companies",
         legendPosition: "middle",
         legendOffset: -40,
         tick: {

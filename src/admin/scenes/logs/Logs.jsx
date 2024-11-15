@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { Box, IconButton } from "@mui/material";
+import { Refresh } from "@mui/icons-material";
 import { Header } from "../../components";
 import api from "../../../library/Api";
 import { toast } from "react-hot-toast";
@@ -73,6 +74,10 @@ const Logs = () => {
   const handleResponseCodeChange = (event) => {
     setResponseCode(event.target.value);
     applyFilters(allLogs, requestMethod, logLimit, event.target.value);
+  };
+
+  const handleRefresh = () => {
+    fetchLogs(logLimit);
   };
 
   return (
@@ -152,9 +157,18 @@ const Logs = () => {
 
             <div className="col-span-4 sm:col-span-9">
               <div className="bg-gray-800 h-[650px] shadow rounded-lg p-4">
-                <h2 className="text-lg font-bold text-indigo-400 mb-4">
-                  Server Log ({filteredLogs.length})
-                </h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-bold text-indigo-400">
+                    Server Log ({filteredLogs.length})
+                  </h2>
+                  <IconButton
+                    onClick={handleRefresh}
+                    color="primary"
+                    style={{ color: "white" }}
+                  >
+                    <Refresh />
+                  </IconButton>
+                </div>
                 <div className="p-4 border overflow-y-auto overflow-x-hidden font-mono text-sm bg-black text-green-500 h-[580px]">
                   {filteredLogs.length > 0 ? (
                     filteredLogs.map((log, index) => (

@@ -134,7 +134,7 @@ const CompanySideBar = () => {
           }}
         >
           <Item
-            title="Company Verification"
+            title="Verify Company"
             path="/company-verification"
             colors={colors}
             icon={<ContactsOutlined />}

@@ -1,28 +1,15 @@
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Header, StatBox, PieChart, BarChart } from "../../components";
 import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import {
-  Header,
-  StatBox,
-  PieChart,
-  LineChart,
-  ProgressCircle,
-  BarChart,
-  GeographyChart,
-} from "../../components";
-import {
-  DownloadOutlined,
   Person,
-  PersonAdd,
-  PointOfSale,
-  Traffic,
+  ReceiptOutlined,
+  SummarizeOutlined,
+  ApartmentRounded,
 } from "@mui/icons-material";
 import { tokens } from "../../../theme";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import api from "../../../library/Api";
 
 function Dashboard() {
   const theme = useTheme();
@@ -30,6 +17,33 @@ function Dashboard() {
   const isXlDevices = useMediaQuery("(min-width: 1260px)");
   const isMdDevices = useMediaQuery("(min-width: 724px)");
   const isXsDevices = useMediaQuery("(max-width: 436px)");
+
+  // State for storing fetched data
+  const [dashboardData, setDashboardData] = useState({
+    total_users: 0,
+    total_companies: 0,
+    total_programs: 0,
+    total_reports: 0,
+    verified_companies: 0,
+    unverified_companies: 0,
+  });
+
+  // Fetch dashboard data on component mount
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await api.get("/admin/dashboard");
+        console.log(response.data);
+
+        setDashboardData(response.data);
+      } catch (error) {
+        console.error("Error fetching dashboard data", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">
@@ -56,13 +70,14 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="11,361"
-            subtitle="User"
+            title={dashboardData.total_users}
+            subtitle="Users"
             icon={
               <Person
                 sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
               />
             }
+            sx={{ ml: "50px" }} // Add margin-left here
           />
         </Box>
         <Box
@@ -73,11 +88,11 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
+            title={dashboardData.total_companies}
+            subtitle="Companies"
             icon={
-              <PointOfSale
-                sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
+              <ApartmentRounded
+                sx={{ color: colors.blueAccent[500], fontSize: "50px" }}
               />
             }
           />
@@ -90,11 +105,11 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
+            title={dashboardData.total_programs}
+            subtitle="Programs"
             icon={
-              <PersonAdd
-                sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
+              <ReceiptOutlined
+                sx={{ color: colors.blueAccent[500], fontSize: "50px" }}
               />
             }
           />
@@ -107,17 +122,15 @@ function Dashboard() {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
-            subtitle="Income"
+            title={dashboardData.total_reports}
+            subtitle="Reports"
             icon={
-              <Traffic
-                sx={{ color: colors.blueAccent[500], fontSize: "40px" }}
+              <SummarizeOutlined
+                sx={{ color: colors.blueAccent[500], fontSize: "50px" }}
               />
             }
           />
         </Box>
-
-        {/* Graph and Barchart */}
 
         <Box
           gridColumn={
@@ -128,7 +141,7 @@ function Dashboard() {
         >
           <Box px="10px">
             <Typography variant="h5" fontWeight="600" mt="15px">
-              Pie Chart
+              Company Verification
             </Typography>
           </Box>
           <Box height="400px">
@@ -145,7 +158,7 @@ function Dashboard() {
         >
           <Box px="10px">
             <Typography variant="h5" fontWeight="600" mt="15px">
-              Bar Chart
+              User Registration
             </Typography>
           </Box>
           <Box height="400px">
