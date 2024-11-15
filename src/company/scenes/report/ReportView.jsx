@@ -375,6 +375,7 @@ const ReportView = () => {
                         </div>
                         {showBountyButton && (
                           <div className="mt-8">
+                            {/* Bounty Section */}
                             <div className="flex flex-col items-center bg-gray-600 p-6 rounded-lg shadow-lg">
                               <h2 className="text-2xl font-bold text-indigo-400 mb-2">
                                 Bounty Section
@@ -388,13 +389,20 @@ const ReportView = () => {
                                     : ""}
                                 </strong>
                               </p>
-                              <div className="mt-2">
-                                <button className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 transform transition-transform duration-200 hover:scale-105">
-                                  Pay
-                                </button>
-                              </div>
+
+                              {/* Pay button, visible when bounty is calculated */}
+                              {isBountyCalculated && (
+                                <div className="mt-2">
+                                  <Link to={`/payment/${report.id}`}>
+                                    <button className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 transform transition-transform duration-200 hover:scale-105">
+                                      Pay
+                                    </button>
+                                  </Link>
+                                </div>
+                              )}
                             </div>
 
+                            {/* Calculate Bounty button, visible when bounty is not yet calculated */}
                             {!isBountyCalculated && (
                               <div className="flex justify-center mt-4">
                                 <button

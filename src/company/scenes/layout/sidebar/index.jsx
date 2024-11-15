@@ -7,10 +7,10 @@ import {
   ContactsOutlined,
   DashboardOutlined,
   MenuOutlined,
-  PeopleAltOutlined,
   PersonOutlined,
   ReceiptOutlined,
   SummarizeOutlined,
+  MonetizationOnOutlined,
 } from "@mui/icons-material";
 import avatar from "../../../assets/images/avatar.png";
 import logo from "../../../assets/images/logo.png";
@@ -156,6 +156,12 @@ const CompanySideBar = () => {
             path="/company-info"
             colors={colors}
             icon={<PersonOutlined />}
+          />
+          <Item
+            title="Reward"
+            path="/reward"
+            colors={colors}
+            icon={<MonetizationOnOutlined />}
           />
         </Menu>
       </Box>

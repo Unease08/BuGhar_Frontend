@@ -16,9 +16,12 @@ import {
   UpdateProgram,
   Report,
   ViewDocument,
-} from "./company/scenes"; 
-import NotFound from "./user/pages/NotFound"; 
+  Reward,
+} from "./company/scenes";
+import NotFound from "./user/pages/NotFound";
 import ReportView from "./company/scenes/report/ReportView";
+import Payable from "./company/scenes/reward/Payable";
+import Payment from "./company/scenes/reward/Payment";
 
 const CompanyRouter = () => {
   return (
@@ -33,6 +36,9 @@ const CompanyRouter = () => {
       <Route path="/company-info" element={<CompanyInfo />} />
       <Route path="/report" element={<Report />} />
       <Route path="/report-view/:id" element={<ReportView />} />
+      <Route path="/reward" element={<Reward />} />
+      <Route path="/payable" element={<Payable />} />
+      <Route path="/payment/:id" element={<Payment />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/bar" element={<Bar />} />
       <Route path="/pie" element={<Pie />} />

@@ -9,6 +9,7 @@ import CompanyVerification from "./companyverification";
 import CompanyInfo from "./companyinfo";
 import Report from "./report";
 import ViewDocument from "./companyverification/ViewDocument";
+import Reward from "./reward/Reward";
 import Calendar from "./calendar";
 import Bar from "./bar";
 import Pie from "./pie";
@@ -28,6 +29,7 @@ export {
   CompanyInfo,
   Report,
   ViewDocument,
+  Reward,
   Calendar,
   Bar,
   Pie,
