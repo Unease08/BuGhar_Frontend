@@ -21,7 +21,6 @@ const CompanyInfo = () => {
     description: "",
   });
 
-  // Handle Image Change
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -34,13 +33,11 @@ const CompanyInfo = () => {
     }
   };
 
-  // Fetch Company Details
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       try {
         const response = await api.get(`/company/company-detail/`);
 
-        // Check if the response has data and it's an array
         if (response.data && response.data.length > 0) {
           const {
             company_name = "",
@@ -49,7 +46,7 @@ const CompanyInfo = () => {
             description = "",
             country = "",
             company_logo,
-          } = response.data[0]; // Access the first object
+          } = response.data[0];
 
           setCompanyDetails({
             company_name,
@@ -74,7 +71,6 @@ const CompanyInfo = () => {
     fetchCompanyDetails();
   }, []);
 
-  // Handle Form Submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -111,7 +107,6 @@ const CompanyInfo = () => {
         onSubmit={handleFormSubmit}
         className="max-w-8xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg flex flex-col gap-8"
       >
-        {/* Logo Upload */}
         <div className="flex justify-center items-center">
           <label className="w-32 h-32 overflow-hidden rounded-full border-4 border-blue-300 flex justify-center items-center cursor-pointer">
             <img
@@ -128,7 +123,6 @@ const CompanyInfo = () => {
           </label>
         </div>
 
-        {/* Input Fields */}
         <div className="grid gap-6 mt-5 mb-6 md:grid-cols-2">
           <div>
             <label
@@ -213,7 +207,6 @@ const CompanyInfo = () => {
           </div>
         </div>
 
-        {/* Text Area */}
         <div className="mb-6">
           <label
             htmlFor="company_bio"
