@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import api from "../.../../../../library/Api"; // Adjust the path based on your file structure
+import api from "../.../../../../library/Api";
 
 const MyReport = () => {
-  const [reports, setReports] = useState([]); // State to store reports data
-  const [currentPage, setCurrentPage] = useState(1); // State to track the current page
-  const reportsPerPage = 5; // Number of reports to show per page
+  const [reports, setReports] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const reportsPerPage = 5;
 
-  // Fetch reports from /report endpoint
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await api.get("/report/"); // Replace with your API endpoint
+        const response = await api.get("/report/");
         console.log("API response", response.data);
 
-        // Assuming response.data is an array of reports
         const sortedReports = response.data.sort((a, b) => {
-          // Compare dates in descending order
           return new Date(b.created_at) - new Date(a.created_at);
         });
 
@@ -30,7 +27,6 @@ const MyReport = () => {
     fetchReports();
   }, []);
 
-  // Format date into a readable string format
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString("en-US", {
       year: "numeric",
@@ -39,17 +35,14 @@ const MyReport = () => {
     });
   };
 
-  // Calculate the total number of pages
   const totalPages = Math.ceil(reports.length / reportsPerPage);
 
-  // Calculate the index range for the current page's reports
   const indexOfLastReport = currentPage * reportsPerPage;
   const indexOfFirstReport = indexOfLastReport - reportsPerPage;
   const currentReports = reports.slice(indexOfFirstReport, indexOfLastReport);
 
-  // Function to handle page change
   const handlePageChange = (pageNumber) => {
-    if (pageNumber < 1 || pageNumber > totalPages) return; // Prevent navigation outside of valid pages
+    if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
   };
 
@@ -75,7 +68,6 @@ const MyReport = () => {
           </p>
         </div>
 
-        {/* Render reports dynamically from fetched data */}
         {currentReports.length > 0 ? (
           currentReports.map((report, index) => (
             <div
@@ -91,26 +83,26 @@ const MyReport = () => {
                     <span
                       className={`w-3 h-3 rounded-full ${
                         report.status === "new"
-                          ? "bg-blue-600" // Blue for opened
+                          ? "bg-blue-600"
                           : report.status === "triaged"
-                          ? "bg-yellow-500" // Yellow for triaged
+                          ? "bg-yellow-500"
                           : report.status === "pending"
-                          ? "bg-orange-500" // Orange for pending
+                          ? "bg-orange-500"
                           : report.status === "in_progress"
-                          ? "bg-indigo-600" // Indigo for in progress
+                          ? "bg-indigo-600"
                           : report.status === "resolved"
-                          ? "bg-green-600" // Green for resolved
+                          ? "bg-green-600"
                           : report.status === "not_applicable"
-                          ? "bg-gray-500" // Gray for not applicable
+                          ? "bg-gray-500"
                           : report.status === "duplicate"
-                          ? "bg-gray-400" // Light Gray for duplicate
+                          ? "bg-gray-400"
                           : report.status === "wont_fix"
-                          ? "bg-red-600" // Red for won't fix
+                          ? "bg-red-600"
                           : report.status === "informative"
-                          ? "bg-teal-500" // Teal for informative
+                          ? "bg-teal-500"
                           : report.status === "closed"
-                          ? "bg-green-600" // Green for closed
-                          : "bg-gray-200" // Default gray for unknown statuses
+                          ? "bg-green-600"
+                          : "bg-gray-200"
                       }`}
                     ></span>
                     <span className="text-white font-bold">
@@ -138,10 +130,6 @@ const MyReport = () => {
                       {formatDate(report.created_at)}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <span className="text-white">Bounty Received: </span>
-                    <p className="text-gray-400">{report.bountyReceived}</p>
-                  </div>
                 </div>
               </div>
               <div className="flex justify-end mt-1 mb-2">
@@ -160,7 +148,6 @@ const MyReport = () => {
           <p className="text-gray-400 mt-4">No reports found.</p>
         )}
 
-        {/* Pagination Controls */}
         {totalPages > 1 && (
           <div className="flex justify-center mt-8">
             <nav className="flex items-center space-x-2">

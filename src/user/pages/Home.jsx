@@ -1,9 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { IoStatsChartSharp } from "react-icons/io5";
 import DashboardSidebar from "../components/dashboardsidebar/DashboardSidebar";
 
 function Dashboard() {
+
+   const [userData, setUserData] = useState({
+     first_name: "",
+     last_name: "",
+     profile_picture: "",
+   });
+
   useEffect(() => {
     const message = sessionStorage.getItem("toastMessage");
     if (message) {
@@ -11,6 +18,23 @@ function Dashboard() {
       sessionStorage.removeItem("toastMessage");
     }
   }, []);
+
+   useEffect(() => {
+     const fetchUserDetails = async () => {
+       try {
+         const response = await api.get("/user/details/");
+         setUserData(response.data);
+       } catch (error) {
+         console.error("Failed to fetch user details", error);
+       }
+     };
+
+     fetchUserDetails();
+   }, []);
+
+   const imageUrl = userData.profile_picture
+     ? `${config.BASE_URL}/${userData.profile_picture}`
+     : "https://saugat-nepal.com.np/assets/img/profile-img.png";
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
