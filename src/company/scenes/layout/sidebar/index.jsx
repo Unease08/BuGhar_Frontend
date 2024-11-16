@@ -24,28 +24,30 @@ const CompanySideBar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [userData, setUserData] = useState({
-    first_name: "",
-    last_name: "",
-    profile_picture: "",
+  const [companyData, setCompanyData] = useState({
+    company_name: "",
+    company_logo: "",
   });
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const fetchCompanyDetails = async () => {
       try {
         const response = await api.get("/company/company-detail/");
-        console.log(response.data);
-        setUserData(response.data);
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          setCompanyData(response.data[0]);
+        } else {
+          console.error("No company data found");
+        }
       } catch (error) {
-        console.error("Failed to fetch user details", error);
+        console.error("Failed to fetch company details", error);
       }
     };
 
-    fetchUserDetails();
+    fetchCompanyDetails();
   }, []);
 
-  const imageUrl = userData.company_logo
-    ? `${config.BASE_URL}/${userData.company_logo}`
+  const imageUrl = companyData?.company_logo
+    ? `${config.BASE_URL}/${companyData.company_logo}`
     : "https://saugat-nepal.com.np/assets/img/profile-img.png";
   return (
     <Sidebar
@@ -114,7 +116,7 @@ const CompanySideBar = () => {
           />
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight="bold" color={colors.gray[100]}>
-              {userData.company_name}
+              {companyData.company_name}
             </Typography>
           </Box>
         </Box>
