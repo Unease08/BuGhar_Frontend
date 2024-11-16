@@ -15,19 +15,19 @@ const PieChart = () => {
       try {
         const response = await api.get("/company/dashboard");
         console.log(response.data);
-        const { total_paid_rewards, total_pending_rewards } = response.data;
+        const { total_rewards_paid, total_rewards_pending } = response.data;
 
         setPieData([
           {
             id: "Paid",
             label: "Paid",
-            value: total_paid_rewards,
+            value: total_rewards_paid,
             color: "#4caf50",
           },
           {
             id: "Pending",
             label: "Pending",
-            value: total_pending_rewards,
+            value: total_rewards_pending,
             color: "#ffeb3b",
           },
         ]);
