@@ -1,29 +1,47 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
+import { useState, useEffect } from "react";
+import api from "../../library/Api";
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const data = [
-    {
-      id: "Approved",
-      label: "Approved",
-      value: 100,
-      color: "#4caf50",
-    },
-    {
-      id: "Pending",
-      label: "Pending",
-      value: 100,
-      color: "#ffeb3b",
-    },
-  ];
+  const [pieData, setPieData] = useState([]);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await api.get("/company/dashboard");
+        console.log(response.data);
+        const { total_paid_rewards, total_pending_rewards } = response.data;
+
+        setPieData([
+          {
+            id: "Paid",
+            label: "Paid",
+            value: total_paid_rewards,
+            color: "#4caf50",
+          },
+          {
+            id: "Pending",
+            label: "Pending",
+            value: total_pending_rewards,
+            color: "#ffeb3b",
+          },
+        ]);
+      } catch (error) {
+        console.error("Error fetching dashboard data", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <ResponsivePie
-      data={data}
+      data={pieData}
       margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
       innerRadius={0.5}
       padAngle={0.7}

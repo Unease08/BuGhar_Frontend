@@ -4,6 +4,7 @@ import { Header } from "../../components";
 import { useParams } from "react-router-dom";
 import api from "../../../library/Api";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Payment = () => {
   const { id } = useParams();
@@ -48,24 +49,21 @@ const Payment = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      // Create a payload object matching the backend's expected format
-      const payload = {
-        report_id: parseInt(id), // Ensure report_id is an integer
-        amount: parseFloat(bounty), // Ensure amount is a valid float
-        reward_status: "paid", // You can modify this value if needed
-      };
+      const endpoint = `/reward/pay?report_id=${id}&amount=${encodeURIComponent(
+        bounty
+      )}&reward_status=paid`;
 
-      console.log("Request Payload:", payload);
+      console.log("Request Endpoint:", endpoint);
 
-      // Make the API request with application/json content-type
-      const response = await api.post("/reward/pay", payload, {
+      // Make the API request
+      const response = await api.post(endpoint, null, {
         headers: {
           "Content-Type": "application/json", // Ensure the correct content type for JSON
         },
       });
 
-      alert("Bounty amount updated successfully!");
-      navigate("/company");
+      toast.success("Bounty amount updated successfully!");
+      navigate("/reward");
     } catch (error) {
       console.error("Error updating bounty amount:", error);
       if (error.response) {
