@@ -7,23 +7,21 @@ import config from "../../../config";
 
 const ProgramsDetails = () => {
   const [program, setProgram] = useState(null);
-  const [bounties, setBounties] = useState(null); // State to hold the bounty data
+  const [bounties, setBounties] = useState(null); 
   const { id } = useParams();
 
   useEffect(() => {
     const fetchProgram = async () => {
       try {
-        const response = await api.get(`/programs/${id}`); // Fetching program details
+        const response = await api.get(`/programs/${id}`); 
         console.log("API response", response.data);
-        setProgram(response.data); // Assuming the response contains program details
+        setProgram(response.data); 
 
-        // Fetching bounty calculation data
         const bountyResponse = await api.get(
           `/programs/${id}/calculate_bounties`
         );
         console.log("Bounty Calculation Response:", bountyResponse.data);
 
-        // Convert the bounties object to an array of key-value pairs
         const bountyArray = Object.entries(bountyResponse.data.bounties);
         setBounties(bountyArray);
       } catch (error) {
@@ -37,10 +35,9 @@ const ProgramsDetails = () => {
   }, [id]);
 
   if (!program) {
-    return <div>Loading...</div>; // Show a loading state while data is being fetched
+    return <div>Loading...</div>; 
   }
 
-  // Convert the in_scope string into an array of targets
   const inScopeTargets = program.in_scope
     .split(",")
     .map((target) => target.trim());
@@ -51,7 +48,6 @@ const ProgramsDetails = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* Program details section */}
       <div className="flex justify-start ml-48 gap-40">
         <div className="bg-gray-700 text-card-foreground p-4 rounded-lg w-[1080px] relative overflow-visible transform mt-24">
           <div className="relative">
@@ -117,7 +113,6 @@ const ProgramsDetails = () => {
         </div>
       </div>
 
-      {/* Program Scope and Rewards Section */}
       <div className="bg-card mt-2 ml-48 h-14 bg-gray-700 text-card-foreground p-4 rounded-xl w-[1080px]">
         <div className="flex gap-10 mb-2 font-bold text-lg ml-4 text-gray-400 cursor-pointer">
           <span className="text-indigo-500 underline">Program Details</span>
@@ -125,7 +120,6 @@ const ProgramsDetails = () => {
       </div>
       <div className="bg-card mt-5 ml-48 h-auto bg-gray-700 text-card-foreground p-4 rounded-md w-[1080px] mx-auto shadow-lg">
         <div className="w-full mt-2">
-          {/* In Scope and Out of Scope Section */}
           <div className="font-sans mt-10">
             <span className="text-black font-extrabold ml-1">In Scope</span>
             <div className="block w-full overflow-x-auto border mt-5">
@@ -151,7 +145,6 @@ const ProgramsDetails = () => {
             </div>
           </div>
 
-          {/* Out of Scope Section */}
           <div className="font-sans mt-10">
             <span className="text-black font-extrabold ml-1">Out Scope</span>
             <div className="block w-full overflow-x-auto border mt-5">
@@ -178,7 +171,6 @@ const ProgramsDetails = () => {
             <hr className="mt-10" />
           </div>
 
-          {/* Reward Section */}
           <div className="font-sans mt-10">
             <h1 className="font-bold text-indigo-400 text-xl mb-4">Reward</h1>
             <div className="block w-full overflow-x-auto border mt-5">
@@ -200,10 +192,9 @@ const ProgramsDetails = () => {
                         <tr className="text-white" key={index}>
                           <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
                             {severity}{" "}
-                            {/* This is the key (e.g., Informational, Low, etc.) */}
                           </th>
                           <th className="border-t-0 px-4 align-middle text-sm font-normal whitespace-nowrap p-4 text-left cursor-pointer">
-                            {range[0]} - {range[1]} {/* This is the range */}
+                            {range[0]} - {range[1]} 
                           </th>
                         </tr>
                       )

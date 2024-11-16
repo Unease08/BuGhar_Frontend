@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
-import config from "../../../config"
-import api from "../.../../../../library/Api"; // Adjust the path based on your file structure
+import config from "../../../config";
+import api from "../.../../../../library/Api";
 
 const ViewMyReport = () => {
-  const { id } = useParams(); // Get the ID from URL parameters
-  const [report, setReport] = useState(null); // State to store the report data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal open state
-  const [currentImage, setCurrentImage] = useState(""); // State to store the current image
+  const { id } = useParams();
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState("");
 
-  // Fetch single report using the ID from the URL
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const response = await api.get(`/report/${id}`); // Ensure correct endpoint
-        setReport(response.data); // Assuming response.data is the report object
+        const response = await api.get(`/report/${id}`);
+        setReport(response.data);
         console.log("Report data:", response.data);
 
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching report:", error);
         setLoading(false);
@@ -27,43 +26,40 @@ const ViewMyReport = () => {
     };
 
     fetchReport();
-  }, [id]); // Dependency array includes id to refetch if id changes
+  }, [id]);
 
   const handleImageClick = (imageSrc) => {
     setCurrentImage(imageSrc);
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Close the modal
+    setIsModalOpen(false);
   };
 
-  // Modal component defined within ViewMyReport
-const Modal = ({ isOpen, onClose, imageSrc }) => {
-  if (!isOpen) return null;
+  const Modal = ({ isOpen, onClose, imageSrc }) => {
+    if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-4 relative">
-        <img
-          src={imageSrc}
-          alt="Large view"
-          className="rounded"
-          style={{ maxWidth: "100%", maxHeight: "80vh" }}
-        />
-        <button
-          className="absolute top-0 right-0 bg-red-500 text-white rounded p-2 w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors duration-300" // Square button styling
-          onClick={onClose}
-          aria-label="Close"
-        >
-          &times; {/* Close button */}
-        </button>
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-4 relative">
+          <img
+            src={imageSrc}
+            alt="Large view"
+            className="rounded"
+            style={{ maxWidth: "100%", maxHeight: "80vh" }}
+          />
+          <button
+            className="absolute top-0 right-0 bg-red-500 text-white rounded p-2 w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors duration-300" // Square button styling
+            onClick={onClose}
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
       </div>
-    </div>
-  );
-};
-
-
+    );
+  };
 
   if (loading) {
     return (
@@ -81,11 +77,10 @@ const Modal = ({ isOpen, onClose, imageSrc }) => {
     );
   }
 
-  // Prepare the selected vulnerabilities for react-select
   const selectedVulnerabilities =
     report.vulnerabilities?.map((vuln) => ({
-      value: vuln, // Use the vulnerability string as the value
-      label: vuln, // Use the vulnerability string as the label
+      value: vuln,
+      label: vuln,
     })) || [];
 
   return (
@@ -100,7 +95,7 @@ const Modal = ({ isOpen, onClose, imageSrc }) => {
               name="summary"
               className="w-full mt-1 py-1 px-2 rounded border border-gray-400 text-black"
               value={report.title || ""}
-              readOnly // Set input to read-only as this is for viewing
+              readOnly
             />
           </div>
         </div>
@@ -112,8 +107,8 @@ const Modal = ({ isOpen, onClose, imageSrc }) => {
           <select
             name="severity"
             className="w-full mt-1 py-1 px-2 rounded border border-gray-400 bg-gray-50 text-black"
-            value={report.impact || ""} // Bind value to report.impact
-            disabled // Make it disabled so that it is view-only, but still shows the value as a dropdown
+            value={report.impact || ""}
+            disabled
           >
             <option value={report.impact}>{report.impact}</option>
             <option value="Low">Low</option>
@@ -131,9 +126,9 @@ const Modal = ({ isOpen, onClose, imageSrc }) => {
             name="vulnerability_ids"
             className="text-black w-full mt-1"
             value={selectedVulnerabilities}
-            options={selectedVulnerabilities} // Use the selected vulnerabilities
-            isMulti // Allow multiple selections
-            isDisabled // Disable select to make it read-only
+            options={selectedVulnerabilities}
+            isMulti
+            isDisabled
           />
           <div className="mt-6">
             <label className="text-lg">URL/Location of the vulnerability</label>
@@ -179,7 +174,6 @@ const Modal = ({ isOpen, onClose, imageSrc }) => {
           </div>
         </div>
       </div>
-      {/* Modal for displaying the large image */}
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

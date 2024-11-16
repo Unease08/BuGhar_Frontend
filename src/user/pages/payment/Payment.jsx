@@ -1,29 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import api from "../../../library/Api";
 
 const Payment = () => {
-  const transactions = [
-    {
-      id: 1,
-      company: "Tech Solutions",
-      amount: "Rs.500",
-      date: "2024-09-25",
-      status: "Paid",
-    },
-    {
-      id: 2,
-      company: "Creative Minds",
-      amount: "Rs.750",
-      date: "2024-09-28",
-      status: "Paid",
-    },
-    {
-      id: 3,
-      company: "Design Hub",
-      amount: "Rs.900",
-      date: "2024-10-01",
-      status: "Paid",
-    },
-  ];
+  const [payments, setPayments] = useState([]);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await api.get("/user/rewards");
+        setPayments(response.data);
+      } catch (error) {
+        console.error("Failed to fetch payment data:", error);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+  const formatDate = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <div className="bg-gray-900 text-white min-h-screen p-8">
@@ -34,9 +34,7 @@ const Payment = () => {
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr>
-              <th className="py-2 px-4 border-b border-gray-500">
-                Transaction ID
-              </th>
+              <th className="py-2 px-4 border-b border-gray-500">SN</th>
               <th className="py-2 px-4 border-b border-gray-500">Company</th>
               <th className="py-2 px-4 border-b border-gray-500">Amount</th>
               <th className="py-2 px-4 border-b border-gray-500">Date</th>
@@ -44,33 +42,42 @@ const Payment = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td className="py-2 px-4 border-b border-gray-600">
-                  {transaction.id}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-600">
-                  {transaction.company}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-600">
-                  {transaction.amount}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-600">
-                  {transaction.date}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-600">
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm ${
-                      transaction.status === "Paid"
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                    }`}
-                  >
-                    {transaction.status}
-                  </span>
+            {payments.length > 0 ? (
+              payments.map((payment, index) => (
+                <tr key={payment.id}>
+                  <td className="py-2 px-4 border-b border-gray-600">
+                    {index + 1}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-600">
+                    {payment.company.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-600">
+                    Rs.{payment.amount}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-600">
+                    <span>{formatDate(payment.rewarded_at)}</span>
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-600">
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm ${
+                        payment.status === "paid"
+                          ? "bg-green-600 text-white"
+                          : "bg-yellow-600 text-white"
+                      }`}
+                    >
+                      {payment.status.charAt(0).toUpperCase() +
+                        payment.status.slice(1)}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center py-4 text-gray-400">
+                  No payment records available.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

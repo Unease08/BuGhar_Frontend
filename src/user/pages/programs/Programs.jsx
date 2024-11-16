@@ -11,7 +11,7 @@ const parseDate = (dateStr) => {
 };
 
 const Programs = () => {
-  const [programs, setPrograms] = useState([]); // State to hold programs data
+  const [programs, setPrograms] = useState([]); 
   const [filteredData, setFilteredData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortBy, setSortBy] = useState("price");
@@ -22,15 +22,13 @@ const Programs = () => {
   const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Fetch programs data from the API
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
         const response = await api.get("/programs/");
         console.log("API response", response.data);
-        // Replace with your API endpoint
-        setPrograms(response.data); // Assuming the data is an array of programs
-        setFilteredData(response.data); // Initialize filtered data
+        setPrograms(response.data); 
+        setFilteredData(response.data); 
       } catch (error) {
         console.error("Error fetching programs:", error);
       }
@@ -39,7 +37,6 @@ const Programs = () => {
     fetchPrograms();
   }, []);
 
-  // Remaining part of the component remains unchanged...
   const parsePrice = (priceStr) => {
     const match = priceStr.match(/Rs (\d+)/);
     return match ? parseInt(match[1], 10) : 0;
